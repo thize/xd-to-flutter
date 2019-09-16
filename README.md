@@ -72,7 +72,6 @@ If you want to use the Plugin in Production mode, just browse the xd plugins and
 
 ```
 $ git clone https://github.com/steniowagner/mindCast
-
 ```
 
 Paste the Folder on Xd Develop Folder.\
