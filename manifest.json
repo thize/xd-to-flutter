@@ -5,6 +5,7 @@
   ],
   "author": "Thize (Giovani Lobato)",
   "name": "Xd to Flutter",
+  "releaseNotes": "First release",
   "host": {
     "app": "XD",
     "minVersion": "13.0"
@@ -12,32 +13,12 @@
   "description": "Select item (with Ctrl) and Click on plugin to copy code to clipboard\n\nHelp improve the plugin on github! (link on help url)",
   "helpUrl": "https://github.com/thize/Xd-to-Flutter",
   "id": "b9d42c73",
-  "icons": [
-    {
-      "path": "images/icon@1x.png",
-      "width": 24,
-      "height": 24
-    },
-    {
-      "path": "images/icon@2x.png",
-      "width": 48,
-      "height": 48
-    },
-    {
-      "path": "images/icon@3x.png",
-      "width": 96,
-      "height": 96
-    },
-    {
-      "path": "images/icon@4x.png",
-      "width": 144,
-      "height": 144
-    },
-    {
-      "path": "images/icon@5x.png",
-      "width": 192,
-      "height": 192
-    }
+  "keywords": [
+    "utility",
+    "productivity",
+    "flutter",
+    "layout",
+    "code"
   ],
   "uiEntryPoints": [
     {
@@ -46,5 +27,12 @@
       "commandId": "createCode"
     }
   ],
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "icons": [
+  	{ "width": 24, "height": 24, "path": "images/icon@1x.png" },
+        { "width": 48, "height": 48, "path": "images/icon@2x.png" },
+        { "width": 96, "height": 96, "path": "images/icon@3x.png" },
+        { "width": 144, "height": 144, "path": "images/icon@4x.png" },
+        { "width": 192, "height": 192, "path": "images/icon@5x.png" }
+  ]
 }
