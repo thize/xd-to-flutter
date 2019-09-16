@@ -41,7 +41,9 @@ This list is not very well ordered. I'm mainly picking up things that seem inter
 
 ## Probably out of scope/non-goals
 
-- Generate full screen layout [Click here to Beta example](https://i.giphy.com/media/gfwGJdXuj08X4YcRQu/giphy.webp).
+- Generate full screen layout
+####Experimental example:
+![Plugin-Example](https://media.giphy.com/media/kcInse3OtlbJPANh3G/giphy.gif)
 - Generate partial screen layout
 
 ## Installers
