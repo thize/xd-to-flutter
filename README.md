@@ -23,21 +23,19 @@ Connect with me at [LinkedIn](https://linkedin.com/in/giovani-lobato-68aa57131).
 ## TODO
 
 This list is not very well ordered. I'm mainly picking up things that seem interesting or useful.
-
-(X) - Text\
-(X) - Container/Elipse\
-(X) - Rotation\
-(X) - RGBA to 0xffColor\
-(/) - Line (Just straight line at the moment)\
-( ) - Gif's on READ-ME\
-( ) - Svg\
-( ) - Image\
-( ) - Gradient\
-( ) - Copy only Color\
-( ) - Copy only Text\
-( ) - Export widget with method\
-( ) - Functionalities on ReadMe\
-( ) - Visual Tab of XD plugin
+- [x] Text
+- [x] Container/Elipse
+- [x] Rotation
+- [x] RGBA to 0xffColor
+- [ ] Line (Just straight line at the moment)
+- [ ] Svg (Partially complete)
+- [ ] Image (Partially complete)
+- [ ] Gradient
+- [ ] Copy only Color
+- [ ] Copy only Text
+- [ ] Export widget with method
+- [ ] Functionalities on ReadMe
+- [ ] Visual Tab of XD plugin
 
 ## Probably out of scope/non-goals
 
