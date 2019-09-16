@@ -71,7 +71,7 @@ If you want to use the Plugin in Production mode, just browse the xd plugins and
 **Cloning the Repository**
 
 ```
-$ git clone https://github.com/steniowagner/mindCast
+$ git clone https://github.com/thize/xd-to-flutter
 ```
 
 Paste the Folder on Xd Develop Folder.\
