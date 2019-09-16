@@ -3,7 +3,7 @@
 
 # Xd to Flutter - Plugin
 
-![Plugin-Example](https://i.giphy.com/media/gfwGJdXuj08X4YcRQu/giphy.webp)
+![Plugin-Example](https://media.giphy.com/media/l4XVdfY3yWBJJ7euck/giphy.gif)
 
 ## About this Project
 
