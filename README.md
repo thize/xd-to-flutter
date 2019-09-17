@@ -36,6 +36,7 @@ This list is not very well ordered. I'm mainly picking up things that seem inter
 - [ ] Export widget with method
 - [ ] Functionalities on ReadMe
 - [ ] Visual Tab of XD plugin
+- [ ] Generate Spacer/SizedBox between widgets
 
 ## Probably out of scope/non-goals
 
