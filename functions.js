@@ -5,6 +5,23 @@ const { widgetSvg } = require("./widgets/svg");
 const { inkWell, rotation } = require("./widgets/wrappers");
 const { alert } = require("./dialogs/dialogs");
 
+function createCodeFunction(selection) {
+    if (selection.items.length != 0) {
+        let widget = "";
+        selection.items.forEach((item, pos) => {
+            if (pos == selection.items.length - 1 || selection.items.length == 1) {
+                widget += generateWidget(item);
+            } else {
+                widget += `${generateWidget(item)},`;
+            }
+        });
+        clipboard.copyText(widget);
+        alert("Code generate with sucess", "Code copied to clipboard");
+    } else {
+        error("Error", "Select something");
+    }
+}
+
 function generateWidget(node, child) {
     let widget;
     if (node.constructor.name == 'Text') {
