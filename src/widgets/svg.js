@@ -3,7 +3,6 @@ function widgetSvg(node) {
         'assets/svg/${node.name}.svg',
         height: sz(${node.boundsInParent["height"]}),
         width: sz(${node.boundsInParent["width"]}),
-        alignment: Alignment.center,
       )`;
 }
 

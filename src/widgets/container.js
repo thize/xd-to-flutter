@@ -2,10 +2,10 @@ const { color, allOpacity, offSet } = require("./global");
 
 function widgetContainer(node, child) {
     const json = _jsonRectangle(node);
-    let widget = `new Container(
+    let widget;
+    widget = `new Container(
         ${_size(json)}
-        ${child != null ? `child:${child},` : ''}${_alignment(json)}
-        ${_colorOrDecoration(json)}
+        ${child != null ? `child:${child},` : ''}${_alignment(json)}${_colorOrDecoration(json, node)}
     )`;
     return widget;
 }
@@ -19,51 +19,72 @@ function _alignment(json) {
     if (json["alignment"] == undefined) {
         return "";
     }
-    return `alignment: Alignment.${json["alignment"]},`;
+    return `
+    alignment: Alignment.${json["alignment"]},`;
 }
 
-function _colorOrDecoration(json) {
+function _colorOrDecoration(json, node) {
     const radius = _borderRadius(json);
     const shape = _shape(json);
     const boxShadow = _boxShadow(json);
     const border = _border(json);
-    const ccolor = `color: ${color(json["color"],allOpacity(json["opacity"],json["colorOpacity"]))}`
-    if (radius == "" && shape == "" && boxShadow == '' && border == "") {
-        return `${ccolor} `
+    const isImage = json["color"].toString().includes('ImageFill');
+    let ccolor;
+    if (isImage) {
+        ccolor = "";
+    } else {
+        ccolor = `color: ${color(json["color"], allOpacity(json["opacity"], json["colorOpacity"]))}`;
+    }
+    if (radius == "" && shape == "" && boxShadow == '' && border == "" && !isImage) {
+        return `${ccolor}`;
     } else {
         return `decoration: BoxDecoration(
-        ${ ccolor}${border}${boxShadow}${radius}${shape}
+        ${_generateDecorationImage(isImage, node)}${ccolor}${border}${boxShadow}${radius}${shape}
     ), `;
     }
+}
+
+function _generateDecorationImage(isImage, node) {
+    if (!isImage) {
+        return "";
+    }
+    let imageType = node.fill.mimeType.replace('image/', '');
+    if (imageType == "jpeg") {
+        imageType = "jpg";
+    }
+    return `image: DecorationImage(
+        image: AssetImage("assets/${node.name}.${imageType}"),
+      ),`;
 }
 
 function _jsonRectangle(node) {
     let w, h, shape = "rectangle";
     if (node.constructor.name == "Line") {
         return widgetContainerLine(node);
-    } else
-        if (node.constructor.name == "Ellipse") {
-            w = node.radiusX * 2;
-            h = node.radiusY * 2;
-            if (node.isCircle) {
-                shape = "circle";
-            } else {
-                shape = "ellipse"
-            }
+    }
+
+    if (node.constructor.name == "Ellipse") {
+        w = node.radiusX * 2;
+        h = node.radiusY * 2;
+        if (node.isCircle) {
+            shape = "circle";
         } else {
-            w = node.width;
-            h = node.height;
+            shape = "ellipse"
         }
+    } else {
+        w = node.width;
+        h = node.height;
+    }
     return {
         "w": w,
         "h": h,
         "radius": node.hasRoundedCorners ? node.cornerRadii : null,
         "color": node.fill["value"] != null ? node.fill.toHex(true) : node.fill,
         "colorOpacity": node.fill["value"] != null ? 1.0 : node.fill.a / 255,
+        "opacity": node.opacity,
         "borderColor": node.stroke.toHex(true),
         "borderWidth": node.strokeWidth,
         "withBorder": node.strokeEnabled,
-        "opacity": node.opacity,
         "shadow": node.shadow == null ? { "visible": false } : {
             "x": node.shadow["x"],
             "y": node.shadow["y"],
@@ -72,7 +93,6 @@ function _jsonRectangle(node) {
             "blur": node.shadow["blur"],
             "visible": node.shadow["visible"]
         },
-        "alignment": "center",
         "shape": shape,
     };
 }
@@ -83,7 +103,7 @@ function _boxShadow(json) {
     boxShadow: [
         BoxShadow(
             offset: ${ offSet(json)},
-            color: ${ color(json["shadow"]["color"],allOpacity(json["opacity"],json["shadow"]["colorOpacity"]))
+            color: ${ color(json["shadow"]["color"], allOpacity(json["opacity"], json["shadow"]["colorOpacity"]))
         }
 blurRadius: sz(${ json["shadow"]["blur"]}),
     ),
@@ -118,7 +138,7 @@ function _borderOnly(pos, val) {
 
 function _border(json) {
     return !json["withBorder"] ? "" : `
-border: Border.all(width: sz(${ json["borderWidth"].toFixed(2)}), color: ${color(json["borderColor"],allOpacity(json["opacity"],json["colorOpacity"]))}), `
+border: Border.all(width: sz(${ json["borderWidth"].toFixed(2)}), color: ${color(json["borderColor"], allOpacity(json["opacity"], json["colorOpacity"]))}), `
 }
 
 function _shape(json) {
