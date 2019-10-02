@@ -7,7 +7,7 @@ function opacity(value) {
 }
 
 function allOpacity(opacity1, opacity2) {
-    return (opacity1 + opacity2) / 2;
+    return 1 * opacity1 * opacity2;
 }
 
 function offSet(json) {
@@ -15,6 +15,3 @@ function offSet(json) {
 }
 
 module.exports = { color, offSet, allOpacity };
-
-
-

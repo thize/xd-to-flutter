@@ -1,7 +1,63 @@
+const { generateWidget, generateColor, generateTextStyle } = require("./src/generate");
+const { showMessageWithColor } = require("./src/showMessage");
 let clipboard = require("clipboard");
 let scenegraph = require("scenegraph");
 let panel;
-const { error, alert } = require("./dialogs/dialogs");
+
+function onTapGenerate(selection) {
+  const widget = document.querySelector("#widget").checked;
+  const color = document.querySelector("#color").checked;
+  const textStyle = document.querySelector("#textStyle").checked;
+  const method = document.querySelector("#methodCheckbox").checked;
+  const methodName = document.querySelector("#methodInput").value;
+  const name = selection.items[0].constructor.name;
+  let generatedWidget = "";
+  if (method && methodName == "") {
+    showMessageWithColor("Method name cannot be empty", "red");
+  } else if (selection.items.length != 1) {
+    showMessageWithColor("Multi items not implemented yet", "grey");
+  } else if (name == "Group" || name == "Artboard") {
+    showMessageWithColor(`${name} not implemented yet`, "grey");
+  } else {
+    try {
+      if (widget) {
+        generatedWidget = generateWidget(selection.items[0]);
+      } else if (color) {
+        generatedWidget = generateColor(selection.items[0]);
+      } else if (textStyle) {
+        if (name == "Text") {
+          generatedWidget = generateTextStyle(selection.items[0]);
+        } else {
+          throw "Select an text";
+        }
+      }
+      if (method) {
+        generatedWidget = `${methodName}() {
+          return ${generatedWidget};
+        }`;
+      }
+      clipboard.copyText(removeSz(generatedWidget));
+      showMessageWithColor("Successfully generated", "green");
+    } catch (error) {
+      showMessageWithColor(error.toString().includes('TypeError') ? "Error" : error, "red");
+    }
+  }
+}
+
+function removeSz(generatedWidget) {
+  if (generatedWidget.includes("sz(")) {
+    let initPos = generatedWidget.indexOf("sz(");
+    let finalPos = generatedWidget.indexOf(")", initPos);
+    let value = generatedWidget.substring(initPos + 3, finalPos);
+    generatedWidget = generatedWidget.substring(0, initPos) + value + generatedWidget.substring(finalPos + 1, generatedWidget.length);
+    return removeSz(generatedWidget);
+  }
+  return generatedWidget;
+}
+
+function onTapGenerateMargin() {
+  showMessageWithColor("Margin not implemented yet", "grey");
+}
 
 function create() {
   panel = document.createElement("div");
@@ -9,17 +65,17 @@ function create() {
   panel.querySelector("#ExportForm").addEventListener("submit", function () {
     const selection = scenegraph.selection;
     if (selection.items.length != 0) {
-      onTapExport(selection);
+      onTapGenerate(selection);
     } else {
-      error("Error", "Select something");
+      showMessageWithColor("Select something", "grey");
     }
   });
   panel.querySelector("#MarginForm").addEventListener("submit", function () {
     const selection = scenegraph.selection;
     if (selection.items.length == 2) {
-      onTapMargin(selection);
+      onTapGenerateMargin(selection);
     } else {
-      error("Error", "Select 2 Components");
+      showMessageWithColor("Select 2 Components", "grey");
     }
   });
   panel.querySelector("#methodCheckbox").addEventListener("click", function () {
@@ -27,47 +83,6 @@ function create() {
   });
   return panel;
 }
-
-function onTapExport() {
-  const widget = document.querySelector("#widget").checked;
-  const color = document.querySelector("#color").checked;
-  const textStyle = document.querySelector("#textStyle").checked;
-  const method = document.querySelector("#methodCheckbox").checked;
-  const methodName = document.querySelector("#methodInput").value;
-  if (method && methodName == "") {
-    error("Error", "Method name cannot be empty");
-  } else {
-    try {
-      if (widget) {
-        console.log("widget" + `, method = ${method}`);
-      } else if (color) {
-        alert("Ops", "Color not implemented yet");
-      } else if (textStyle) {
-        alert("Ops", "TextStyle not implemented yet");
-      }
-      sucessGenereateWidget();
-    } catch (error) {
-      console.log("error ao gerar widget");
-    }
-  }
-}
-
-function onTapMargin() {
-  try {
-    console.log("onTapMargin");
-    sucessGenereateWidget();
-  } catch (error) {
-    console.log("error ao gerar widget");
-  }
-}
-
-async function sucessGenereateWidget() {
-  console.log("sucessGenereateWidget");
-  const sucess = document.querySelector("#sucess");
-  sucess.innerHTML = "Successfully generated!\nWidget copied to clipboard.";
-  setTimeout(function () { sucess.innerHTML = ""; }, 1500);
-}
-
 
 function update() {
   const selection = scenegraph.selection;
@@ -96,13 +111,14 @@ function update() {
 function show(event) {
   if (!panel) event.node.appendChild(create());
 }
+
 function generateHtml() {
   return `
   <style>.hidden {opacity: 0.0;} .center {text-align: center;display: flex;justify-content: center;}</style>
   ${exportForm}
   ${marginForm}
   <div class="center">
-    <h2 id="sucess" style="color:green;" align="center"></h3>
+    <h2 id="message" style="color:green;" align="center"></h3>
   </div>
   `;
 }
@@ -142,6 +158,12 @@ let exportForm = `
   `;
 
 let marginForm = `
+  <form id= "MarginForm">
+  </form>
+`;
+
+/*
+let marginForm = `
   <h2>Margin</h2>
   <form id= "MarginForm">
     <fieldset id="marginGroup">
@@ -155,3 +177,4 @@ let marginForm = `
     <button id="marginButton" type="submit">Generate margin</button>
   </form>
 `;
+*/

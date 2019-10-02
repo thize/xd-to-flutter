@@ -6,14 +6,22 @@ function widgetText(node) {
     "${json["text"]}",    
     ${_textAlign(json)}style: TextStyle(
       ${_fontFamily(json)}${_fontWeight(json)}${_fontSize(json)}
-      color:${color(json["color"],allOpacity(json["opacity"],json["colorOpacity"]))}${_textUnderline(json)}${_textShadow(json)}
+      color:${color(json["color"], allOpacity(json["opacity"], json["colorOpacity"]))}${_textUnderline(json)}${_textShadow(json)}
     ),
+  )`;
+}
+
+function widgetTextStyle(node) {
+  const json = _jsonText(node);
+  return `style: TextStyle(
+      ${_fontFamily(json)}${_fontWeight(json)}${_fontSize(json)}
+      color:${color(json["color"], allOpacity(json["opacity"], json["colorOpacity"]))}${_textUnderline(json)}${_textShadow(json)}
   )`;
 }
 
 function _jsonText(node) {
   return {
-    "text": node.text,
+    "text": node.text.replace("\n", "\\n"),
     "color": node.fill.toHex(true),
     "colorOpacity": node.fill.a / 255,
     "underline": node.underline,
@@ -38,7 +46,7 @@ function _textShadow(json) {
     shadows:[
     Shadow(
       offset: ${offSet(json)},
-      color: ${color(json["shadow"]["color"],allOpacity(json["opacity"],json["shadow"]["colorOpacity"]))}
+      color: ${color(json["shadow"]["color"], allOpacity(json["opacity"], json["shadow"]["colorOpacity"]))}
       blurRadius: sz(${json["shadow"]["blur"]}),
     ),
   ],`} `;
@@ -90,4 +98,6 @@ function _fontSize(json) {
     fontSize: sz(${json["fontSize"]}),`;
 }
 
-module.exports = { widgetText };
+
+
+module.exports = { widgetText, widgetTextStyle };

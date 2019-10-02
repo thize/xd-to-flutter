@@ -27,15 +27,17 @@ This list is not very well ordered. I'm mainly picking up things that seem inter
 - [x] Container/Elipse
 - [x] Rotation
 - [x] RGBA to 0xffColor
-- [ ] Line (Just straight line at the moment)
-- [ ] Svg (Partially complete)
-- [ ] Image (Partially complete)
+- [x] Copy only Color
+- [x] Copy only TextStyle
+- [x] Visual Tab of XD plugin
+- [x] Svg
+- [x] Image
+- [x] \n Text
+- [x] Export with method (does not currently export with widget type)
 - [ ] Gradient
-- [ ] Copy only Color
-- [ ] Copy only Text
-- [ ] Export widget with method
+- [ ] Text Area
+- [ ] Line (Just straight line at the moment)
 - [ ] Functionalities on ReadMe
-- [ ] Visual Tab of XD plugin
 - [ ] Generate Spacer/SizedBox between widgets
 
 ## Probably out of scope/non-goals
@@ -48,24 +50,6 @@ This list is not very well ordered. I'm mainly picking up things that seem inter
 ## Installers
 
 If you want to use the Plugin in Production mode, just browse the xd plugins and install it.
-
-<!-- ## Functionalities
-
-- Playlists
-	- Create, Edit and Remove your Playlists
-	- Download Playlists to listen when the user goes offline
-	- Undownload Playlists
-
-- Player to listen the selected podcasts and also be able to: 
-	- Shuffle Playlist
-	- Repeat Playist
-	- Repeat a single Podcast
-	- Donwload the current podcast
-	- Add the current Podcast to a Playlist
-	- Access the queue of next podcasts that will be played
-	- Remove podcasts from the queue
-	- Play/Pause the current Podcast
-	- Next/Previous podcast on the Playlsit -->
 
 ### Installing
 
