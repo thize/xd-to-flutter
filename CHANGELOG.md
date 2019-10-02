@@ -7,6 +7,7 @@
 ##### Export FIX:
 - Svg
 - Image
+- Negative Rotation
 - \n Text
 
 ## 1.0.0
