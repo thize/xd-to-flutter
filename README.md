@@ -47,10 +47,9 @@ This list is not very well ordered. I'm mainly picking up things that seem inter
 ![Plugin-Example](https://media.giphy.com/media/kcInse3OtlbJPANh3G/giphy.gif)
 - Generate partial screen layout
 
-## Installers
-
+<--## Installers
 If you want to use the Plugin in Production mode, just browse the xd plugins and install it.
-
+-->
 ### Installing
 
 **Cloning the Repository**
