@@ -24,6 +24,14 @@ function _alignment(json) {
 }
 
 function _colorOrDecoration(json, node) {
+    let isRadial = false;
+    let isGradient = false;
+    try {
+        isGradient = json["color"].startX != undefined;
+        isRadial = json["color"].gradientTransform.a != undefined;
+    } catch (error) {
+        // it's not gradient
+    }
     const radius = _borderRadius(json);
     const shape = _shape(json);
     const boxShadow = _boxShadow(json);
@@ -33,9 +41,27 @@ function _colorOrDecoration(json, node) {
     if (isImage) {
         ccolor = "";
     } else {
-        ccolor = `color: ${color(json["color"], allOpacity(json["opacity"], json["colorOpacity"]))}`;
+        if (isGradient) {
+            if (isRadial) {
+                ccolor = "radial";
+            } else {
+                let colors = "";
+                for (let index = 0; index < json["color"].colorStops.length; index++) {
+                    colors += `${color(json["color"].colorStops[index].color.toHex(true), allOpacity(json["opacity"], json["color"].colorStops[index].color.a / 255))}`;
+                }
+                ccolor = `gradient: LinearGradient(
+                    begin: Alignment(${json["color"].startX.toFixed(2)}, ${json["color"].startY.toFixed(2)}),
+                    end: Alignment(${json["color"].endX.toFixed(2)}, ${json["color"].endY.toFixed(2)}),
+                    colors: [
+                         ${colors}
+                    ],
+                  ),`;
+            }
+        } else {
+            ccolor = `color: ${color(json["color"], allOpacity(json["opacity"], json["colorOpacity"]))}`;
+        }
     }
-    if (radius == "" && shape == "" && boxShadow == '' && border == "" && !isImage) {
+    if (radius == "" && shape == "" && boxShadow == '' && border == "" && !isImage && !isGradient) {
         return `${ccolor}`;
     } else {
         return `decoration: BoxDecoration(
