@@ -2,58 +2,45 @@ import '../models/index.dart';
 
 CostBenefit costBenefit(No node, Widget prox, {bool onlyInside = false}) {
   int bestPosition = 0;
-  var _cb;
-  var _bcb;
-  var tipoUsado = node.widget.runtimeType;
+  var runType = node.widget.runtimeType;
+  List<double> _bestCostBenefit = [];
   if (onlyInside) {
     bestPosition = 1;
-    _bcb = _custoBeneficio(node.children[0].widget, prox, tipoUsado);
+    _bestCostBenefit = _costBenefit(node.children[0].widget, prox, runType);
   } else {
-    tipoUsado = null;
-    _bcb = _custoBeneficio(node.widget, prox, tipoUsado);
+    runType = null;
+    _bestCostBenefit = _costBenefit(node.widget, prox, runType);
   }
+  List<double> _auxCostBenefit = [];
   for (var i = bestPosition; i < node.children.length; i++) {
-    _cb = _custoBeneficio(node.children[i].widget, prox, tipoUsado);
-    if (_cb[0] + _cb[1] <= _bcb[0] + _bcb[1]) {
+    _auxCostBenefit = _costBenefit(node.children[i].widget, prox, runType);
+    if (_auxCostBenefit[0] + _auxCostBenefit[1] <=
+        _bestCostBenefit[0] + _bestCostBenefit[1]) {
       bestPosition = i + 1;
-      _bcb = _cb;
+      _bestCostBenefit = _auxCostBenefit;
     }
-    if (_cb[0] + _cb[1] <= 0) {
+    if (_auxCostBenefit[0] + _auxCostBenefit[1] <= 0) {
       break;
     }
   }
-
-  return new CostBenefit(bestPosition, _bcb[0] > _bcb[1] ? Row : Column);
+  return new CostBenefit(
+      bestPosition, _bestCostBenefit[0] > _bestCostBenefit[1] ? Row : Column);
 }
 
-List<double> _custoBeneficio(Widget ant, Widget widget, tipo) {
-  List<Widget> itens = [ant, widget];
-  int acima = 0;
-  int esq = 0;
-  if (ant.y > widget.y) {
-    acima = 1;
+List<double> _costBenefit(Widget ant, Widget widget, type) {
+  List<Widget> item = [ant, widget];
+  int above = 0;
+  int left = 0;
+  if (ant.y > widget.y) above = 1;
+  if (ant.x > widget.x) left = 1;
+  double distX = item[(left + 1) % 2].x - (item[left].x + item[left].gw);
+  double distY = item[(above + 1) % 2].y - (item[above].y + item[above].gh);
+  distX = distX < 0 ? -1 : distX;
+  distY = distY < 0 ? -1 : distY;
+  if (distY == -1 && type == Column) {
+    distX = 0;
+  } else if (distX == -1 && type == Row) {
+    distY = 0;
   }
-  if (ant.x > widget.x) {
-    esq = 1;
-  }
-  if ((itens[esq].x + itens[esq].gw) > itens[(esq + 1) % 2].x &&
-      (tipo == Row || tipo == null)) {
-    return [-1, 0];
-  }
-  if ((itens[acima].y + itens[acima].gh) > itens[(acima + 1) % 2].y &&
-      (tipo == Column || tipo == null)) {
-    return [0, -1];
-  }
-  double alt;
-  double larg;
-  larg = (itens[(esq + 1) % 2].x - (itens[esq].x + itens[esq].gw));
-  if (larg < 0) {
-    larg = 0;
-  }
-
-  alt = (itens[(acima + 1) % 2].y - (itens[acima].y + itens[acima].gh));
-  if (alt < 0) {
-    alt = 0;
-  }
-  return [larg, alt];
+  return [distX, distY];
 }

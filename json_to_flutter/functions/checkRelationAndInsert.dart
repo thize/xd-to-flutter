@@ -31,18 +31,32 @@ checkRelationAndInsert(No father, Widget widget) {
   }
 }
 
-Relation checkIfIsInside(Widget ant, Widget widget) {
-  var x = ant.x, y = ant.y, w = ant.gw, h = ant.gh;
-  var ix = widget.x, iy = widget.y, iw = widget.gw, ih = widget.gh;
-  var iaf = iy + ih;
-  var ilf = ix + iw;
-  var af = y + h;
-  var lf = x + w;
-  if (iy >= y - 0.3 && iaf <= af + 0.3 && ix >= x - 0.3 && ilf <= lf + 0.3) {
+Relation checkIfIsInside(Widget ant, Widget widget,
+    {bool onlyW = false, bool onlyH = false}) {
+  var father_x = ant.x, father_y = ant.y, father_w = ant.gw, father_h = ant.gh;
+  var widget_x = widget.x,
+      widget_y = widget.y,
+      widget_w = widget.gw,
+      widget_h = widget.gh;
+  var widget_final_h = widget_y + widget_h;
+  var widget_final_w = widget_x + widget_w;
+  var father_final_h = father_y + father_h;
+  var father_final_w = father_x + father_w;
+  if (_checkOnly(onlyW, widget_y, father_y, widget_final_h, father_final_h) &&
+      _checkOnly(onlyH, widget_x, father_x, widget_final_w, father_final_w)) {
     return Relation.inside;
-  } else if (ilf <= x || lf <= ix || iaf <= y || af <= iy) {
+  } else if (widget_final_w <= father_x ||
+      father_final_w <= widget_x ||
+      widget_final_h <= father_y ||
+      father_final_h <= widget_y) {
     return Relation.outside;
   } else {
     return Relation.stack;
   }
+}
+
+bool _checkOnly(bool ignore, double widget, double father, double widget_final,
+    double father_final) {
+  if (ignore) return true;
+  return widget >= father - 0.3 && widget_final <= father_final + 0.3;
 }

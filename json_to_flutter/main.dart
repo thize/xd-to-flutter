@@ -10,13 +10,12 @@ import 'models/index.dart';
 
 /*
 ! to fix
-* to implement_test
+* to implement
 ? do better
 
 ! funcionar com rotação
 ? insert
 ? _insertAt
-? costBenefit
 * generate with layout
 */
 
