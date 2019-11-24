@@ -1,19 +1,19 @@
 import '../models/index.dart';
 
-CostBenefit costBenefit(No node, Widget prox, {bool onlyInside = false}) {
+CostBenefit costBenefit(No no, Widget prox, {bool onlyInside = false}) {
   int bestPosition = 0;
-  var runType = node.widget.runtimeType;
+  var runType = no.widget.runtimeType;
   List<double> _bestCostBenefit = [];
   if (onlyInside) {
     bestPosition = 1;
-    _bestCostBenefit = _costBenefit(node.children[0].widget, prox, runType);
+    _bestCostBenefit = _costBenefit(no.children[0].widget, prox, runType);
   } else {
     runType = null;
-    _bestCostBenefit = _costBenefit(node.widget, prox, runType);
+    _bestCostBenefit = _costBenefit(no.widget, prox, runType);
   }
   List<double> _auxCostBenefit = [];
-  for (var i = bestPosition; i < node.children.length; i++) {
-    _auxCostBenefit = _costBenefit(node.children[i].widget, prox, runType);
+  for (var i = bestPosition; i < no.children.length; i++) {
+    _auxCostBenefit = _costBenefit(no.children[i].widget, prox, runType);
     if (_auxCostBenefit[0] + _auxCostBenefit[1] <=
         _bestCostBenefit[0] + _bestCostBenefit[1]) {
       bestPosition = i + 1;

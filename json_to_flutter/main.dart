@@ -4,18 +4,16 @@ import 'functions/checkRelationAndInsert.dart';
 import 'functions/jsonToWidgetList.dart';
 import 'models/index.dart';
 
-//dart main.dart run
-//dartaotruntime xd_to_flutter.aot run
-//dart2native main.dart -k aot
+// dart main.dart run
+// dartaotruntime xd_to_flutter.aot run
+// dart2native main.dart -k aot
 
 /*
 ! to fix
 * to implement
 ? do better
 
-! funcionar com rotação
-? insert
-? _insertAt
+! work with rotation
 * generate with layout
 */
 

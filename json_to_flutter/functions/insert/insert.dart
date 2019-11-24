@@ -2,72 +2,84 @@ import '../../models/index.dart';
 import '../checkRelationAndInsert.dart';
 import '../widgetInfo.dart';
 
-insert(No node, Widget widget, type) {
+insertWidgetAtNoWithType(Widget widget, No no, type) {
   No newNo;
-  if (node.widget.runtimeType == type ||
-      (node.father != null && node.father.widget.runtimeType == type)) {
-    var index = 0;
-    No no;
-    if (node.widget.runtimeType == type) {
-      no = node;
-    } else {
-      no = node.father;
-    }
-    if (type != Stack) {
-      index = _insertAt(no, widget, type);
-    }
-    newNo = new No(no, widget, []);
-    no.children.insert(index, newNo);
-    attWidgetInfo(no);
+  if (no.widget.runtimeType == type ||
+      (no.father != null && no.father.widget.runtimeType == type)) {
+    newNo = _insertIntoExisting(no, widget, type);
   } else {
-    No wNo = new No(null, widget, []);
-    if (type == Row) {
-      newNo = new No(null, new Row(0, 0, 0, 0, 0, 0), []);
-    } else if (type == Stack) {
-      newNo = new No(null, new Stack(0, 0, 0, 0, 0, 0), []);
+    newNo = _createNoByType(type);
+    No widgetNo = new No(null, widget, []);
+    if (no.father != null) {
+      _newNoAtMiddleOfTree(widgetNo, no, type, newNo);
     } else {
-      newNo = new No(null, new Column(0, 0, 0, 0, 0, 0), []);
+      _newNoAtRootOfTree(widgetNo, no, type, newNo);
     }
-    if (node.father != null) {
-      newNo.father = node.father;
-      node.father.children.remove(node);
-      wNo.father = newNo;
-      node.father = newNo;
-      newNo.children.insert(0, node);
-      var index = _insertAt(newNo, wNo.widget, newNo.widget.runtimeType);
-      index = type == Stack ? 0 : index;
-      newNo.children.insert(index, wNo);
-      attWidgetInfo(newNo);
-      newNo.father.children.insert(
-          _insertAt(
-              newNo.father, newNo.widget, newNo.father.widget.runtimeType),
-          newNo);
-      attWidgetInfo(newNo);
-    } else {
-      wNo.father = newNo;
-      node.father = newNo;
-      treeHead = newNo;
-      newNo.children.insert(_insertAt(newNo, node.widget, type), node);
-      if (type != Stack) {
-        newNo.children.insert(_insertAt(newNo, wNo.widget, type), wNo);
-      } else {
-        newNo.children.insert(0, wNo);
-      }
-      attWidgetInfo(newNo);
-    }
+  }
+  attWidgetInfo(newNo);
+}
+
+void _newNoAtMiddleOfTree(No widgetNo, No no, type, No newNo) {
+  newNo.father = no.father;
+  no.father.children.remove(no);
+  widgetNo.father = newNo;
+  no.father = newNo;
+  newNo.children.insert(0, no);
+  var index = type == Stack
+      ? 0
+      : _insertAt(newNo, widgetNo.widget, newNo.widget.runtimeType);
+  newNo.children.insert(index, widgetNo);
+  attWidgetInfo(newNo);
+  newNo.father.children.insert(
+      _insertAt(newNo.father, newNo.widget, newNo.father.widget.runtimeType),
+      newNo);
+}
+
+void _newNoAtRootOfTree(No widgetNo, No no, type, No newNo) {
+  widgetNo.father = newNo;
+  no.father = newNo;
+  treeHead = newNo;
+  newNo.children.insert(_insertAt(newNo, no.widget, type), no);
+  if (type != Stack) {
+    newNo.children.insert(_insertAt(newNo, widgetNo.widget, type), widgetNo);
+  } else {
+    newNo.children.insert(0, widgetNo);
   }
 }
 
-int _insertAt(No node, Widget widget, tipo) {
-  var at = node.children.length;
-  for (var i = 0; i < node.children.length; i++) {
-    var a =
-        tipo == Column ? node.children[i].widget.y : node.children[i].widget.x;
-    var b = tipo == Column ? widget.y : widget.x;
-    if (b < a) {
-      at = i;
+No _createNoByType(type) {
+  switch (type) {
+    case Row:
+      return new No(null, new Row(0, 0, 0, 0, 0, 0), []);
+    case Stack:
+      return new No(null, new Stack(0, 0, 0, 0, 0, 0), []);
+    default:
+      return new No(null, new Column(0, 0, 0, 0, 0, 0), []);
+  }
+}
+
+No _insertIntoExisting(No no, Widget widget, type) {
+  No newNo;
+  No auxNo = no.widget.runtimeType == type ? no : no.father;
+  var index = 0;
+  if (type != Stack) {
+    index = _insertAt(auxNo, widget, type);
+  }
+  newNo = new No(auxNo, widget, []);
+  auxNo.children.insert(index, newNo);
+  return auxNo;
+}
+
+int _insertAt(No no, Widget widget, type) {
+  var bestPosition = no.children.length;
+  for (var i = 0; i < no.children.length; i++) {
+    var nodeValue =
+        type == Column ? no.children[i].widget.y : no.children[i].widget.x;
+    var widgetValue = type == Column ? widget.y : widget.x;
+    if (widgetValue < nodeValue) {
+      bestPosition = i;
       break;
     }
   }
-  return at;
+  return bestPosition;
 }

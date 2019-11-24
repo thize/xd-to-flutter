@@ -26,7 +26,7 @@ checkRelationAndInsert(No father, Widget widget) {
           break;
       }
   } else {
-    // Creating first node of tree
+    // Creating first no of tree
     treeHead = new No(null, widget, []);
   }
 }

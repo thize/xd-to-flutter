@@ -22,7 +22,7 @@ class Text extends Widget {
       : super(x, y, w, h, gw, gh, id);
 
   @override
-  String generateWidget(No node) {
+  String generateWidget(No no) {
     return """
     Text(
       "$text",

@@ -6,9 +6,9 @@ class Column extends Widget {
       : super(x, y, w, h, gw, gh, id);
 
   @override
-  String generateWidget(No node) {
+  String generateWidget(No no) {
     List<String> widgets = [];
-    node.children?.forEach((f) {
+    no.children?.forEach((f) {
       widgets.add("${f.widget.generateWidget(f)}");
     });
     String wid = "$widgets";

@@ -13,5 +13,5 @@ abstract class Widget {
     gh = fixDouble(gh);
   }
 
-  String generateWidget(No node);
+  String generateWidget(No no);
 }

@@ -3,7 +3,7 @@ import 'models/index.dart';
 import 'package:ansicolor/ansicolor.dart';
 import './main.dart';
 
-logTree(No node, int dist) {
+logTree(No no, int dist) {
   if (verbose) {}
   var ant = 0;
   var start = "";
@@ -14,8 +14,8 @@ logTree(No node, int dist) {
     print(green("\nStructure:"));
   }
   print(blue(
-      "$start${node.widget.runtimeType} - ${node.widget.id}, w = ${node.widget.gw}, h = ${node.widget.gh}, x = ${node.widget.x}, y = ${node.widget.y}"));
-  node.children.forEach((f) {
+      "$start${no.widget.runtimeType} - ${no.widget.id}, w = ${no.widget.gw}, h = ${no.widget.gh}, x = ${no.widget.x}, y = ${no.widget.y}"));
+  no.children.forEach((f) {
     logTree(f, dist + 1);
   });
 }

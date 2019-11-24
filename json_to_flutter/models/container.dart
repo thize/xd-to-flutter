@@ -24,8 +24,8 @@ class Container extends Widget {
       : super(x, y, w, h, gw, gh, id);
 
   @override
-  String generateWidget(No node) {
-    String widget = withDivision ? divisionWidget(node) : defaultWidget(node);
+  String generateWidget(No no) {
+    String widget = withDivision ? divisionWidget(no) : defaultWidget(no);
     return widget;
     /*.replaceAll("\n", "")
         .replaceAll(" ", "");*/
@@ -62,9 +62,9 @@ class Container extends Widget {
         ? new Shadow.fromJson(json['shadow'], withColor)
         : null;
   }
-  String _child(No node) {
-    String child = node.children.length > 0
-        ? node.children[0].widget.generateWidget(node.children[0])
+  String _child(No no) {
+    String child = no.children.length > 0
+        ? no.children[0].widget.generateWidget(no.children[0])
         : null;
     child = child != null ? "child:${child}," : "";
     return child;
@@ -143,11 +143,11 @@ class Container extends Widget {
     return "";
   }
 
-  divisionWidget(No node) {
+  divisionWidget(No no) {
     String widget = """
     Parent(
       child: new Container(
-          ${_child(node)}
+          ${_child(no)}
         ),
         style: ParentStyle()
           ${widthHeight(w, width: true, division: true)}
@@ -164,14 +164,14 @@ class Container extends Widget {
     return widget;
   }
 
-  defaultWidget(No node) {
+  defaultWidget(No no) {
     String widget = """
     Container(
       alignment: Alignment.center,
       ${widthHeight(w, width: true)}
       ${widthHeight(h, width: false)}
       ${_decoration()}
-      ${_child(node)}
+      ${_child(no)}
     )
     """;
     return rotate(rotation, child: widget);
