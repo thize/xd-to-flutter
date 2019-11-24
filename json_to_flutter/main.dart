@@ -14,7 +14,8 @@ import 'models/index.dart';
 ? do better
 
 ! work with rotation
-* generate with layout
+* generate with layout (spacer, sizedbox, margin, padding, alignment)
+* division text
 */
 
 Future main(List<String> args) async {
@@ -38,11 +39,11 @@ Future main(List<String> args) async {
   }
 }
 
-Layout layout = Layout.spacer;
-bool withSimpleCode = false;
-bool withDivision = false;
-bool verbose = false;
-bool verboseCode = false;
+Layout layout;
+bool withSimpleCode;
+bool withDivision;
+bool verbose;
+bool verboseCode;
 
 applyArgs(List<String> args) {
   withSimpleCode = true;
