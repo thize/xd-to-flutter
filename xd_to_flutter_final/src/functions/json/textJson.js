@@ -16,6 +16,7 @@ function textJson(node) {
         "wcolor": node.fillEnabled,
         "textAlign": node.textAlign,
         "underline": node.underline,
+        "rotation":  node.rotation,
         "strikethrough": node.strikethrough,
         "fontFamily": node.fontFamily,
         "fontWeight": node.fontStyle.toLowerCase().replace("-", ""),

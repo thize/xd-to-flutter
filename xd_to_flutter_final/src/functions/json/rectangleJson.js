@@ -29,13 +29,14 @@ function rectangleJson(node) {
     }
     return JSON.stringify({
         "type": "container",
-        "name": node.name,       
+        "name": node.name,
         "w": w,
         "h": h,
         "globalW": node.globalBounds["width"],
         "globalH": node.globalBounds["height"],
-        "x":  node.globalBounds["x"],
-        "y":  node.globalBounds["y"],
+        "rotation": node.rotation,
+        "x": node.globalBounds["x"],
+        "y": node.globalBounds["y"],
         "radius": node.hasRoundedCorners ? node.cornerRadii : null,
         "color": !isGradient ? node.fill.toHex(true) : node.fill,
         "wcolor": node.fillEnabled,

@@ -6,6 +6,7 @@ function svgJson(node) {
         "h": node.globalBounds["height"],
         "globalW": node.globalBounds["width"],
         "globalH": node.globalBounds["height"],
+        "rotation":  node.rotation,
         "x": node.globalBounds["x"],
         "y": node.globalBounds["y"],
     });

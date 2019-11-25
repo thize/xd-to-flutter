@@ -10,7 +10,7 @@ Future<List<Widget>> jsonToWidgetList() async {
       var parsedJson = json.decode(fileContents);
       var aux;
       for (int i = 0; i < 9999999; i++) {
-        aux = _addWidgetOnList(parsedJson["$i"], i);
+        aux = _addWidgetOnList(parsedJson["$i"]);
         if (aux == null) break;
         widgets.add(aux);
       }
@@ -22,7 +22,7 @@ Future<List<Widget>> jsonToWidgetList() async {
   return widgets;
 }
 
-Widget _addWidgetOnList(var json, int pos) {
+Widget _addWidgetOnList(var json) {
   if (json == null) return null;
   switch (json["type"]) {
     case "container":

@@ -4,6 +4,7 @@ import '../widgetInfo.dart';
 
 insertWidgetAtNoWithType(Widget widget, No no, type) {
   No newNo;
+  print("widget = ${no.widget}, run type = ${no.widget.runtimeType}");
   if (no.widget.runtimeType == type ||
       (no.father != null && no.father.widget.runtimeType == type)) {
     newNo = _insertIntoExisting(no, widget, type);
