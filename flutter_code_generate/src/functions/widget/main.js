@@ -3,7 +3,7 @@ const { checkRelationAndInsert } = require("./checkRelationAndInsert");
 const { logTree } = require("./debug");
 
 let withSimpleCode = false;
-let withDivision = true;
+let withDivision = false;
 
 const Relation = {
   INSIDE: 'inside',
@@ -19,7 +19,11 @@ class Tree {
 
 let tree = new Tree();
 
-async function generateWidgetFromJson(json) {
+async function generateWidgetFromJson(json, wSimpleCode, wDivision) {
+  withSimpleCode = wSimpleCode;
+  withDivision = wDivision;
+  exports.withDivision = withDivision;
+  exports.withSimpleCode = withSimpleCode;
   tree.no = null;
   // Generate widgets from Json
   let widgets = await jsonToWidgetList(json);
@@ -40,7 +44,4 @@ async function generateWidgetFromJson(json) {
 }
 exports.tree = tree;
 exports.Relation = Relation;
-exports.withDivision = withDivision;
-exports.withSimpleCode = withSimpleCode;
 module.exports = { generateWidgetFromJson };
-
