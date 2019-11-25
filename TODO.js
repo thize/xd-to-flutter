@@ -4,4 +4,8 @@
 * Division Text
 * Text with multi decorations
 * Fix Svg Widget
+* Gradients
+* \n Text
+* Line
+* TextArea
 */
