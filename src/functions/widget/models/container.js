@@ -124,7 +124,7 @@ class Container {
   divisionWidget(no) {
     let widget = `
     Parent(
-      child: new Container(
+      child: Container(
         ${ this._child(no)}
       ),
       style: ParentStyle()

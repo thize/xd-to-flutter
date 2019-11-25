@@ -1,7 +1,6 @@
 const { Row } = require("../models/row");
 const { Stack } = require("../models/stack");
 const { Column } = require("../models/column");
-const { Container } = require("../models/container");
 const { No } = require("../models/no");
 const { attWidgetInfo } = require("../widgetInfo");
 var tree = require("../main");

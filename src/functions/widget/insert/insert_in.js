@@ -1,6 +1,9 @@
-const { checkIfIsInside, checkRelationAndInsert } = require("../checkRelationAndInsert");
 const { insertWidgetAtNoWithType } = require("./insert");
 const { No } = require("../models/no");
+var Relation = require("../main");
+var checkIfIsInside = require("../checkRelationAndInsert");
+var checkRelationAndInsert = require("../checkRelationAndInsert");
+const { costBenefit } = require("../costBenefit");
 
 function insertInside(father, widget) {
     if (father.children.length == 0) {
@@ -10,15 +13,15 @@ function insertInside(father, widget) {
         // Checking if it's inside something inside
         for (let i = 0; i < father.children.length; i++) {
             let child = father.children[i];
-            let vd = checkIfIsInside(child.widget, widget, false, false);
-            if (vd == Relation.STACK || vd == Relation.INSIDE) {
+            let vd = checkIfIsInside.checkIfIsInside(child.widget, widget);
+            if (vd == Relation.Relation.STACK || vd == Relation.Relation.INSIDE) {
                 inside = child;
                 break;
             }
         }
         if (inside != null) {
             // It's inside something inside
-            checkRelationAndInsert(inside, widget);
+            checkRelationAndInsert.checkRelationAndInsert(inside, widget);
         } else {
             // It isn't inside something inside
             // Cost benefit to know where put
@@ -32,4 +35,3 @@ function insertInside(father, widget) {
 }
 
 module.exports = { insertInside };
-

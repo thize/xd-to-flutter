@@ -62,5 +62,6 @@ function _checkOnly(ignore, widget, father, widget_final, father_final) {
   if (ignore) return true;
   return widget >= father - 0.3 && widget_final <= father_final + 0.3;
 }
-
+exports.checkIfIsInside = checkIfIsInside;
+exports.checkRelationAndInsert = checkRelationAndInsert;
 module.exports = { checkRelationAndInsert, checkIfIsInside, Relation, tree };
