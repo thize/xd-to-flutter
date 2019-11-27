@@ -177,7 +177,6 @@ class Container {
   }
 
   _radialGradient(json, colors) {
-    console.log(json);
     let content = `colors:[${colors}],
     radius: ${fixDouble(json.endR)},
     center: Alignment(${fixDouble(json.startX)}, ${fixDouble(json.startY)}),`;

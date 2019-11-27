@@ -2,8 +2,9 @@
 
 ##TODO List:
 
-* [ ] RepeatGrid
-* [ ] Line
+* [ ] RepeatGrid (XD)
+* [ ] SymbolInstance (XD)
+* [ ] Line (XD)
 * [ ] Ellipse with Division (waiting division update)
 * [ ] Stops on LinearGradient and RadialGradient
 * [ ] Generate layout distances (spacer, sizedBox, margin, padding, alingment)
