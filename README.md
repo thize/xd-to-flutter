@@ -2,13 +2,14 @@
 
 ##TODO List:
 
-* [ ] RepeatGrid (XD)
-* [ ] SymbolInstance (XD)
-* [ ] Line (XD)
+* [ ] Automatic detect buttons
 * [ ] Ellipse with Division (waiting division update)
 * [ ] Stops on LinearGradient and RadialGradient
 * [ ] Generate layout distances (spacer, sizedBox, margin, padding, alingment)
-* [ ] Automatic detect buttons
+* [ ] Line (XD)
+* [ ] RepeatGrid (XD)
+* [ ] SymbolInstance (XD)
+* [ ] Show Structure
 * [x] Radial Gradient
 * [x] Rotation
 * [x] Remove itens from Group

@@ -1,10 +1,10 @@
 const { showMessageWithColor } = require("./src/showMessage");
 const { generateColor } = require("./src/color");
 const { allToWidget } = require("./src/allToWidget");
-
 let clipboard = require("clipboard");
 let scenegraph = require("scenegraph");
 let panel;
+let showAutomaticButton = false;
 
 function onTapGenerate(selection) {
     const widget = document.querySelector("#widget").checked;
@@ -63,28 +63,32 @@ function create() {
             showMessageWithColor("Select something", "grey");
         }
     });
-    panel.querySelector("#methodCheckbox").addEventListener("click", function () {
-        update();
-    });
-    panel.querySelector("#simpleCodeCheckbox").addEventListener("click", function () {
-        update();
-    });
-    panel.querySelector("#division").addEventListener("click", function () {
-        update();
-    });
+    panel.querySelector("#methodCheckbox").addEventListener("click", update);
+    panel.querySelector("#simpleCodeCheckbox").addEventListener("click", update);
+    if (showAutomaticButton) {
+        panel.querySelector("#automaticDetectButton").addEventListener("click", update);
+        panel.querySelector("#rippleCheckbox").addEventListener("click", update);
+    }
     return panel;
 }
 
 function update() {
     const selection = scenegraph.selection;
     const method = document.querySelector("#methodCheckbox").checked;
-    const input = document.querySelector("#methodInput");
+    const methodInput = document.querySelector("#methodInput");
+    const rippleCheckbox = document.querySelector("#rippleCheckbox");
+    const automaticDetectButton = document.querySelector("#automaticDetectButton").checked;
     const buttons = document.querySelectorAll("button");
-    if (method) {
-        input.removeAttribute("disabled");
+    if (automaticDetectButton) {
+        rippleCheckbox.removeAttribute("disabled");
     } else {
-        input.value = "";
-        input.setAttribute("disabled", "disabled");
+        rippleCheckbox.setAttribute("disabled", "disabled");
+    }
+    if (method) {
+        methodInput.removeAttribute("disabled");
+    } else {
+        methodInput.value = "";
+        methodInput.setAttribute("disabled", "disabled");
     }
     buttons.forEach(function (button) {
         if (selection.items.length != 0) {
@@ -109,6 +113,30 @@ function generateHtml() {
   `;
 }
 
+
+
+let exportForm = `
+  <h2>Export</h2>
+  <form id= "ExportForm">
+    ${_row(`<input type="radio" id="widget" name="exportGroup" checked>Widget<br>`)}
+    ${_row(`<input type="radio" id="color" name="exportGroup" >Color<br>`)}
+    ${_row(`<input type="checkbox" id="methodCheckbox" name="exportGroup" >Extract with method<br>`)}
+    ${_row(`<span>Method Name</span>`)}
+    ${_row(`<input id="methodInput" type="text" placeholder="Name"/>`)}    
+    ${showAutomaticButton ? ` <h2>Button</h2>
+    ${_row(`<input type="checkbox" id="automaticDetectButton" name="exportGroup" >Automatic Detect<br>`)}
+    ${_row(`<input type="checkbox" id="rippleCheckbox" name="exportGroup" >With Ripple<br>`)} ` : ''}   
+    <h2>Plugins</h2>
+    ${_row(`<input type="checkbox" id="division" name="exportGroup" >With Division<br>`)}
+    ${_row(`<input type="checkbox" id="simpleCodeCheckbox" name="exportGroup" >With SimpleCode<br>`)}
+    <button id="button" type="submit">Generate</button>
+  </form>
+  `;
+
+function _row(content) {
+    return `<label class="row">${content}</label>`;
+}
+
 module.exports = {
     panels: {
         createWidgets: {
@@ -117,31 +145,3 @@ module.exports = {
         }
     },
 };
-
-let exportForm = `
-  <h2>Export</h2>
-  <form id= "ExportForm">
-    <fieldset id="exportGroup">
-      <label class="row">
-        <input type="radio" id="widget" name="exportGroup" checked>Widget<br>
-      </label>
-      <label class="row">
-        <input type="radio" id="color" name="exportGroup" >Color<br>
-      </label>
-      <label class="row">
-        <input type="checkbox" id="methodCheckbox" name="exportGroup" >Extract with method<br>
-      </label>
-      <label class="row">
-          <span>Method Name</span>
-          <input id="methodInput" type="text" placeholder="Name"/>
-      </label>
-    </fieldset>
-    <button id="button" type="submit">Generate</button>
-    <label class="row">
-        <input type="checkbox" id="simpleCodeCheckbox" name="exportGroup" >With SimpleCode<br>
-    </label>
-    <label class="row">
-        <input type="checkbox" id="division" name="exportGroup" >With Division<br>
-    </label>
-  </form>
-  `;
