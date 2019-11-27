@@ -5,6 +5,7 @@ let clipboard = require("clipboard");
 let scenegraph = require("scenegraph");
 let panel;
 let showAutomaticButton = false;
+let showPlugins = true;
 
 function onTapGenerate(selection) {
     const widget = document.querySelector("#widget").checked;
@@ -60,15 +61,10 @@ function create() {
         if (selection.items.length != 0) {
             onTapGenerate(selection);
         } else {
-            showMessageWithColor("Select something", "grey");
+           showMessageWithColor("Select something", "grey");
         }
     });
     panel.querySelector("#methodCheckbox").addEventListener("click", update);
-    panel.querySelector("#simpleCodeCheckbox").addEventListener("click", update);
-    if (showAutomaticButton) {
-        panel.querySelector("#automaticDetectButton").addEventListener("click", update);
-        panel.querySelector("#rippleCheckbox").addEventListener("click", update);
-    }
     return panel;
 }
 
@@ -104,6 +100,7 @@ function show(event) {
 }
 
 function generateHtml() {
+    updateExport();
     return `
   <style>.hidden {opacity: 0.0;} .center {text-align: center;display: flex;justify-content: center;}</style>
   ${exportForm}
@@ -112,27 +109,26 @@ function generateHtml() {
   </div>
   `;
 }
-
-
-
-let exportForm = `
-  <h2>Export</h2>
-  <form id= "ExportForm">
-    ${_row(`<input type="radio" id="widget" name="exportGroup" checked>Widget<br>`)}
-    ${_row(`<input type="radio" id="color" name="exportGroup" >Color<br>`)}
-    ${_row(`<input type="checkbox" id="methodCheckbox" name="exportGroup" >Extract with method<br>`)}
-    ${_row(`<span>Method Name</span>`)}
-    ${_row(`<input id="methodInput" type="text" placeholder="Name"/>`)}    
-    ${showAutomaticButton ? ` <h2>Button</h2>
-    ${_row(`<input type="checkbox" id="automaticDetectButton" name="exportGroup" >Automatic Detect<br>`)}
-    ${_row(`<input type="checkbox" id="rippleCheckbox" name="exportGroup" >With Ripple<br>`)} ` : ''}   
-    <h2>Plugins</h2>
-    ${_row(`<input type="checkbox" id="division" name="exportGroup" >With Division<br>`)}
-    ${_row(`<input type="checkbox" id="simpleCodeCheckbox" name="exportGroup" >With SimpleCode<br>`)}
-    <button id="button" type="submit">Generate</button>
-  </form>
-  `;
-
+function updateExport() {
+    exportForm = `
+    <h2>Export</h2>
+    <form id= "ExportForm">
+      ${_row(`<input type="radio" id="widget" name="exportGroup" checked>Widget<br>`)}
+      ${_row(`<input type="radio" id="color" name="exportGroup" >Color<br>`)}
+      ${_row(`<input type="checkbox" id="methodCheckbox" name="exportGroup" >Extract with method<br>`)}
+      ${_row(`<span>Method Name</span>`)}
+      ${_row(`<input id="methodInput" type="text" placeholder="Name"/>`)}    
+      ${showAutomaticButton ? ` <h2>Button</h2>
+      ${_row(`<input type="checkbox" id="automaticDetectButton" name="exportGroup" >Automatic Detect<br>`)}
+      ${_row(`<input type="checkbox" id="rippleCheckbox" name="exportGroup" >With Ripple<br>`)} ` : ''}   
+      <h2>Plugins</h2>
+      ${showPlugins ? ` ${_row(`<input type="checkbox" id="division" name="exportGroup" >With Division<br>`)}
+      ${_row(`<input type="checkbox" id="simpleCodeCheckbox" name="exportGroup" >With SimpleCode<br>`)}` : ``}
+      <button id="button" type="submit">Generate</button>
+    </form>
+    `;
+}
+let exportForm;
 function _row(content) {
     return `<label class="row">${content}</label>`;
 }
