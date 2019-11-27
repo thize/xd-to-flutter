@@ -22,9 +22,9 @@ function hexColorToFlutterColor(hexColor, opacity, transparent, withTag) {
   let color;
   if (opacity == 0) {
     if (transparent)
-      color = "";
+      color = "Colors.transparent";
     else
-      color = "color: Colors.transparent,";
+      return "";
   } else {
     color = _hexToMaterialColor(`Color(${hexColor.replace("#", "0xff")})`) + (opacity == 1 ? "" : `.withOpacity(${opacity})`);
   }

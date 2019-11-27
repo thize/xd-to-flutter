@@ -14,10 +14,10 @@ class Svg {
   }
 
   generateWidget(no) {
-   return `SvgPicture.asset(
+    return `SvgPicture.asset(
       "assets/${this.id}.svg",
-      ${ widthHeight(this.w,true) }
-      ${ widthHeight(this.h, false) }
+      ${ widthHeight(fixDouble(this.w), true)}
+      ${ widthHeight(fixDouble(this.h), false)}
     )`;
   }
 }

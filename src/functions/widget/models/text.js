@@ -93,8 +93,8 @@ class Text {
       return "";
     }
     let content = `FontWeight.w${this.fontWeight}`;
-    if (withDivision.withDivision) return `..fontWeight(${content})`.
-      return`fontWeight: ${content},`;
+    if (withDivision.withDivision) return `..fontWeight(${content})`;
+    return `fontWeight: ${content},`;
   }
 
   _defaultWidget() {

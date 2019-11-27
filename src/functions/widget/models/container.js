@@ -95,7 +95,7 @@ class Container {
   _radius() {
     if (this.radius != null) {
       if (this.radius.isCircular()) {
-        if (withDivision.withDivision) return `..borderRadius(all:ddasd)`;
+        if (withDivision.withDivision) return `..borderRadius(all:${sz(this.radius.topLeft)})`;
         return `borderRadius: BorderRadius.circular(${sz(this.radius.topLeft)}),`;
       }
       var tL = this.radius.topLeft != 0
@@ -159,7 +159,8 @@ class Container {
     }
     let color = hexColorToFlutterColor(
       json.toString(), this.withColor ? this.opacity : 0,
-      true, !withDivision.withDivision);
+      false, !withDivision.withDivision);
+    if (color == "") return color;
     if (withDivision.withDivision) return `..background.color(${color})`;
     return color;
   }

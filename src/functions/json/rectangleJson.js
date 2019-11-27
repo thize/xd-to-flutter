@@ -29,7 +29,7 @@ function rectangleJson(node) {
         }
         let isLinear = gradient["endR"] == undefined;
         if (isLinear) {
-            gradient = { "endY": gradient["endY"], "endX": gradient["endX"], "startY": gradient["startY"], "startX": gradient["startX"] - 0.5, "colorStops": gradients };
+            gradient = { "endY": gradient["endY"], "endX": gradient["endX"], "startY": gradient["startY"], "startX": gradient["startX"], "colorStops": gradients };
         } else {
             let startX = (gradient["startX"] - 0.5) * 2;
             let startY = (gradient["startY"] - 0.5) * 2;
