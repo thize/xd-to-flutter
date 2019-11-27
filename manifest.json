@@ -1,5 +1,5 @@
 {
-  "summary": "lutter Code Generate",
+  "summary": "Flutter Code Generate",
   "languages": [
     "en"
   ],
@@ -12,7 +12,7 @@
   },
   "description": "Select item (with Ctrl) and Click on plugin to copy code to clipboard\n\nHelp improve the plugin on github! (link on help url)",
   "helpUrl": "https://github.com/thize/Xd-to-Flutter",
-  "id": "9a6cfef9",
+  "id": "b9d42c73",
   "keywords": [
     "utility",
     "productivity",
@@ -27,7 +27,7 @@
       "panelId": "createWidgets"
     }
   ],
-  "version": "1.3.0",
+  "version": "2.0.0",
   "icons": [
     {
       "width": 24,
