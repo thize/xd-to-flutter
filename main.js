@@ -61,7 +61,7 @@ function create() {
         if (selection.items.length != 0) {
             onTapGenerate(selection);
         } else {
-           showMessageWithColor("Select something", "grey");
+            showMessageWithColor("Select something", "grey");
         }
     });
     panel.querySelector("#methodCheckbox").addEventListener("click", update);
@@ -125,6 +125,8 @@ function updateExport() {
       ${showPlugins ? ` ${_row(`<input type="checkbox" id="division" name="exportGroup" >With Division<br>`)}
       ${_row(`<input type="checkbox" id="simpleCodeCheckbox" name="exportGroup" >With SimpleCode<br>`)}` : ``}
       <button id="button" type="submit">Generate</button>
+      ${_row(`<span>To SVG Folder Group use: svg_SVGNAME</span>`)}
+      ${_row(`<span>ex: svg_hearth</span>`)}
     </form>
     `;
 }
