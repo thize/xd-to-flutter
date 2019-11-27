@@ -10,7 +10,7 @@ function fixDouble(value) {
 }
 
 function sz(value) {
-  if (withSimpleCode.withSimpleCode) {
+  if (withSimpleCode.withSimpleCode && value > 0) {
     return `sz(${value})`;
   }
   return `${value}`;
@@ -26,7 +26,7 @@ function hexColorToFlutterColor(hexColor, opacity, transparent, withTag) {
     else
       color = "color: Colors.transparent,";
   } else {
-    color = _hexToMaterialColor(`Color(${hexColor.replace("#", "0xff")})`);
+    color = _hexToMaterialColor(`Color(${hexColor.replace("#", "0xff")})`) + (opacity == 1 ? "" : `.withOpacity(${opacity})`);
   }
   if (!withTag) return `${color}`;
   return `color: ${color}` + (withDivision.withDivision ? "" : ",");
@@ -49,7 +49,7 @@ function widthHeight(value, width, division) {
 
 function rotate(rotation, child) {
   if (rotation > 0) {
-    if (withDivision.withDivision) return `..rotate(${rotation / 360})`;
+    if (withDivision.withDivision) return `..rotate(${fixDouble(rotation / 360)})`;
     return `
     Transform.rotate(
       angle: ${rotation} * pi / 180,

@@ -8,8 +8,6 @@ var Relation = require("./main");
 
 function checkRelationAndInsert(father, widget) {
   if (father != null) {
-    console.log("father != null");
-
     let type = checkIfIsInside(father.widget, widget);
     // Id -1 is Genereated Widget (Column, Row or Stack)
     if (father.widget.id == "-1")
@@ -27,10 +25,7 @@ function checkRelationAndInsert(father, widget) {
           break;
       }
   } else {
-    console.log("father == null");
     // Creating first no of tree
-    console.log(`tree = ${tree}`);
-
     tree.tree.no = new No(null, widget, []);
 
   }

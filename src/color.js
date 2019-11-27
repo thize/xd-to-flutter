@@ -6,7 +6,6 @@ function generateColor(node) {
     };
     let opacity = json["colorOpacity"] * json["opacity"];
     let hexColor = json["color"];
-    console.log(`opacity = ${opacity}`);
     opacity = parseFloat(opacity.toFixed(2));
     return `Color(${hexColor.replace("#", "0xff")})${opacity != 1 ? `.withOpacity(${opacity})` : ""}`;
 }

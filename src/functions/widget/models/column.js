@@ -18,7 +18,7 @@ class Column {
       });
     }
     let wid = `${widgets}`;
-    return `Column(children:<Widget>${wid},)`;
+    return `Column(children:<Widget>[${wid}],)`;
   }
 }
 

@@ -20,13 +20,17 @@ function onTapGenerate(selection) {
         try {
             if (widget) {
                 require("application").editDocument(async () => {
-                    generatedWidget = await allToWidget(selection, simpleCode, division);
-                    if (method) {
-                        generatedWidget = `${methodName}() {
+                    try {
+                        generatedWidget = await allToWidget(selection, simpleCode, division);
+                        if (method) {
+                            generatedWidget = `${methodName}() {
                         return ${generatedWidget};
                         }`;
+                        }
+                        clipboard.copyText(generatedWidget);
+                    } catch (error) {
+                        showMessageWithColor(error.toString().includes('TypeError') ? "Error" : error, "red");
                     }
-                    clipboard.copyText(generatedWidget);
                 });
             } else if (selection.items.length == 1 && selection.items[0].children.length < 2) {
                 if (color) {
@@ -39,8 +43,6 @@ function onTapGenerate(selection) {
                 }
                 clipboard.copyText(generatedWidget);
             } else {
-                console.log(`qtd = ${selection.items[0].children.length}`);
-
                 throw "Select only one widget";
             }
             showMessageWithColor("Successfully generated", "green");

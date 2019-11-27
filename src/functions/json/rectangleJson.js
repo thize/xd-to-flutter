@@ -20,12 +20,21 @@ function rectangleJson(node) {
 
     var color = node.constructor.name != "Artboard";
     var isGradient = node.fill["value"] == null;
+    var gradient = node.fill;
     if (isGradient) {
-        var gradient = node.fill;
-        gradient["colorStops"].forEach(element => {
-            element["opacity"] = element["color"].a / 255 * node.opacity;
-            element["color"] = element["color"].toHex(true);
-        });
+        let gradients = [];
+        for (let i = 0; i < gradient["colorStops"].length; i++) {
+            let stop = gradient["colorStops"][i];
+            gradients.push({ "color": stop["color"].toHex(true), "stop": stop["stop"], "opacity": stop["color"].a / 255 * node.opacity });
+        }
+        let isLinear = gradient["endR"] == undefined;
+        if (isLinear) {
+            gradient = { "endY": gradient["endY"], "endX": gradient["endX"], "startY": gradient["startY"], "startX": gradient["startX"] - 0.5, "colorStops": gradients };
+        } else {
+            let startX = (gradient["startX"] - 0.5) * 2;
+            let startY = (gradient["startY"] - 0.5) * 2;
+            gradient = { "gradientTransform": gradient["gradientTransform"], "endR": gradient["endR"], "startR": gradient["startR"], "endY": gradient["endY"], "endX": gradient["endX"], "startY": startY, "startX": startX, "colorStops": gradients };
+        }
     }
     return JSON.stringify({
         "type": "container",
@@ -38,7 +47,7 @@ function rectangleJson(node) {
         "x": node.globalBounds["x"],
         "y": node.globalBounds["y"],
         "radius": node.hasRoundedCorners ? node.cornerRadii : null,
-        "color": !isGradient ? node.fill.toHex(true) : node.fill,
+        "color": isGradient ? gradient : node.fill.toHex(true),
         "wcolor": node.fillEnabled,
         "image": image,
         "borderColor": color ? node.stroke.toHex(true) : "#ffffff",
@@ -57,27 +66,4 @@ function rectangleJson(node) {
         "shape": shape
     });
 }
-
 module.exports = { rectangleJson };
-
-/*
-Container(
-    height: 200,
-    width: 200,
-    color: Colors.white,
-    decoration: BoxDecoration(
-        border: Border.all(width: 50),
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(80),
-        boxShadow: ,
-        gradient: ,
-        image: ,
-        shape: ,
-    ),
-    alignment: ,
-    child: ,
-    constraints: ,
-    decoration: ,
-    foregroundDecoration: ,
-)
-*/

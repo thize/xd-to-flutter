@@ -17,11 +17,8 @@ class Container {
     this.withColor = json['wcolor'];
     this.haveImage = json['image'];
     this.rotation = fixDouble(json['rotation']);
-    this.color = this.haveImage
-      ? ""
-      : hexColorToFlutterColor(
-        json['color'].toString(), this.withColor ? this.opacity : 0,
-        true, !withDivision.withDivision);
+    this.withGradient = json["color"]["startY"] != undefined;
+    this.color = this._color(json["color"]);
     this.borderOpacity = fixDouble(json['borderOpacity']);
     this.borderColor = hexColorToFlutterColor(
       json['borderColor'].toString(), this.borderOpacity, true);
@@ -36,9 +33,7 @@ class Container {
   }
 
   generateWidget(no) {
-    console.log(`container withDivisior = ${withDivision.withDivision}`);
-
-    let widget = withDivision.withDivision ? this.divisionWidget(no) : this.defaultWidget(no);
+    let widget = withDivision.withDivision ? this._divisionWidget(no) : this._defaultWidget(no);
     return widget;
   }
 
@@ -55,7 +50,7 @@ class Container {
       this.withBorder ||
       this.shape != "rectangle" ||
       this.shadow.visible ||
-      this.radius != null) {
+      this.radius != null || this.withGradient) {
       return `decoration: BoxDecoration(
         ${this.color}
         ${ this._border()}
@@ -79,10 +74,10 @@ class Container {
 
   _shape() {
     if (this.shape == "ellipse") {
-      if (withDivision.withDivision) return "..borderRadius(all:${w})";
-      return "borderRadius: BorderRadius.all(Radius.elliptical($gw, $gh)),";
+      if (withDivision.withDivision) return `..borderRadius(all:${this.h})`;
+      return `borderRadius: BorderRadius.all(Radius.elliptical(${this.w}, ${this.h})),`;
     } else if (this.shape == "circle") {
-      if (withDivision.withDivision) return "..borderRadius(all:${w})";
+      if (withDivision.withDivision) return "..circle()";
       return "shape: BoxShape.circle,";
     }
     return "";
@@ -100,20 +95,20 @@ class Container {
   _radius() {
     if (this.radius != null) {
       if (this.radius.isCircular()) {
-        if (withDivision.withDivision) return `..borderRadius(all:${sz(this.radius.topLeft)})`;
+        if (withDivision.withDivision) return `..borderRadius(all:ddasd)`;
         return `borderRadius: BorderRadius.circular(${sz(this.radius.topLeft)}),`;
       }
       var tL = this.radius.topLeft != 0
-        ? `topLeft: ${radiusCircular(sz(this.radius.topLeft))},`
+        ? `topLeft: ${_radiusCircular(sz(this.radius.topLeft))},`
         : "";
       var tR = this.radius.topRight != 0
-        ? `topRight: ${radiusCircular(sz(this.radius.topRight))},`
+        ? `topRight: ${_radiusCircular(sz(this.radius.topRight))},`
         : "";
       var bL = this.radius.bottomLeft != 0
-        ? `bottomLeft: ${radiusCircular(sz(this.radius.bottomLeft))},`
+        ? `bottomLeft: ${_radiusCircular(sz(this.radius.bottomLeft))},`
         : "";
       var bR = this.radius.bottomRight != 0
-        ? `bottomRight: ${radiusCircular(sz(this.radius.bottomRight))}`
+        ? `bottomRight: ${_radiusCircular(sz(this.radius.bottomRight))}`
         : "";
       if (withDivision.withDivision) return `..borderRadius(${tL}${tR}${bL}${bR})`;
       return `borderRadius: BorderRadius.only(${tL}${tR}${bL}${bR}),`;
@@ -121,7 +116,7 @@ class Container {
     return "";
   }
 
-  divisionWidget(no) {
+  _divisionWidget(no) {
     let widget = `
     Parent(
       child: Container(
@@ -132,7 +127,7 @@ class Container {
           ${ widthHeight(this.h, false, true)}
       ..alignmentContent.center()
           ${ rotate(this.rotation)}
-      ..background.color(${this.color})
+          ${this.color}
           ${ this._border()}
           ${ this._radius()}
           ${ this._shape()}
@@ -141,7 +136,7 @@ class Container {
     return widget;
   }
 
-  defaultWidget(no) {
+  _defaultWidget(no) {
     let widget = `
     Container(
       alignment: Alignment.center,
@@ -153,12 +148,50 @@ class Container {
     return rotate(this.rotation, widget);
   }
 
-  radiusCircular(content) {
+  _radiusCircular(content) {
     if (withDivision.withDivision) return content;
     return `Radius.circular(${content})`;
   }
+  _color(json) {
+    if (this.haveImage) return "";
+    if (this.withGradient) {
+      return this._gradient(json);
+    }
+    let color = hexColorToFlutterColor(
+      json.toString(), this.withColor ? this.opacity : 0,
+      true, !withDivision.withDivision);
+    if (withDivision.withDivision) return `..background.color(${color})`;
+    return color;
+  }
+
+  _gradient(json) {
+    let isLinear = json["startR"] == undefined;
+    let colors = "";
+    for (let index = 0; index < json.colorStops.length; index++) {
+      let stop = json.colorStops[index];
+      colors += hexColorToFlutterColor(stop["color"], fixDouble(stop["opacity"]),
+        false, false) + (index == json.colorStops.length - 1 ? "" : ",");
+    }
+    if (isLinear) return this._linearGradient(json, colors);
+    return this._radialGradient(json, colors);
+  }
+
+  _radialGradient(json, colors) {
+    console.log(json);
+    let content = `colors:[${colors}],
+    radius: ${fixDouble(json.endR)},
+    center: Alignment(${fixDouble(json.startX)}, ${fixDouble(json.startY)}),`;
+    if (withDivision.withDivision) return `..radialGradient(${content})`;
+    return `gradient: RadialGradient(${content}),`;
+  }
+
+  _linearGradient(json, colors) {
+    let content = `begin: Alignment(${fixDouble(json.startX)}, ${fixDouble(json.startY)}),
+    end: Alignment(${fixDouble(json.endX)}, ${fixDouble(json.endY)}),
+    colors: [${colors}],`;
+    if (withDivision.withDivision) return `..linearGradient(${content})`;
+    return `gradient: LinearGradient(${content}),`;
+  }
 }
 
-
 module.exports = { Container };
-

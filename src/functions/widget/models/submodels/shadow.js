@@ -14,22 +14,23 @@ class Shadow {
   }
 
   print(isText) {
-    isText = isText == null ? false : isText;
     if (this.visible) {
       let offSet = `offset: Offset(${sz(this.x)},${sz(this.y)})`;
       let blurR = `${sz(this.blurRadius)}`;
-      if (withDivision.withDivision)
-        return `..boxShadow(${this.color}, blur: ${blurR}, ${offSet})`;
-      return `
-    ${ isText ? "shadows" : "boxShadow"}: [
-      BoxShadow(
-        ${offSet}, ${this.color}blurRadius: ${blurR},
-      ),
-    ],
-    `;
+      let content = `${offSet}, ${withDivision.withDivision ? 'blur' : 'blurRadius'}: ${blurR},${this.color}`;
+      if (isText) {
+        if (withDivision.withDivision)
+          return `..textShadow(${content})`;
+        return `shadows:[Shadow(${content})],`;
+      } else {
+        if (withDivision.withDivision)
+          return `..boxShadow(${content})`;
+        return `boxShadow:[BoxShadow(${content})],`;
+      }
     }
     return "";
   }
 }
 
 module.exports = { Shadow };
+

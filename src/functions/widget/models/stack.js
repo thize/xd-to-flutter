@@ -18,7 +18,7 @@ class Stack {
     }
     widgets.reverse();
     let wid = `${widgets}`;
-    return `Stack(children:<Widget>${wid},)`;
+    return `Stack(children:<Widget>[${wid}],)`;
   }
 }
 

@@ -17,7 +17,7 @@ class Row {
       });
     }
     let wid = `${widgets}`;
-    return `Row(children:<Widget>${wid},)`;
+    return `Row(children:<Widget>[${wid}],)`;
   }
 }
 

@@ -9,18 +9,15 @@ function insertWidgetAtNoWithType(widget, no, type) {
   let newNo;
   if (no.widget.type == type ||
     (no.father != null && no.father.widget.type == type)) {
-    console.log("entrou aqui 1");
 
     newNo = _insertIntoExisting(no, widget, type);
   } else {
-    console.log("entrou aqui 2");
     newNo = _createNoByType(type);
     let widgetNo = new No(null, widget, []);
     if (no.father != null) {
-      console.log("entrou aqui 3");
       _newNoAtMiddleOfTree(widgetNo, no, type, newNo);
     } else {
-      console.log("entrou aqui 4");
+      
       _newNoAtRootOfTree(widgetNo, no, type, newNo);
     }
   }
