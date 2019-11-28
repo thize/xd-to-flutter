@@ -1,6 +1,7 @@
-# Flutter Code Generate - Plugin
+# Adobe XD Flutter Code Generate - Plugin
+<a href="https://github.com/thize/xd-to-flutter/releases"><img src="https://img.shields.io/badge/FlutterCodeGenerate-v2.0.0-blue"/></a>
 
-![Plugin-Example](https://media.giphy.com/media/l4XVdfY3yWBJJ7euck/giphy.gif)
+![Plugin-Example](https://media.giphy.com/media/llOhnaDgpmAiFR0Exz/giphy.gif)
 
 ## About this Project
 
