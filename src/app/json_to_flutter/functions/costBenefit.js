@@ -1,6 +1,6 @@
-const { Row } = require("./models/row");
-const { Column } = require("./models/column");
-const { CostBenefit } = require("./models/costBenefit");
+const { Row } = require("../models/row");
+const { Column } = require("../models/column");
+const { CostBenefit } = require("../models/costBenefit");
 
 function costBenefit(no, prox, onlyInside) {
   onlyInside = onlyInside == null ? false : onlyInside;

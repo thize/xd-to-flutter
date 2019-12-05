@@ -1,14 +1,6 @@
 var withSimpleCode = require("./main");
 var withDivision = require("./main");
 
-function fixDouble(value) {
-  try {
-    return parseFloat(value.toFixed(2));
-  } catch (e) {
-    return parseFloat((parseFloat(value)).toFixed(2));
-  }
-}
-
 function sz(value) {
   if (withSimpleCode.withSimpleCode && value > 0) {
     return `sz(${value})`;
@@ -49,7 +41,7 @@ function widthHeight(value, width, division) {
 
 function rotate(rotation, child) {
   if (rotation > 0) {
-    if (withDivision.withDivision) return `..rotate(${fixDouble(rotation / 360)})`;
+    if (withDivision.withDivision) return `..rotate(${rotation / 360})`;
     return `
     Transform.rotate(
       angle: ${rotation} * pi / 180,
@@ -60,4 +52,4 @@ function rotate(rotation, child) {
   return child != null ? child : "";
 }
 
-module.exports = { rotate, widthHeight, hexColorToFlutterColor, sz, fixDouble };
+module.exports = { rotate, widthHeight, hexColorToFlutterColor, sz };

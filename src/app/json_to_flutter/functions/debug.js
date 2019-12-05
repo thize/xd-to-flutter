@@ -1,9 +1,8 @@
-const { Column } = require("./models/column");
-const { Container } = require("./models/container");
-const { Stack } = require("./models/stack");
-const { Row } = require("./models/row");
-const { Text } = require("./models/text");
-const { Svg } = require("./models/svg");
+const { Column } = require("../models/column");
+const { Container } = require("../models/container");
+const { Stack } = require("../models/stack");
+const { Row } = require("../models/row");
+const { Svg } = require("../models/svg");
 
 function logTree(no, dist) {
   var ant = 0;

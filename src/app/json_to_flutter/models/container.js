@@ -1,7 +1,7 @@
-const { fixDouble, hexColorToFlutterColor, widthHeight, sz, rotate } = require("../util");
+const { hexColorToFlutterColor, widthHeight, sz, rotate } = require("../functions/util");
 const { Radius } = require("./submodels/radius");
 const { Shadow } = require("./submodels/shadow");
-var withDivision = require("../main");
+var withDivision = require("../json_to_flutter");
 
 class Container {
   constructor(json) {
@@ -13,13 +13,13 @@ class Container {
     this.gw = parseFloat(json["globalW"]);
     this.gh = parseFloat(json["globalH"]);
     this.id = json["name"];
-    this.opacity = fixDouble(json['opacity']);
+    this.opacity = json['opacity'];
     this.withColor = json['wcolor'];
     this.haveImage = json['image'];
-    this.rotation = fixDouble(json['rotation']);
+    this.rotation = json['rotation'];
     this.withGradient = json["color"]["startY"] != undefined;
     this.color = this._color(json["color"]);
-    this.borderOpacity = fixDouble(json['borderOpacity']);
+    this.borderOpacity = json['borderOpacity'];
     this.borderColor = hexColorToFlutterColor(
       json['borderColor'].toString(), this.borderOpacity, true);
     this.borderWidth = parseFloat(json["borderWidth"]);
@@ -119,9 +119,7 @@ class Container {
   _divisionWidget(no) {
     let widget = `
     Parent(
-      child: Container(
-        ${ this._child(no)}
-      ),
+      ${this._child(no)}
       style: ParentStyle()
           ${ widthHeight(this.w, true, true)}
           ${ widthHeight(this.h, false, true)}
@@ -170,7 +168,7 @@ class Container {
     let colors = "";
     for (let index = 0; index < json.colorStops.length; index++) {
       let stop = json.colorStops[index];
-      colors += hexColorToFlutterColor(stop["color"], fixDouble(stop["opacity"]),
+      colors += hexColorToFlutterColor(stop["color"], stop["opacity"],
         false, false) + (index == json.colorStops.length - 1 ? "" : ",");
     }
     if (isLinear) return this._linearGradient(json, colors);
@@ -179,15 +177,15 @@ class Container {
 
   _radialGradient(json, colors) {
     let content = `colors:[${colors}],
-    radius: ${fixDouble(json.endR)},
-    center: Alignment(${fixDouble(json.startX)}, ${fixDouble(json.startY)}),`;
+    radius: ${json.endR},
+    center: Alignment(${json.startX}, ${json.startY}),`;
     if (withDivision.withDivision) return `..radialGradient(${content})`;
     return `gradient: RadialGradient(${content}),`;
   }
 
   _linearGradient(json, colors) {
-    let content = `begin: Alignment(${fixDouble(json.startX)}, ${fixDouble(json.startY)}),
-    end: Alignment(${fixDouble(json.endX)}, ${fixDouble(json.endY)}),
+    let content = `begin: Alignment(${json.startX}, ${json.startY}),
+    end: Alignment(${json.endX}, ${json.endY}),
     colors: [${colors}],`;
     if (withDivision.withDivision) return `..linearGradient(${content})`;
     return `gradient: LinearGradient(${content}),`;

@@ -1,15 +1,15 @@
-const { fixDouble, hexColorToFlutterColor, sz } = require("../../util");
-var withDivision = require("../../main");
+const { hexColorToFlutterColor, sz } = require("../../functions/util");
+var withDivision = require("../../json_to_flutter");
 
 class Shadow {
   constructor(json, withColor) {
     this.visible = json['visible'] && withColor;
     if (this.visible) {
-      this.x = fixDouble(json['x']);
-      this.y = fixDouble(json['y']);
-      this.opacity = fixDouble(json['opacity']);
+      this.x = json['x'];
+      this.y = json['y'];
+      this.opacity = json['opacity'];
       this.color = hexColorToFlutterColor(json['color'], this.opacity);
-      this.blurRadius = fixDouble(json['blur']);
+      this.blurRadius = json['blur'];
     }
   }
 

@@ -1,4 +1,4 @@
-const { No } = require("./models/no");
+const { No } = require("../models/no");
 const { insertInside } = require("./insert/insert_in");
 const { insertOutside } = require("./insert/insert_out");
 const { insertStack } = require("./insert/insert_stack");
@@ -27,7 +27,6 @@ function checkRelationAndInsert(father, widget) {
   } else {
     // Creating first no of tree
     tree.tree.no = new No(null, widget, []);
-
   }
 }
 

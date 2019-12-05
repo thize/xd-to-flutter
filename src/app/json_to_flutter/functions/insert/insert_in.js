@@ -1,5 +1,5 @@
 const { insertWidgetAtNoWithType } = require("./insert");
-const { No } = require("../models/no");
+const { No } = require("../../models/no");
 var Relation = require("../main");
 var checkIfIsInside = require("../checkRelationAndInsert");
 var checkRelationAndInsert = require("../checkRelationAndInsert");

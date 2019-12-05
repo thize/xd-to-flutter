@@ -1,0 +1,45 @@
+const { jsonToWidgetList } = require("./functions/jsonToWidgetList");
+const { checkRelationAndInsert } = require("./functions/checkRelationAndInsert");
+const { logTree } = require("./functions/debug");
+
+let withSimpleCode = false;
+let withDivision = false;
+
+const Relation = {
+  INSIDE: 'inside',
+  OUTSIDE: 'outside',
+  STACK: 'stack',
+}
+
+class Tree {
+  constructor() {
+    this.no;
+  }
+}
+
+let tree = new Tree();
+
+async function json_to_flutter(json, wSimpleCode, wDivision) {
+  withSimpleCode = wSimpleCode;
+  withDivision = wDivision;
+  exports.withDivision = withDivision;
+  exports.withSimpleCode = withSimpleCode;
+  tree.no = null;
+  let widgets = await jsonToWidgetList(json);
+  if (widgets.length > 0) {
+    for (var i = 0; i < widgets.length; i++)
+      checkRelationAndInsert(tree.no, widgets[i]);
+    let code = tree.no.widget.generateWidget(tree.no);
+    logTree(tree.no, 0);
+    //logCode(code);
+    return code;
+  } else {
+    console.log("Without Widget");
+    return "";
+  }
+}
+
+exports.tree = tree;
+exports.Relation = Relation;
+
+module.exports = { json_to_flutter };

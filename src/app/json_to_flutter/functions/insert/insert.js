@@ -1,7 +1,7 @@
-const { Row } = require("../models/row");
-const { Stack } = require("../models/stack");
-const { Column } = require("../models/column");
-const { No } = require("../models/no");
+const { Row } = require("../../models/row");
+const { Stack } = require("../../models/stack");
+const { Column } = require("../../models/column");
+const { No } = require("../../models/no");
 const { attWidgetInfo } = require("../widgetInfo");
 var tree = require("../main");
 
@@ -17,7 +17,7 @@ function insertWidgetAtNoWithType(widget, no, type) {
     if (no.father != null) {
       _newNoAtMiddleOfTree(widgetNo, no, type, newNo);
     } else {
-      
+
       _newNoAtRootOfTree(widgetNo, no, type, newNo);
     }
   }

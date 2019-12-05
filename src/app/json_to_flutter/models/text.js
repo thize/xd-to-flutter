@@ -1,6 +1,6 @@
-const { fixDouble, hexColorToFlutterColor, sz, widthHeight, rotate } = require("../util");
+const { hexColorToFlutterColor, sz, widthHeight, rotate } = require("../functions/util");
 const { Shadow } = require("./submodels/shadow");
-var withDivision = require("../main");
+var withDivision = require("../json_to_flutter");
 class Text {
   constructor(json) {
     this.type = Text;
@@ -15,8 +15,8 @@ class Text {
     this.id = this.text;
     this.withAreaBox = json['withAreaBox'];
     this.withColor = json['wcolor'];
-    this.rotation = fixDouble(json['rotation']);
-    this.opacity = fixDouble(json['opacity']);
+    this.rotation = json['rotation'];
+    this.opacity = json['opacity'];
     this.color = hexColorToFlutterColor(
       json['color'].toString(), this.withColor ? this.opacity : 0, true, !withDivision.withDivision);
     this.textAlign = json['textAlign'];
@@ -24,7 +24,7 @@ class Text {
     this.strikethrough = json['strikethrough'];
     this.fontFamily = json['fontFamily'];
     this.fontWeight = json['fontWeight'];
-    this.fontSize = fixDouble(json['fontSize']);
+    this.fontSize = json['fontSize'];
     this.shadow = json['shadow'] != null
       ? new Shadow(json['shadow'], this.withColor)
       : null;

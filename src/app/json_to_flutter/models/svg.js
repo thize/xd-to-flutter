@@ -1,9 +1,9 @@
-const { fixDouble, widthHeight } = require("../util");
+const { widthHeight } = require("../functions/util");
 
 class Svg {
   constructor(json) {
     this.type = Svg;
-    this.rotation = fixDouble(json['rotation']);
+    this.rotation = json['rotation'];
     this.x = parseFloat(json["x"]);
     this.y = parseFloat(json["y"]);
     this.w = parseFloat(json["w"]);
@@ -16,8 +16,8 @@ class Svg {
   generateWidget(no) {
     return `SvgPicture.asset(
       "assets/${this.id}.svg",
-      ${ widthHeight(fixDouble(this.w), true)}
-      ${ widthHeight(fixDouble(this.h), false)}
+      ${ widthHeight(this.w, true)}
+      ${ widthHeight(this.h, false)}
     )`;
   }
 }
