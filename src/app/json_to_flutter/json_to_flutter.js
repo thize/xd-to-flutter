@@ -1,4 +1,4 @@
-const { jsonToWidgetList } = require("./functions/jsonToWidgetList");
+const { json_to_widgets } = require("./functions/json_to_widgets");
 const { checkRelationAndInsert } = require("./functions/checkRelationAndInsert");
 const { logTree } = require("./functions/debug");
 
@@ -25,7 +25,7 @@ async function json_to_flutter(json, wSimpleCode, wDivision) {
   exports.withDivision = withDivision;
   exports.withSimpleCode = withSimpleCode;
   tree.no = null;
-  let widgets = await jsonToWidgetList(json);
+  let widgets = await json_to_widgets(json);
   if (widgets.length > 0) {
     for (var i = 0; i < widgets.length; i++)
       checkRelationAndInsert(tree.no, widgets[i]);

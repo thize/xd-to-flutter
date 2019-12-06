@@ -1,5 +1,5 @@
-var withSimpleCode = require("./main");
-var withDivision = require("./main");
+var withSimpleCode = require("../json_to_flutter");
+var withDivision = require("../json_to_flutter");
 
 function sz(value) {
   if (withSimpleCode.withSimpleCode && value > 0) {

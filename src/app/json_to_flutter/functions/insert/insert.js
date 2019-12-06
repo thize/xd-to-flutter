@@ -3,7 +3,7 @@ const { Stack } = require("../../models/stack");
 const { Column } = require("../../models/column");
 const { No } = require("../../models/no");
 const { attWidgetInfo } = require("../widgetInfo");
-var tree = require("../main");
+var tree = require("../../json_to_flutter");
 
 function insertWidgetAtNoWithType(widget, no, type) {
   let newNo;

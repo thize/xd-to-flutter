@@ -1,31 +1,24 @@
-const { fixDouble, getGradient } = require("../util");
+const { fixDouble } = require("../util");
+const { shadow, border } = require("./util");
 
-function svg(node) {
-    let isGradient = node.fill["value"] == null;
-    let gradient;
-    if (isGradient) {
-        gradient = getGradient(node);
-    }
-    return JSON.stringify({
+function svg(node) {   
+    const json = JSON.parse(`
+    { 
         "type": "svg",
-        "name": node.name.replace("svg_", ""),
-        "x": fixDouble(node.globalBounds["x"]),
-        "y": fixDouble(node.globalBounds["y"]),
-        "w": fixDouble(node.width),
-        "h": fixDouble(node.height),
-        "gbW": fixDouble(node.globalBounds["width"]),
-        "gbH": fixDouble(node.globalBounds["height"]),
-        "rotation": fixDouble(node.rotation),
-        "opacity": fixDouble(node.opacity),
-        "border": node.strokeEnabled ? {
-            "color": node.stroke.toHex(true),
-            "opacity": node.stroke.a / 255 * node.opacity,
-            "borderWidth": fixDouble(node.strokeWidth),
-        } : null,
-        "shadow": node.shadow != null && node.shadow.visible ? node.shadow : null,
+        "name": "${node.name.replace("svg_", "")}",
+        "x": ${fixDouble(node.globalBounds["x"])},
+        "y": ${fixDouble(node.globalBounds["y"])},
+        "w": ${fixDouble(node.localBounds.width)},
+        "h": ${fixDouble(node.localBounds.height)},
+        "gbW": ${fixDouble(node.globalBounds.width)},
+        "gbH": ${fixDouble(node.globalBounds.height)},
+        "rotation": ${fixDouble(node.rotation)},
+        "opacity": ${fixDouble(node.opacity)},
         "blend": null,
-        "gradient": isGradient ? gradient : null,
-    });
+        "border": ${node.strokeEnabled ? border(node) : null},
+        "shadow": ${node.shadow == null || !node.shadow.visible ? null : shadow(node)}
+    }`);
+    return JSON.stringify(json);
 }
 
 module.exports = { svg };

@@ -1,6 +1,6 @@
 const { insertWidgetAtNoWithType } = require("./insert");
 const { No } = require("../../models/no");
-var Relation = require("../main");
+var Relation = require("../../json_to_flutter");
 var checkIfIsInside = require("../checkRelationAndInsert");
 var checkRelationAndInsert = require("../checkRelationAndInsert");
 const { costBenefit } = require("../costBenefit");

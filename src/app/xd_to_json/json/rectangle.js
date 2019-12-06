@@ -1,4 +1,5 @@
 const { fixDouble, getGradient } = require("../util");
+const { shadow, border } = require("./util");
 
 function rectangle(node) {
     let w, h, shape;
@@ -20,29 +21,28 @@ function rectangle(node) {
     if (isGradient) {
         gradient = getGradient(node);
     }
-    return JSON.stringify({
+
+    const json = JSON.parse(`
+    { 
         "type": "rectangle",
-        "name": node.name,
-        "x": fixDouble(node.globalBounds["x"]),
-        "y": fixDouble(node.globalBounds["y"]),
-        "w": fixDouble(w),
-        "h": fixDouble(h),
-        "gbW": fixDouble(node.globalBounds["width"]),
-        "gbH": fixDouble(node.globalBounds["height"]),
-        "rotation": fixDouble(node.rotation),
-        "opacity": fixDouble((isGradient ? 1 : (node.fill.a / 255)) * node.opacity),
-        "border": node.strokeEnabled ? {
-            "color": node.stroke.toHex(true),
-            "opacity": fixDouble(node.stroke.a / 255 * node.opacity),
-            "borderWidth": fixDouble(node.strokeWidth),
-        } : null,
-        "shadow": node.shadow != null && node.shadow.visible ? node.shadow : null,
+        "name": "${node.name}",
+        "x": ${fixDouble(node.globalBounds["x"])},
+        "y": ${fixDouble(node.globalBounds["y"])},
+        "w": ${fixDouble(w)},
+        "h": ${fixDouble(h)},
+        "gbW": ${fixDouble(node.globalBounds.width)},
+        "gbH": ${fixDouble(node.globalBounds.height)},
+        "rotation": ${fixDouble(node.rotation)},
+        "opacity": ${fixDouble((isGradient ? 1 : (node.fill.a / 255)) * node.opacity)},
+        "border": ${node.strokeEnabled ? border(node) : null},
+        "shadow": ${node.shadow == null || !node.shadow.visible ? null : shadow(node)},
         "blend": null,
-        "color": isGradient || !node.fillEnabled ? null : node.fill.toHex(true),
-        "radius": fixDouble(node.hasRoundedCorners ? node.cornerRadii : null),
-        "shape": shape,
-        "gradient": isGradient ? gradient : null,
-    });
+        "color": ${isGradient || !node.fillEnabled ? null : `"${node.fill.toHex(true)}"`},
+        "radius": ${node.hasRoundedCorners ? JSON.stringify(node.cornerRadii) : null},
+        "shape": "${shape}",
+        "gradient": ${isGradient ? gradient : null}
+    }`);
+    return JSON.stringify(json);
 }
 
 module.exports = { rectangle };

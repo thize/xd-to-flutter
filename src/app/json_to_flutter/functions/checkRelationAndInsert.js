@@ -2,8 +2,8 @@ const { No } = require("../models/no");
 const { insertInside } = require("./insert/insert_in");
 const { insertOutside } = require("./insert/insert_out");
 const { insertStack } = require("./insert/insert_stack");
-var tree = require("./main");
-var Relation = require("./main");
+var tree = require("../json_to_flutter");
+var Relation = require("../json_to_flutter");
 
 
 function checkRelationAndInsert(father, widget) {

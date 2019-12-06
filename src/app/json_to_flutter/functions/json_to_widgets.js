@@ -1,9 +1,9 @@
-const { Container } = require("../models/container");
+const { Container } = require("../models/container/container");
 const { Svg } = require("../models/svg");
 const { Text } = require("../models/text");
 const { Image } = require("../models/image");
 
-async function jsonToWidgetList(json) {
+async function json_to_widgets(json) {
   let widgets = [];
   json = JSON.parse(json);
   for (let i = 0; i < 9999999; i++) {
@@ -11,14 +11,12 @@ async function jsonToWidgetList(json) {
     if (widget == null) break;
     widgets.push(widget);
   }
-
   return widgets;
 }
 
 function _addWidgetOnList(json) {
   if (json == null) return null;
-  console.log(`type = ${json["type"]}`);
-
+   
   switch (json["type"]) {
     case "rectangle":
       return new Container(json);
@@ -33,4 +31,4 @@ function _addWidgetOnList(json) {
   }
 }
 
-module.exports = { jsonToWidgetList };
+module.exports = { json_to_widgets };

@@ -7,13 +7,12 @@ async function export_widget(selection, simpleCode, division) {
 
     if (isNotEmptySelectionItens(selection)) {
         let array = await xd_to_array(selection.items);
-        let json = xd_to_json(array);
+        let json = xd_to_json(array);             
         let code = await json_to_flutter(json, simpleCode, division);
         return code;
     } else {
         showMessageWithColor("Select something", "grey");
     }
-
 }
 
 module.exports = { export_widget };

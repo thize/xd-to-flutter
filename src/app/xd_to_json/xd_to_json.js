@@ -13,7 +13,7 @@ function xd_to_json(list) {
         } else {
             all += `,"${i}": ${_itemJson(a)}`;
         }
-    });
+    });    
     var json = JSON.parse(JSON.stringify(`{${all}}`));
     return json;
 }
@@ -21,21 +21,16 @@ function xd_to_json(list) {
 function _itemJson(node) {
     var name = node.constructor.name;
     if (name == "BooleanGroup" || name == "Path" || (name == "Group" && (node.name.includes("svg_") || node.mask))) {
-        console.log(`svg = ${node.name}`);
         return svg(node);
     } else if (name == "Polygon") {
-        console.log(`Polygon = ${node.name}`);
         return polygon(node);
     } else if (_isImage(name, node)) {
         return image(node);
     } else if (name == "Line") {
-        console.log(`line = ${node.name}`);
         return line(node);
     } else if (name == "Text") {
-        console.log(`text = ${node.name}`);
         return text(node);
     } else if (name == "Artboard" || name == "Ellipse" || name == "Rectangle") {
-        console.log(`rectangle = ${node.name}`);
         return rectangle(node);
     }
 }

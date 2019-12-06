@@ -8,8 +8,8 @@ class Svg {
     this.y = parseFloat(json["y"]);
     this.w = parseFloat(json["w"]);
     this.h = parseFloat(json["h"]);
-    this.gw = parseFloat(json["globalW"]);
-    this.gh = parseFloat(json["globalH"]);
+    this.gw = parseFloat(json["gbW"]);
+    this.gh = parseFloat(json["gbH"]);
     this.id = json["name"];
   }
 
