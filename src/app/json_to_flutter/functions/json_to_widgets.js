@@ -1,6 +1,6 @@
 const { Container } = require("../models/container/container");
 const { Svg } = require("../models/svg");
-const { Text } = require("../models/text");
+const { Text } = require("../models/text/text");
 const { Image } = require("../models/image");
 
 async function json_to_widgets(json) {

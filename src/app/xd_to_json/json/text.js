@@ -18,7 +18,14 @@ function text(node) {
         "shadow": ${node.shadow == null || !node.shadow.visible ? null : shadow(node)},
         "text": "${node.text.replace(new RegExp("\n", 'g'), "\\n")}",
         "border": ${node.strokeEnabled ? border(node) : null},
-        "withAreaBox": ${node.areaBox != null}
+        "withAreaBox": ${node.areaBox != null},
+        "color": "${node.stroke.toHex(true)}",
+        "textAlign": "${node.textAlign}",
+        "underline": ${node.underline},
+        "strikethrough": ${node.strikethrough},
+        "fontFamily": "${node.fontFamily}",
+        "fontWeight": "${node.fontStyle.toLowerCase().replace("-", "")}",
+        "fontSize": ${node.fontSize}
     }`);
     return JSON.stringify(json);
 };

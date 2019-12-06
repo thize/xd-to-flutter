@@ -21,6 +21,10 @@ Email-me: thize@bluebookapps.com
 
 Connect with me at [LinkedIn](https://linkedin.com/in/giovani-lobato-68aa57131).
 
+## TODO NOW
+* [ ] Gradient
+* [ ] Gradient
+
 ## TODO
 
 This list is not very well ordered. I'm mainly picking up things that seem interesting or useful.

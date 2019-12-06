@@ -4,7 +4,6 @@ const { showMessageWithColor, isNotEmptySelectionItens } = require("../util");
 const { json_to_flutter } = require("./json_to_flutter/json_to_flutter");
 
 async function export_widget(selection, simpleCode, division) {
-
     if (isNotEmptySelectionItens(selection)) {
         let array = await xd_to_array(selection.items);
         let json = xd_to_json(array);             

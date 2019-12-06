@@ -13,7 +13,7 @@ class Image {
         this.id = json["name"];
     }
 
-    generateWidget(no) {
+    generateWidget() {
         return `Image.asset(
       "assets/${this.id}.png",
       ${ widthHeight(this.w, true)}

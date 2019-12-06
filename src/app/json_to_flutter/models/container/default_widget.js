@@ -11,7 +11,6 @@ function default_widget(container, child) {
     return rotate(container.rotation, widget);
 }
 
-
 function _decoration(container) {
     const color = hexColorToFlutterColor(container.color, container.opacity, false, true);
     if (container.border != null || container.shape != "rectangle"
@@ -46,6 +45,7 @@ function _radius(container) {
     const bR = _onlyRadius("bottomRight", radius.bottomRight);
     return `borderRadius: BorderRadius.only(${tL}${tR}${bL}${bR}),`;
 }
+
 function _onlyRadius(tag, value) {
     if (value == 0) return "";
     return `${tag}: Radius.circular(${sz(value)}),`;
@@ -63,8 +63,7 @@ function _shadow(container) {
     if(shadow == null) return "";
     let offSet = `offset: Offset(${sz(shadow.x)},${sz(shadow.y)})`;
     let blurR = `${sz(shadow.blurRadius)}`;
-    return `boxShadow:[BoxShadow(${offSet}, 'blurRadius': ${blurR},${shadow.color})],`;
-
+    return `boxShadow:[BoxShadow(${offSet}, blurRadius: ${blurR},${shadow.color})],`;
 }
 
 module.exports = { default_widget };

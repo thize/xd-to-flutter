@@ -5,7 +5,7 @@ function shadow(node) {
         "x": ${node.shadow["x"]},
         "y": ${node.shadow["y"]},
         "color": "${node.shadow["color"].toHex(true)}",
-        "opacity": ${ node.shadow["color"].a / 255 * node.opacity},
+        "opacity": ${fixDouble(node.shadow["color"].a / 255 * node.opacity)},
         "blur": ${node.shadow.blur}
     }`;
 }

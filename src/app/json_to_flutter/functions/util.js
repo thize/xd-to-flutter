@@ -1,3 +1,5 @@
+var withDivision = require("../json_to_flutter");
+
 var withSimpleCode = require("../json_to_flutter");
 var withDivision = require("../json_to_flutter");
 
@@ -9,6 +11,7 @@ function sz(value) {
 }
 
 function hexColorToFlutterColor(hexColor, opacity, transparent, withTag) {
+  if (hexColor == null) return "";
   transparent = transparent == null ? false : transparent;
   withTag = withTag == null ? true : withTag;
   let color;
@@ -38,10 +41,17 @@ function widthHeight(value, width, division) {
   }
   return "";
 }
-
+function fixDouble(value) {
+  if (value == null) return value;
+  try {
+    return parseFloat(value.toFixed(2));
+  } catch (e) {
+    return parseFloat((parseFloat(value)).toFixed(2));
+  }
+}
 function rotate(rotation, child) {
   if (rotation > 0) {
-    if (withDivision.withDivision) return `..rotate(${rotation / 360})`;
+    if (withDivision.withDivision) return `..rotate(${fixDouble(rotation / 360)})`;
     return `
     Transform.rotate(
       angle: ${rotation} * pi / 180,
@@ -53,3 +63,4 @@ function rotate(rotation, child) {
 }
 
 module.exports = { rotate, widthHeight, hexColorToFlutterColor, sz };
+
