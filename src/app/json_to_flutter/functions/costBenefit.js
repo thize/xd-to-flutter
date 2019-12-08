@@ -19,7 +19,7 @@ function costBenefit(no, widget, onlyInside) {
     _auxCostBenefit = _costBenefit(no.children[i].widget, widget, runType);
     let auxCB = _auxCostBenefit[0] + _auxCostBenefit[1];
     let bCB = _bestCostBenefit[0] + _bestCostBenefit[1];
-    if ((auxCB <= bCB && onlyInside) || auxCB < bCB && !onlyInside) {
+    if ((auxCB <= bCB && onlyInside) || auxCB <= bCB && !onlyInside) {
       onlyInside = true;
       bestPosition = i + 1;
       _bestCostBenefit = _auxCostBenefit;

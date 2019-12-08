@@ -16,7 +16,6 @@ async function json_to_widgets(json) {
 
 function _addWidgetOnList(json) {
   if (json == null) return null;
-   
   switch (json["type"]) {
     case "rectangle":
       return new Container(json);

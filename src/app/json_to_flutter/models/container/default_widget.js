@@ -3,6 +3,7 @@ const { widthHeight, rotate, hexColorToFlutterColor, sz } = require("../../funct
 function default_widget(container, child) {
     let widget = `
     Container(
+      alignment: Alignment.center,
       ${ widthHeight(container.w, true)}
       ${ widthHeight(container.h, false)}
       ${ _decoration(container)}
@@ -60,7 +61,7 @@ function _shape(container) {
 
 function _shadow(container) {
     const shadow = container.shadow;
-    if(shadow == null) return "";
+    if (shadow == null) return "";
     let offSet = `offset: Offset(${sz(shadow.x)},${sz(shadow.y)})`;
     let blurR = `${sz(shadow.blurRadius)}`;
     return `boxShadow:[BoxShadow(${offSet}, blurRadius: ${blurR},${shadow.color})],`;

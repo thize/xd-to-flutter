@@ -35,6 +35,7 @@ function widthHeight(value, width, division) {
   division = division == null ? false : division;
   let type = "height";
   if (value != 0) {
+    value = fixDouble(value);
     if (width) type = "width";
     if (division) return `..${type}(${sz(value)})`;
     return `${type}: ${sz(value)},`;
