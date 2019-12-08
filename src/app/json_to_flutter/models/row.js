@@ -11,6 +11,7 @@ class Row {
   }
   generateWidget(no) {
     let widgets = [];
+    let distances = [];
     if (no.children != null) {
       no.children.forEach(function (f) {
         widgets.push(`${f.widget.generateWidget(f)}`);

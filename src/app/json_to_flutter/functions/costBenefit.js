@@ -2,23 +2,25 @@ const { Row } = require("../models/row");
 const { Column } = require("../models/column");
 const { CostBenefit } = require("../models/costBenefit");
 
-function costBenefit(no, prox, onlyInside) {
+function costBenefit(no, widget, onlyInside) {
   onlyInside = onlyInside == null ? false : onlyInside;
   let bestPosition = 0;
   var runType = no.widget.type;
   let _bestCostBenefit = [];
   if (onlyInside) {
     bestPosition = 1;
-    _bestCostBenefit = _costBenefit(no.children[0].widget, prox, runType);
+    _bestCostBenefit = _costBenefit(no.children[0].widget, widget, runType);
   } else {
     runType = null;
-    _bestCostBenefit = _costBenefit(no.widget, prox, runType);
+    _bestCostBenefit = _costBenefit(no.widget, widget, runType);
   }
   let _auxCostBenefit = [];
   for (var i = bestPosition; i < no.children.length; i++) {
-    _auxCostBenefit = _costBenefit(no.children[i].widget, prox, runType);
-    if (_auxCostBenefit[0] + _auxCostBenefit[1] <=
-      _bestCostBenefit[0] + _bestCostBenefit[1]) {
+    _auxCostBenefit = _costBenefit(no.children[i].widget, widget, runType);
+    let auxCB = _auxCostBenefit[0] + _auxCostBenefit[1];
+    let bCB = _bestCostBenefit[0] + _bestCostBenefit[1];
+    if ((auxCB <= bCB && onlyInside) || auxCB < bCB && !onlyInside) {
+      onlyInside = true;
       bestPosition = i + 1;
       _bestCostBenefit = _auxCostBenefit;
     }

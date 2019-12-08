@@ -1,6 +1,7 @@
 const { json_to_widgets } = require("./functions/json_to_widgets");
 const { checkRelationAndInsert } = require("./functions/checkRelationAndInsert");
 const { logTree } = require("./functions/debug");
+const { update_widgets_size } = require("./functions/update_widgets_size");
 
 let withSimpleCode = false;
 let withDivision = false;
@@ -29,6 +30,7 @@ async function json_to_flutter(json, wSimpleCode, wDivision) {
   if (widgets.length > 0) {
     for (var i = 0; i < widgets.length; i++)
       checkRelationAndInsert(tree.no, widgets[i]);
+    update_widgets_size(tree.no, tree.no);
     let code = tree.no.widget.generateWidget(tree.no);
     logTree(tree.no, 0);
     //logCode(code);

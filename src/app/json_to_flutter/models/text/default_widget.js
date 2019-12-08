@@ -1,6 +1,6 @@
 const { widthHeight, rotate, hexColorToFlutterColor, sz } = require("../../functions/util");
 
-function default_widget(text) {
+function default_widget(text) {  
   let widget = `Text(
     "${text.text}",
     ${_align(text)}

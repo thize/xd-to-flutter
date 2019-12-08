@@ -10,20 +10,19 @@ function checkRelationAndInsert(father, widget) {
   if (father != null) {
     let type = checkIfIsInside(father.widget, widget);
     // Id -1 is Genereated Widget (Column, Row or Stack)
-    if (father.widget.id == "-1")
-      insertInside(father, widget);
-    else
-      switch (type) {
-        case Relation.Relation.INSIDE:
-          insertInside(father, widget);
-          break;
-        case Relation.Relation.OUTSIDE:
-          insertOutside(father, widget);
-          break;
-        default:
-          insertStack(father, widget);
-          break;
-      }
+    
+    
+    switch (type) {
+      case Relation.Relation.INSIDE:
+        insertInside(father, widget);
+        break;
+      case Relation.Relation.OUTSIDE:
+        insertOutside(father, widget);
+        break;
+      default:
+        insertStack(father, widget);
+        break;
+    }
   } else {
     // Creating first no of tree
     tree.tree.no = new No(null, widget, []);

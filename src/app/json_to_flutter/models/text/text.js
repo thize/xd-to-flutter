@@ -4,7 +4,7 @@ const { Shadow } = require("../submodels/shadow");
 var withDivision = require("../../json_to_flutter");
 
 class Text {
-  constructor(json) {
+  constructor(json) {   
     this.type = Text;
     this.json = json;
     this.x = parseFloat(json["x"]);
@@ -15,7 +15,7 @@ class Text {
     this.gh = parseFloat(json["gbH"]);
     this.type = json['type'];
     this.text = json['text'];
-    this.id = this.text;
+    this.id = json['name'];
     this.withAreaBox = json['withAreaBox'];
     this.rotation = json['rotation'];
     this.opacity = json['opacity'];
@@ -34,7 +34,7 @@ class Text {
     const withDiv = withDivision.withDivision;
     let widget = withDiv ? division_widget(text) : default_widget(text);
     return widget;
-  } 
+  }
 }
 
 module.exports = { Text };
