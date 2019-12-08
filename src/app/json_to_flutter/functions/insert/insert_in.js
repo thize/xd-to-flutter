@@ -19,6 +19,7 @@ function insertInside(father, widget) {
                 break;
             }
         }
+
         if (inside != null) {
             // It's inside something inside
             checkRelationAndInsert.checkRelationAndInsert(inside, widget);

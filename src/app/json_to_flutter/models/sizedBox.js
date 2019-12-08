@@ -7,7 +7,7 @@ class SizedBox {
     }
 
     generateWidget() {
-        if (this.w == 0 && this.h == 0) return "";
+        if ((this.w == 0 && this.h == 0) || (this.w == undefined && this.h == undefined)) return "SizedBox()";
         return `SizedBox(${widthHeight(this.w, true)}${widthHeight(this.h, false)})`.replace(",", "");
     }
 }

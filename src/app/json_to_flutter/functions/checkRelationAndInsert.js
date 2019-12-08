@@ -9,10 +9,10 @@ var Relation = require("../json_to_flutter");
 function checkRelationAndInsert(father, widget) {
   if (father != null) {
     // Id -1 is Genereated Widget (Column, Row or Stack)
-    if (father.widget.id == "-1") {
+    let type = checkIfIsInside(father.widget, widget);
+    if (father.widget.id == "-1")
       insertInside(father, widget);
-    } else {
-      let type = checkIfIsInside(father.widget, widget);
+    else
       switch (type) {
         case Relation.Relation.INSIDE:
           insertInside(father, widget);
@@ -24,8 +24,6 @@ function checkRelationAndInsert(father, widget) {
           insertStack(father, widget);
           break;
       }
-    }
-
   } else {
     // Creating first no of tree
     tree.tree.no = new No(null, widget, []);
@@ -35,8 +33,8 @@ function checkRelationAndInsert(father, widget) {
 function checkIfIsInside(ant, widget, onlyW, onlyH) {
   onlyW = onlyW == null ? false : onlyW;
   onlyH = onlyH == null ? false : onlyH;
-  var father_x = ant.x; var father_y = ant.y; var father_w = ant.gw; var father_h = ant.gh;
-  var widget_x = widget.x; var widget_y = widget.y; var widget_w = widget.gw; var widget_h = widget.gh;
+  var father_x = ant.x; var father_y = ant.y; var father_w = ant.w; var father_h = ant.h;
+  var widget_x = widget.x; var widget_y = widget.y; var widget_w = widget.w; var widget_h = widget.h;
   var widget_final_h = widget_y + widget_h;
   var widget_final_w = widget_x + widget_w;
   var father_final_h = father_y + father_h;

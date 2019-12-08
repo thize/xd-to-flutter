@@ -1,7 +1,7 @@
 const { fixDouble } = require("../util");
 const { shadow, border } = require("./util");
 
-function text(node) {    
+function text(node) {
     const json = JSON.parse(`
     { 
         "type": "text",
@@ -17,9 +17,8 @@ function text(node) {
         "blend": null,
         "shadow": ${node.shadow == null || !node.shadow.visible ? null : shadow(node)},
         "text": "${node.text.replace(new RegExp("\n", 'g'), "\\n")}",
-        "border": ${node.strokeEnabled ? border(node) : null},
         "withAreaBox": ${node.areaBox != null},
-        "color": "${node.stroke.toHex(true)}",
+        "color": "${node.fill.toHex(true)}",
         "textAlign": "${node.textAlign}",
         "underline": ${node.underline},
         "strikethrough": ${node.strikethrough},

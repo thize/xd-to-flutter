@@ -28,12 +28,13 @@ async function json_to_flutter(json, wSimpleCode, wDivision) {
   tree.no = null;
   let widgets = await json_to_widgets(json);
   if (widgets.length > 0) {
-    for (var i = 0; i < widgets.length; i++)
+    for (var i = 0; i < widgets.length; i++) {
       checkRelationAndInsert(tree.no, widgets[i]);
-    update_widgets_size(tree.no, tree.no);
+      logTree(tree.no, 0);
+      console.log(`-------------------`);
+    }
     let code = tree.no.widget.generateWidget(tree.no);
-    logTree(tree.no, 0);
-    //logCode(code);
+    //logCode(code);*/
     return code;
   } else {
     console.log("Without Widget");

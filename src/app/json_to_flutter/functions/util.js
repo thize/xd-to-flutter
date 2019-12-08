@@ -42,6 +42,7 @@ function widthHeight(value, width, division) {
   }
   return "";
 }
+
 function fixDouble(value) {
   if (value == null) return value;
   try {
@@ -50,6 +51,7 @@ function fixDouble(value) {
     return parseFloat((parseFloat(value)).toFixed(2));
   }
 }
+
 function rotate(rotation, child) {
   if (rotation > 0) {
     if (withDivision.withDivision) return `..rotate(${fixDouble(rotation / 360)})`;
@@ -63,5 +65,5 @@ function rotate(rotation, child) {
   return child != null ? child : "";
 }
 
-module.exports = { rotate, widthHeight, hexColorToFlutterColor, sz };
+module.exports = { rotate, widthHeight, hexColorToFlutterColor, sz, fixDouble };
 

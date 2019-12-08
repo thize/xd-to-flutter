@@ -4,16 +4,13 @@ const { polygon } = require("./json/polygon");
 const { rectangle } = require("./json/rectangle");
 const { svg } = require("./json/svg");
 const { text } = require("./json/text");
+const { initial } = require("./json/initial");
 
-function xd_to_json(list) {
-    let all;
+function xd_to_json(list, selection) {
+    let all = `"${0}": ${initial(selection.editContext)}`;
     list.forEach((a, i) => {
-        if (all == null) {
-            all = `"${i}": ${_itemJson(a)}`;
-        } else {
-            all += `,"${i}": ${_itemJson(a)}`;
-        }
-    });    
+        all += `,"${i + 1}": ${_itemJson(a)}`;
+    });
     var json = JSON.parse(JSON.stringify(`{${all}}`));
     return json;
 }

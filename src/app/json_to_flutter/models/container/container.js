@@ -11,10 +11,8 @@ class Container {
     this.id = json["name"];
     this.x = parseFloat(json["x"]);
     this.y = parseFloat(json["y"]);
-    this.w = parseFloat(json["w"]);
-    this.h = parseFloat(json["h"]);
-    this.gw = parseFloat(json["gbW"]);
-    this.gh = parseFloat(json["gbH"]);
+    this.w = parseFloat(json["gbW"]);
+    this.h = parseFloat(json["gbH"]);
     this.rotation = json['rotation'];
     this.opacity = json['opacity'];
     this.gradient = json['gradient'];
@@ -29,6 +27,7 @@ class Container {
   generateWidget(no) {
     const container = new Container(this.json);
     const child = this._child(no);
+    if (this.id == "initialItem") return child;
     const withDiv = withDivision.withDivision;
     let widget = withDiv ? division_widget(container, child) : default_widget(container, child);
     return widget;
@@ -38,7 +37,7 @@ class Container {
     let child = no.children.length > 0
       ? no.children[0].widget.generateWidget(no.children[0])
       : null;
-    child = child != null ? `child:${child},` : "";
+    child = child != null ? this.id == "initialItem" ? child : `child:${child},` : "";
     return child;
   }
 }

@@ -13,7 +13,7 @@ function logTree(no, dist) {
   if (ant == dist) {
     console.log("\nStructure:");
   }
-  console.log(`${start}${_typeToString(no.widget.type)} - ${no.widget.id}, w = ${no.widget.gw}, h = ${no.widget.gh}, x = ${no.widget.x}, y = ${no.widget.y}`);
+  console.log(`${start}${_typeToString(no.widget.type)} - ${no.widget.id}, w = ${no.widget.w}, h = ${no.widget.h}, x = ${no.widget.x}, y = ${no.widget.y}`);
   no.children.forEach(function (f) {
     logTree(f, dist + 1);
   });

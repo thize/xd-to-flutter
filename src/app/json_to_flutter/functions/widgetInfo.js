@@ -3,8 +3,8 @@ function attWidgetInfo(no) {
         let newInfo = _newWidgetInfo(no.children);
         no.widget.x = newInfo[0];
         no.widget.y = newInfo[1];
-        no.widget.gw = newInfo[2];
-        no.widget.gh = newInfo[3];
+        no.widget.w = newInfo[2];
+        no.widget.h = newInfo[3];
     }
     if (no.father != null) {
         attWidgetInfo(no.father);
@@ -18,13 +18,13 @@ function _newWidgetInfo(nos) {
         if (x == -1) {
             x = f.widget.x;
             y = f.widget.y;
-            w = x + f.widget.gw;
-            h = y + f.widget.gh;
+            w = x + f.widget.w;
+            h = y + f.widget.h;
         } else {
             x = Math.min(x, f.widget.x);
             y = Math.min(y, f.widget.y);
-            w = Math.max(w, f.widget.x + f.widget.gw);
-            h = Math.max(h, f.widget.y + f.widget.gh);
+            w = Math.max(w, f.widget.x + f.widget.w);
+            h = Math.max(h, f.widget.y + f.widget.h);
         }
     });
     return [x, y, w - x, h - y];

@@ -5,8 +5,8 @@ const { json_to_flutter } = require("./json_to_flutter/json_to_flutter");
 
 async function export_widget(selection, simpleCode, division) {
     if (isNotEmptySelectionItens(selection)) {
-        let array = await xd_to_array(selection.items);
-        let json = xd_to_json(array);                    
+        let array = await xd_to_array(selection.itemsIncludingLocked);
+        let json = xd_to_json(array, selection);
         let code = await json_to_flutter(json, simpleCode, division);
         return code;
     } else {

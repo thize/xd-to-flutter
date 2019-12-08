@@ -6,10 +6,8 @@ class Image {
         this.rotation = json['rotation'];
         this.x = parseFloat(json["x"]);
         this.y = parseFloat(json["y"]);
-        this.w = parseFloat(json["w"]);
-        this.h = parseFloat(json["h"]);
-        this.gw = parseFloat(json["gbW"]);
-        this.gh = parseFloat(json["gbH"]);
+        this.w = parseFloat(json["gbW"]);
+        this.h = parseFloat(json["gbH"]);
         this.id = json["name"];
     }
 
