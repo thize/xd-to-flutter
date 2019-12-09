@@ -22,38 +22,30 @@ Email-me: thize@bluebookapps.com
 Connect with me at [LinkedIn](https://linkedin.com/in/giovani-lobato-68aa57131).
 
 ## TODO NOW
+* [ ] Generate correct full layout
+* [ ] Generate layout distances (spacer, sizedBox, margin, padding, alingment)
 * [ ] Gradient
-* [ ] Gradient
+* [ ] Line
+* [ ] Polygon
 
-## TODO
+## TODO LATER
 
 This list is not very well ordered. I'm mainly picking up things that seem interesting or useful.
 
-* [ ] Line (XD)
-* [ ] Automatic detect buttons
-* [ ] Ellipse with Division (waiting division update)
-* [ ] Stops on LinearGradient and RadialGradient
-* [ ] Generate layout distances (spacer, sizedBox, margin, padding, alingment)
-* [ ] RepeatGrid (XD)
-* [ ] SymbolInstance (XD)
 * [ ] Show Structure
+* [ ] Automatic detect buttons
+* [ ] Stops on LinearGradient and RadialGradient
 * [x] Generate with Division
 * [x] Generate with SimpleCode
 * [x] Svg group folder
-* [x] Radial Gradient
-* [x] Linear Gradient
 * [x] Full layout
 * [x] Text
 * [x] Container/Elipse
 * [x] Rotation
-* [x] RGBA to 0xffColor
 * [x] Copy only Color
-* [x] Visual Tab of XD plugin
 * [x] Svg
 * [x] Image
-* [x] \n Text
-* [x] Export with method (does not currently export with widget type)
-* [x] Rotation
+* [x] Export with method
 
 
 ### Installing

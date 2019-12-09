@@ -1,5 +1,5 @@
-const { export_color } = require("./src/app/export_color");
-const { export_widget } = require("./src/app/export_widget");
+const { exportColor } = require("./src/app/exportColor");
+const { exportWidget } = require("./src/app/exportWidget");
 const { isEmptyMethodName, isSingleItem, showMessageWithColor, copyToClipboard, isNotEmptySelectionItens } = require("./src/util");
 let scenegraph = require("scenegraph");
 let panel;
@@ -21,14 +21,14 @@ function onTapGenerate(selection) {
             if (widget) {
                 require("application").editDocument(async () => {
                     try {
-                        generatedWidget = await export_widget(selection, simpleCode, division);
+                        generatedWidget = await exportWidget(selection, simpleCode, division);
                         copyToClipboard(generatedWidget, withMethod, methodName)
                     } catch (error) {
                         currentlyNotSupported(error);
                     }
                 });
             } else if (color && isSingleItem(selection)) {
-                generatedWidget = export_color(selection.items[0]);
+                generatedWidget = exportColor(selection.items[0]);
                 copyToClipboard(generatedWidget, withMethod, methodName)
             } else {
                 throw "Select only one widget";
