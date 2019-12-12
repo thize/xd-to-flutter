@@ -20,9 +20,10 @@ class SizedBox {
     generateWidget(no) {
         if (this.w == 0 && this.h == 0) return "";
         if (this.x != null) {
+            let child = this._child(no);
+            if (child == null) return "";
             const widget = no.children[0].widget;
             const type = widget.type;
-            let child = no.children[0].widget.generateWidget(no.children[0]);
             if (type == Row || type == Column || type == Stack) {
                 return `SizedBox(${widthHeight(this.w, true)}${widthHeight(this.h, false)}child:${child},)`;
             } else {
@@ -31,6 +32,13 @@ class SizedBox {
         } else {
             return `SizedBox(${widthHeight(this.w, true)}${widthHeight(this.h, false)})`.replace(",", "");
         }
+    }
+
+    _child(no) {
+        let child = no.children.length > 0
+            ? no.children[0].widget.generateWidget(no.children[0])
+            : null;
+        return child;
     }
 }
 

@@ -14,6 +14,11 @@ class Svg {
   }
 
   generateWidget(no) {
+    return `Container(
+      color:Colors.red,
+      ${ widthHeight(this.w, true)}
+      ${ widthHeight(this.h, false)}
+    )`;
     return `SvgPicture.asset(
       "assets/${this.id}.svg",
       ${ widthHeight(this.w, true)}

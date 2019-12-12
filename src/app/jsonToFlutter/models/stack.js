@@ -9,6 +9,7 @@ class Stack {
     this.gw = gw;
     this.gh = gh;
   }
+
   generateWidget(no) {
     let widgets = [];
     if (no.children != null) {
@@ -18,7 +19,7 @@ class Stack {
     }
     widgets.reverse();
     let wid = `${widgets}`;
-    return `Stack(children:<Widget>[${wid}],)`;
+    return `Stack(alignment: Alignment.center,children:<Widget>[${wid}],)`;
   }
 }
 

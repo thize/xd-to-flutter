@@ -2,10 +2,14 @@ const { fixDouble } = require("../util");
 const { shadow, border } = require("./util");
 
 function text(node) {
+    let name = node.name;
+    if (name.length >= 10) {
+        name = name.substring(0, 10);
+    }
     const json = JSON.parse(`
     { 
         "type": "text",
-        "name": "${node.name}",
+        "name": "${name}",
         "x": ${fixDouble(node.globalBounds.x)},
         "y": ${fixDouble(node.globalBounds.y)},
         "w": ${fixDouble(node.localBounds.width)},

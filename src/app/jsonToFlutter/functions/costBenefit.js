@@ -20,13 +20,10 @@ function costBenefit(no, widget, onlyInside) {
     _auxCostBenefit = _costBenefit(no.children[i].widget, widget, runType);
     let auxCB = _auxCostBenefit[0] + _auxCostBenefit[1];
     let bCB = _bestCostBenefit[0] + _bestCostBenefit[1];
-    if ((auxCB < bCB && onlyInside) || auxCB <= bCB && !onlyInside) {
+    if ((auxCB < bCB && onlyInside) || (auxCB <= bCB && !onlyInside)) {
       onlyInside = true;
       bestPosition = i + 1;
       _bestCostBenefit = _auxCostBenefit;
-    }
-    if (_auxCostBenefit[0] + _auxCostBenefit[1] <= 0) {
-      break;
     }
   }
   return new CostBenefit(
@@ -41,13 +38,14 @@ function _costBenefit(ant, widget, type) {
   if (ant.x > widget.x) left = 1;
   let distX = item[(left + 1) % 2].x - (item[left].x + item[left].w);
   let distY = item[(above + 1) % 2].y - (item[above].y + item[above].h);
-  /*distX = distX < 0 ? -1 : distX;
-  distY = distY < 0 ? -1 : distY;*/
-  if (distY < 0 && type == Column) {
+  distX = distX < 0 ? -1 : distX;
+  distY = distY < 0 ? -1 : distY;
+  /*if (distY < 0 && type == Column) {
     distX = 0;
   } else if (distX < 0 && type == Row) {
     distY = 0;
-  }
+  }*/
+  console.log(`antID = ${ant.id}, id = ${widget.id}, distX = ${distX}, distY = ${distY}`);
   return [distX, distY];
 }
 module.exports = { costBenefit };

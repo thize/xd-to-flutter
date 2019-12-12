@@ -7,16 +7,18 @@ const { SizedBox } = require("../models/sizedBox");
 async function jsonToWidgets(json) {
   let widgets = [];
   json = JSON.parse(json);
-  for (let i = 0; i < 9999999; i++) {
-    let widget = _addWidgetOnList(json[`${i}`]);
+  let position = 0;
+  while (true) {
+    let widget = _addWidgetOnList(json[`${position}`]);
     if (widget == null) break;
+    position++;
     widgets.push(widget);
   }
   return widgets;
 }
 
 function _addWidgetOnList(json) {
-  if (json == null) return null;  
+  if (json == null) return null;
   switch (json["type"]) {
     case "sizedBox":
       return new SizedBox(json);

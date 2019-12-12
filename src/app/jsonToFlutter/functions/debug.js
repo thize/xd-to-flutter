@@ -6,14 +6,13 @@ const { Svg } = require("../models/svg");
 const { SizedBox } = require("../models/sizedBox");
 
 function logTree(no, dist) {
-  var ant = 0;
+
   var start = "";
   for (var i = 0; i < dist; i++) {
     start += "|  ";
   }
-  if (ant == dist) {
+  if (dist == 0)
     console.log("\nStructure:");
-  }
   console.log(`${start}${_typeToString(no.widget.type)} - ${no.widget.id}, w = ${no.widget.w}, h = ${no.widget.h}, x = ${no.widget.x}, y = ${no.widget.y}`);
   no.children.forEach(function (f) {
     logTree(f, dist + 1);
@@ -23,6 +22,7 @@ function logTree(no, dist) {
 function logCode(code) {
   console.log(`\nCode:\n${code}`);
 }
+
 module.exports = { logCode, logTree };
 
 function _typeToString(type) {
