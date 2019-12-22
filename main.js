@@ -9,34 +9,28 @@ let showPlugins = true;
 function onTapGenerate(selection) {
     const widget = document.querySelector("#widget").checked;
     const color = document.querySelector("#color").checked;
-    const withMethod = document.querySelector("#methodCheckbox").checked;
     const simpleCode = document.querySelector("#simpleCodeCheckbox").checked;
     const division = document.querySelector("#division").checked;
-    const methodName = document.querySelector("#methodInput").value;
     let generatedWidget = "";
-    if (isEmptyMethodName(withMethod, methodName)) {
-        showMessageWithColor("Method name cannot be empty", "red");
-    } else {
-        try {
-            if (widget) {
-                require("application").editDocument(async () => {
-                    try {
-                        generatedWidget = await exportWidget(selection, simpleCode, division);
-                        copyToClipboard(generatedWidget, withMethod, methodName)
-                    } catch (error) {
-                        currentlyNotSupported(error);
-                    }
-                });
-            } else if (color && isSingleItem(selection)) {
-                generatedWidget = exportColor(selection.items[0]);
-                copyToClipboard(generatedWidget, withMethod, methodName)
-            } else {
-                throw "Select only one widget";
-            }
-            showMessageWithColor("Successfully generated", "green");
-        } catch (error) {
-            currentlyNotSupported(error);
+    try {
+        if (widget) {
+            require("application").editDocument(async () => {
+                try {
+                    generatedWidget = await exportWidget(selection, simpleCode, division);
+                    copyToClipboard(generatedWidget)
+                } catch (error) {
+                    currentlyNotSupported(error);
+                }
+            });
+        } else if (color && isSingleItem(selection)) {
+            generatedWidget = exportColor(selection.items[0]);
+            copyToClipboard(generatedWidget)
+        } else {
+            throw "Select only one widget";
         }
+        showMessageWithColor("Successfully generated", "green");
+    } catch (error) {
+        currentlyNotSupported(error);
     }
 }
 
@@ -64,28 +58,12 @@ function create() {
             showMessageWithColor("Select something", "grey");
         }
     });
-    panel.querySelector("#methodCheckbox").addEventListener("click", update);
     return panel;
 }
 
 function update() {
     const selection = scenegraph.selection;
-    const method = document.querySelector("#methodCheckbox").checked;
-    const methodInput = document.querySelector("#methodInput");
     const buttons = document.querySelectorAll("button");
-    //const rippleCheckbox = document.querySelector("#rippleCheckbox");
-    //const automaticDetectButton = document.querySelector("#automaticDetectButton").checked;
-    /*if (automaticDetectButton) {
-        rippleCheckbox.removeAttribute("disabled");
-    } else {
-        rippleCheckbox.setAttribute("disabled", "disabled");
-    }*/
-    if (method) {
-        methodInput.removeAttribute("disabled");
-    } else {
-        methodInput.value = "";
-        methodInput.setAttribute("disabled", "disabled");
-    }
     buttons.forEach(function (button) {
         if (selection.items.length != 0) {
             button.setAttribute("uxp-variant", "cta");
@@ -112,12 +90,6 @@ const exportForm = `<h2>Export</h2>
 <form id= "ExportForm">
   ${_row(`<input type="radio" id="widget" name="exportGroup" checked>Widget<br>`)}
   ${_row(`<input type="radio" id="color" name="exportGroup" >Color<br>`)}
-  ${_row(`<input type="checkbox" id="methodCheckbox" name="exportGroup" >Extract with method<br>`)}
-  ${_row(`<span>Method Name</span>`)}
-  ${_row(`<input id="methodInput" type="text" placeholder="Name"/>`)}    
-  ${showAutomaticButton ? ` <h2>Button</h2>
-  ${_row(`<input type="checkbox" id="automaticDetectButton" name="exportGroup" >Automatic Detect<br>`)}
-  ${_row(`<input type="checkbox" id="rippleCheckbox" name="exportGroup" >With Ripple<br>`)} ` : ''}   
   <h2>Plugins</h2>
   ${showPlugins ? ` ${_row(`<input type="checkbox" id="division" name="exportGroup" >With Division<br>`)}
   ${_row(`<input type="checkbox" id="simpleCodeCheckbox" name="exportGroup" >With SimpleCode<br>`)}` : ``}

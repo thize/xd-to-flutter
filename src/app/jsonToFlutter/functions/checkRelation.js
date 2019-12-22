@@ -9,7 +9,7 @@ var Relation = require("../jsonToFlutter");
 function checkRelation(father, widget) {
   if (father != null) {
     // Id -1 is Genereated Widget (Column, Row or Stack)
-    let type = checkIfIsInside(father.widget, widget);    
+    let type = father.widget.id == -1 ? Relation.Relation.INSIDE : checkIfIsInside(father.widget, widget);
     switch (type) {
       case Relation.Relation.INSIDE:
         insertInside(father, widget);

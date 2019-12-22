@@ -19,12 +19,7 @@ function showMessageWithColor(text, color) {
     setTimeout(function () { message.innerHTML = ""; }, 1500);
 }
 
-function copyToClipboard(generatedWidget, withMethod, methodName) {
-    if (withMethod) {
-        generatedWidget = `${methodName}() =>
-         ${generatedWidget};
-        `;
-    }
+function copyToClipboard(generatedWidget) {   
     clipboard.copyText(generatedWidget);
 }
 
