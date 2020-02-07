@@ -4,6 +4,7 @@ const { logTree } = require("./debug");
 
 let withSimpleCode = false;
 let withDivision = false;
+let withGoogleFonts = false;
 
 const Relation = {
   INSIDE: 'inside',
@@ -19,9 +20,11 @@ class Tree {
 
 let tree = new Tree();
 
-async function generateWidgetFromJson(json, wSimpleCode, wDivision) {
+async function generateWidgetFromJson(json, wSimpleCode, wDivision, wGoogleFonts) {
   withSimpleCode = wSimpleCode;
   withDivision = wDivision;
+  withGoogleFonts = wGoogleFonts;
+  exports.withGoogleFonts = withGoogleFonts;
   exports.withDivision = withDivision;
   exports.withSimpleCode = withSimpleCode;
   tree.no = null;

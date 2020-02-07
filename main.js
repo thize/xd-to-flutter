@@ -40,9 +40,12 @@ function create() {
 function exportVariables() {
     const withSimpleCode = document.querySelector("#simpleCodeCheckbox").checked;
     const withDivision = document.querySelector("#division").checked;
+    const withGoogleFonts = document.querySelector("#googleFonts").checked;
     exports.withSimpleCode = withSimpleCode;
     exports.withDivision = withDivision;
+    exports.withGoogleFonts = withGoogleFonts;
 }
+
 function update() {
     const selection = scenegraph.selection;
     const buttons = document.querySelectorAll("button");
@@ -108,7 +111,8 @@ const global = `
 const util = `
 <h2>Util</h2>
 ${_row(`<input type="checkbox" id="simpleCodeCheckbox" name="exportGroup" >with SimpleCode<br>`)}
-${ _row(`<input type="checkbox" id="division" name="exportGroup" >with Division<br>`)}
+${_row(`<input type="checkbox" id="googleFonts" name="exportGroup" >with GoogleFonts<br>`)}
+${_row(`<input type="checkbox" id="division" name="exportGroup" >with Division<br>`)}
 `;
 
 const widget = `

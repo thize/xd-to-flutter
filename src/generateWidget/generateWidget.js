@@ -5,6 +5,7 @@ const { showMessageWithColor } = require("../showMessageWithColor");
 let clipboard = require("clipboard");
 let withSimpleCode = require("../../main");
 let withDivision = require("../../main");
+let withGoogleFonts = require("../../main");
 let scenegraph = require("scenegraph");
 let throwr;
 
@@ -23,17 +24,18 @@ async function generateWidget(SymbolInstance) {
     throwr = undefined;
     const simpleCode = withSimpleCode.withSimpleCode;
     const division = withDivision.withDivision;
+    const wGoogleFonts = withGoogleFonts.withGoogleFonts;
     exports.throwr = throwr;
     if (SymbolInstance == null) {
         if (scenegraph.selection.items.length != 0) {
             let list = [];
-            throwr = await generateList(list, scenegraph.selection.items, division);
+            throwr = await generateList(list, scenegraph.selection.items, division, wGoogleFonts);
             if (throwr != undefined) {
                 showMessageWithColor(`${throwr} not implemented`, "red");
                 throw `${throwr} not implemented`;
             }
             let json = generateJson(list);
-            let code = await generateWidgetFromJson(json, simpleCode, division);
+            let code = await generateWidgetFromJson(json, simpleCode, division, wGoogleFonts);
             return code;
         } else {
             showMessageWithColor("Select something", "grey");
@@ -41,13 +43,13 @@ async function generateWidget(SymbolInstance) {
     } else {
         let list = [];
         throwr = undefined;
-        throwr = await generateList(list, SymbolInstance.children, division);
+        throwr = await generateList(list, SymbolInstance.children, division, wGoogleFonts);
         if (throwr != undefined) {
             showMessageWithColor(`${throwr} not implemented`, "red", 'messageGlobal');
             throw `${throwr} not implemented`;
         }
         let json = generateJson(list);
-        let code = await generateWidgetFromJson(json, simpleCode, division);
+        let code = await generateWidgetFromJson(json, simpleCode, division, wGoogleFonts);
         return code;
     }
 }

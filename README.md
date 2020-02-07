@@ -37,6 +37,7 @@ This list is not very well-ordered. I'm mainly picking up things that seem inter
 
 ## DONE
 
+* [x] Google Fonts
 * [x] Pedantic Analysis Options rules
 * [x] Const
 * [x] Line
