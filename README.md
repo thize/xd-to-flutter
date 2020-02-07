@@ -1,5 +1,5 @@
 # Adobe XD Flutter Code Generate - Plugin
-<a href="https://github.com/thize/xd-to-flutter/releases"><img src="https://img.shields.io/badge/FlutterCodeGenerate-v2.0.0-blue"/></a>
+<a href="https://github.com/thize/xd-to-flutter/releases"><img src="https://img.shields.io/badge/Xd%20to%20Flutter-v2.0.0-blue"/></a>
 
 ⚠️ **If you encounter an issue or have any feedback which you think could improve Plugin, please open an issue [here](https://github.com/thize/xd-to-flutter/issues)**
 
@@ -34,7 +34,6 @@ This list is not very well-ordered. I'm mainly picking up things that seem inter
 * [ ] Polygon
 * [ ] Show Structure
 * [ ] Automatic detect buttons
-* [ ] Auto animated
 
 ## DONE
 
@@ -53,6 +52,10 @@ This list is not very well-ordered. I'm mainly picking up things that seem inter
 * [x] Export Global Colors/TextStyles/Components
 * [x] Stops on LinearGradient and RadialGradient
 
+## Probably out of scope/non-goals
+
+- Auto Detect Material Design Widgets
+- Auto animated
 
 ### Installing
 
