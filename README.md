@@ -10,11 +10,11 @@
 
 The idea of the Plugin is:
 
-_"Increase productivity and decrease time spent with front-end code"._
+_“Increase productivity and decrease time spent with front-end code”._
 
 ## Why?
 
-This project was designed to accelerate my company's software development and to help everyone wasting time with simple and repetitive widgets creation processes.\
+This project was designed to accelerate my company's software development and to help everyone waste time with simple and repetitive Widget creation processes.\
 I will be happy if you can help me with as many PR's as you like so that we can perfect the plugin more and more
 
 Email-me: thize@bluebookapps.com
@@ -22,30 +22,36 @@ Email-me: thize@bluebookapps.com
 Connect with me at [LinkedIn](https://linkedin.com/in/giovani-lobato-68aa57131).
 
 ## TODO NOW
+
 * [ ] Generate correct full layout
 * [ ] Generate layout distances (spacer, sizedBox, margin, padding, alingment)
-* [ ] Gradient
-* [ ] Line
-* [ ] Polygon
+
 
 ## TODO LATER
 
-This list is not very well ordered. I'm mainly picking up things that seem interesting or useful.
+This list is not very well-ordered. I'm mainly picking up things that seem interesting or useful.
 
+* [ ] Polygon
 * [ ] Show Structure
 * [ ] Automatic detect buttons
-* [ ] Stops on LinearGradient and RadialGradient
+* [ ] Auto animated
+
+## DONE
+
+* [x] Pedantic Analysis Options rules
+* [x] Const
+* [x] Line
 * [x] Generate with Division
 * [x] Generate with SimpleCode
-* [x] Svg group folder
 * [x] Full layout
 * [x] Text
 * [x] Container/Elipse
 * [x] Rotation
-* [x] Copy only Color
-* [x] Svg
+* [x] Svg / Svg group folder
 * [x] Image
-* [x] Export with method
+* [x] Export Color/Border/Shadow/Gradient
+* [x] Export Global Colors/TextStyles/Components
+* [x] Stops on LinearGradient and RadialGradient
 
 
 ### Installing

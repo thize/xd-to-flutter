@@ -1,11 +1,11 @@
 {
-  "summary": "Flutter Code Generate",
+  "summary": "Xd to Flutter",
   "languages": [
     "en"
   ],
   "author": "Thize (Giovani Lobato)",
-  "name": "Flutter Code Generate",
-  "releaseNotes": "Linear and Gradient, Full Layout, Division, SimpleCodd and more!",
+  "name": "Xd to Flutter",
+  "releaseNotes": "Linear and Gradient, Full Layout, Division, SimpleCode and more!",
   "host": {
     "app": "XD",
     "minVersion": "21.0"

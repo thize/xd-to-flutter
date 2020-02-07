@@ -1,26 +1,33 @@
-let clipboard = require("clipboard");
+var withSimpleCode = require("../main");
 
-function isEmptyMethodName(method, methodName) {
-    return method && methodName == "";
+function sz(value) {
+  if (withSimpleCode.withSimpleCode && value > 0) {
+    return `sz(${fixDouble(value)})`;
+  }
+  return `${fixDouble(value)}`;
 }
 
-function isNotEmptySelectionItens(selection) {
-    return selection.items.length != 0;
+function fixDouble(value) {
+  try {
+    return parseFloat(value.toFixed(2));
+  } catch (e) {
+    return parseFloat((parseFloat(value)).toFixed(2));
+  }
 }
 
-function isSingleItem(selection) {
-    return selection.items.length == 1 && selection.items[0].children.length < 2;
+function fixName(value) {
+  return value.replace(/\s+/g, '').replace("–", "");
 }
 
-function showMessageWithColor(text, color) {
-    const message = document.querySelector("#message");
-    message.innerHTML = text;
-    message.style.color = color;
-    setTimeout(function () { message.innerHTML = ""; }, 1500);
+function statelessWidget(widgetName, child) {
+  return `
+    class ${widgetName} extends StatelessWidget {
+        const ${widgetName}({Key key}) : super(key: key);      
+        @override
+        Widget build(BuildContext context) {
+          return ${child};
+        }
+      }`;
 }
 
-function copyToClipboard(generatedWidget) {   
-    clipboard.copyText(generatedWidget);
-}
-
-module.exports = { isEmptyMethodName, isSingleItem, showMessageWithColor, copyToClipboard, isNotEmptySelectionItens };
+module.exports = { sz, statelessWidget, fixName, fixDouble };
