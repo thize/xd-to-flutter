@@ -1,5 +1,5 @@
 # Adobe XD Flutter Code Generate - Plugin
-<a href="https://github.com/thize/xd-to-flutter/releases"><img src="https://img.shields.io/badge/Xd%20to%20Flutter-v2.0.0-blue"/></a>
+<a href="https://github.com/thize/xd-to-flutter/releases"><img src="https://img.shields.io/badge/Xd%20to%20Flutter-v2.1.0-blue"/></a>
 
 ⚠️ **If you encounter an issue or have any feedback which you think could improve Plugin, please open an issue [here](https://github.com/thize/xd-to-flutter/issues)**
 
