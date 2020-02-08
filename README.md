@@ -4,7 +4,7 @@
 ⚠️ **If you encounter an issue or have any feedback which you think could improve Plugin, please open an issue [here](https://github.com/thize/xd-to-flutter/issues)**
 
 ## Example
-![Plugin-Example](https://media.giphy.com/media/llOhnaDgpmAiFR0Exz/giphy.gif)
+![Plugin-Example](https://i.imgur.com/neBC735.png)
 
 ## About this Project
 
