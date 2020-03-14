@@ -20,7 +20,6 @@ function create() {
     return panel;
 }
 
-
 function update() {
     const selection = scenegraph.selection;
     const buttons = document.querySelectorAll("button");
