@@ -61,5 +61,3 @@ ${_row(`<button id="button" type="submit">Generate</button>`)}
 function _row(content) {
     return `<label class="row">${content}</label>`;
 }
-
-

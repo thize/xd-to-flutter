@@ -30,22 +30,28 @@ class XDLine {
     }
 
     parseToRectangle() {
+        console.log('1');
         const node = this.node;
-        let rect = new Rectangle();
+        console.log('2');
+        let rectangle;
         application.editDocument(function () {
+            console.log('3');
+            rectangle = new Rectangle();
+            console.log('4');
             const horizontal = node.globalBounds.width >= node.globalBounds.height;
             const width = horizontal ? node.globalBounds.width : node.strokeWidth;
             const height = !horizontal ? node.globalBounds.height : node.strokeWidth;
             const radius = node.strokeEndCaps == 'round' ? Math.min(width, height) / 2 : 0;
-            rect.width = width;
-            rect.height = height;
-            rect.fill = node.stroke;
-            rect.fillEnabled = node.strokeEnabled;
-            rect.setAllCornerRadii(radius);
-            rect.shadow = node.shadow;
-            rect.strokeEnabled = false;
+            rectangle.width = width;
+            rectangle.height = height;
+            rectangle.fill = node.stroke;
+            rectangle.fillEnabled = node.strokeEnabled;
+            rectangle.setAllCornerRadii(radius);
+            rectangle.shadow = node.shadow;
+            rectangle.strokeEnabled = false;
         });
-        return rect;
+        console.log('5');
+        return rectangle;
     }
 }
 
