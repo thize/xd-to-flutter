@@ -30,14 +30,10 @@ class XDLine {
     }
 
     parseToRectangle() {
-        console.log('1');
         const node = this.node;
-        console.log('2');
         let rectangle;
         application.editDocument(function () {
-            console.log('3');
             rectangle = new Rectangle();
-            console.log('4');
             const horizontal = node.globalBounds.width >= node.globalBounds.height;
             const width = horizontal ? node.globalBounds.width : node.strokeWidth;
             const height = !horizontal ? node.globalBounds.height : node.strokeWidth;
@@ -50,7 +46,6 @@ class XDLine {
             rectangle.shadow = node.shadow;
             rectangle.strokeEnabled = false;
         });
-        console.log('5');
         return rectangle;
     }
 }
