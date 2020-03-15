@@ -1,4 +1,5 @@
 const { Bounds } = require("./models/bounds");
+const { Children } = require("./models/widgets/children");
 /**
 * Create full layout
 * 
@@ -23,12 +24,11 @@ class Layout {
         for (let i = 1; i < widgets.length; i++) {
             const widget = widgets[i];
             this.no = insertNoIn(new No(widget), this.no);
-            console.log(`\n${this.toDart()}`);
         }
     }
 
     toDart() {
-        return this.no.toDart(0);
+        return this.no.toDart();
     }
 }
 
@@ -43,37 +43,46 @@ class No {
         this.father = father;
         this.type = type == null ? widget.node.name : type;
         this.children = [];
+        this.bounds;
+        this.updateBounds();
     }
 
     /**
     * @return {Bounds} No bounds
     */
-    bounds() {
+    updateBounds() {
         if (this.widget != null) {
             const widgetBounds = this.widget.bounds;
-            return new Bounds(widgetBounds.x1, widgetBounds.x2, widgetBounds.y1, widgetBounds.y2);
+            this.bounds = new Bounds(widgetBounds.x1, widgetBounds.x2, widgetBounds.y1, widgetBounds.y2);
         } else {
-            const thisBounds = this.children[0].bounds();
-            this.children.forEach(child => {
-                thisBounds.x1 = Math.min(thisBounds.x1, child.bounds().x1);
-                thisBounds.x2 = Math.max(thisBounds.x2, child.bounds().x2);
-                thisBounds.y1 = Math.min(thisBounds.y1, child.bounds().y1);
-                thisBounds.y2 = Math.max(thisBounds.y2, child.bounds().y2);
-            });
-            return thisBounds;
+            if (this.children.length > 0) {
+                const thisBounds = this.children[0].bounds;
+                this.children.forEach(child => {
+                    thisBounds.x1 = Math.min(thisBounds.x1, child.bounds.x1);
+                    thisBounds.x2 = Math.max(thisBounds.x2, child.bounds.x2);
+                    thisBounds.y1 = Math.min(thisBounds.y1, child.bounds.y1);
+                    thisBounds.y2 = Math.max(thisBounds.y2, child.bounds.y2);
+                });
+                this.bounds = thisBounds;
+            }
         }
     }
 
-    toDart(depth) {
+    toDart() {
+        if (this.widget == null) this.widget = new Children(this.type, this);
+        return this.widget.toDart();
+    }
+
+    debug(depth) {
         const children = [];
         this.children.forEach(child => {
-            children.push(`\n${child.toDart(depth + 1)}`);
+            children.push(`\n${child.debug(depth + 1)}`);
         });
         let tabs = `| `;
         for (let i = 0; i < depth; i++) {
             tabs += '| ';
         }
-        return `${tabs}${this.type}${children}`;
+        console.log(`${tabs}${this.type}${children}`);
     }
 }
 
@@ -88,8 +97,8 @@ class No {
 * and insert the new No in the tree 
 */
 function insertNoIn(newNo, inNo) {
+    inNo.updateBounds();
     const nodesRelation = relation(newNo, inNo);
-    console.log(`relation = ${nodesRelation}, aboveButRowOrColumn = ${(nodesRelation == 'above' && (inNo.type == 'Row' || inNo.type == 'Column'))}`);
     if (nodesRelation == 'inside' || (nodesRelation == 'above' && (inNo.type == 'Row' || inNo.type == 'Column'))) {
         return insertInside(newNo, inNo);
     } else if (nodesRelation == 'above') {
@@ -111,6 +120,7 @@ function insertInside(newNo, inNo) {
     if (inNo.children.length == 0) {
         inNo.children.push(newNo);
         newNo.father = inNo;
+        inNo.updateBounds();
         return inNo;
     } else {
         const invertedType = inNo.type == `Row` ? `Column` : inNo.type == `Column` ? `Row` : ``;
@@ -119,11 +129,6 @@ function insertInside(newNo, inNo) {
         for (let i = 0; i < inNo.children.length; i++) {
             const child = inNo.children[i];
             const nodesRelation = relation(newNo, child);
-            console.log(`childBounds = ${JSON.stringify(child.bounds)}`);
-            console.log(`nodesRelation = ${nodesRelation}`);
-            console.log(`betterOutside(newNo, child) = ${betterOutside(newNo, child)}`);
-            console.log(`invertedType = ${invertedType}`);
-            console.log(`inNo.type = ${inNo.type}`);
             if (nodesRelation == 'inside' || nodesRelation == 'above' || betterOutside(newNo, child) == invertedType) {
                 if (nodesRelation == 'above') {
                     qtdAboves++;
@@ -135,9 +140,11 @@ function insertInside(newNo, inNo) {
             return wrapNodesWithType([inNo, newNo], `Stack`);
         } else if (insertPosition != null && qtdAboves < 2) {
             inNo.children[insertPosition] = insertNoIn(newNo, inNo.children[insertPosition]);
+            inNo.updateBounds();
             return inNo;
         }
         inNo.children[0] = insertNoIn(newNo, inNo.children[0]);
+        inNo.updateBounds();
         return inNo;
     }
 }
@@ -150,8 +157,8 @@ function insertInside(newNo, inNo) {
 * @returns {string} (inside, outside or above);
 */
 function relation(node1, node2) {
-    const node1Bounds = node1.bounds();
-    const node2Bounds = node2.bounds();
+    const node1Bounds = node1.bounds;
+    const node2Bounds = node2.bounds;
     const boundsX1 = node1Bounds.x1 <= node2Bounds.x1 ? node1Bounds : node2Bounds;
     const boundsX2 = node1Bounds.x1 <= node2Bounds.x1 ? node2Bounds : node1Bounds;
     const boundsY1 = node1Bounds.y1 <= node2Bounds.y1 ? node1Bounds : node2Bounds;
@@ -180,11 +187,13 @@ function wrapNodesWithType(nodes, wrapperType) {
         first.children.push(nodes[1]);
         nodes[1].father = first;
         first.children = sortNodesByType(wrapperType, first.children);
+        first.updateBounds();
         return first;
     } else if (fatherType == wrapperType) {
         father.children.push(nodes[1]);
         nodes[1].father = first;
         father.children = sortNodesByType(wrapperType, father.children);
+        father.updateBounds();
         return first;
     }
     const wrapperNo = new No(null, father, wrapperType);
@@ -193,6 +202,7 @@ function wrapNodesWithType(nodes, wrapperType) {
         wrapperNo.children.push(node);
     });
     wrapperNo.children = sortNodesByType(wrapperType, wrapperNo.children);
+    wrapperNo.updateBounds();
     return wrapperNo;
 }
 
@@ -203,9 +213,9 @@ function wrapNodesWithType(nodes, wrapperType) {
 */
 function sortNodesByType(sortType, nodes) {
     if (sortType == 'Row') {
-        nodes = nodes.sort((a, b) => a.bounds().x1 - b.bounds().x1);
+        nodes = nodes.sort((a, b) => a.bounds.x1 - b.bounds.x1);
     } else if (sortType == 'Column') {
-        nodes = nodes.sort((a, b) => a.bounds().y1 - b.bounds().y1);
+        nodes = nodes.sort((a, b) => a.bounds.y1 - b.bounds.y1);
     }
     return nodes;
 }
@@ -218,8 +228,8 @@ function sortNodesByType(sortType, nodes) {
 * @returns {string} better type (Row or Column)
 */
 function betterOutside(newNo, inNo) {
-    let node1Bounds = newNo.bounds();
-    let node2Bounds = inNo.bounds();
+    let node1Bounds = newNo.bounds;
+    let node2Bounds = inNo.bounds;
     let bounds1 = node1Bounds.x1 <= node2Bounds.x1 ? node1Bounds : node2Bounds;
     let bounds2 = node1Bounds.x1 <= node2Bounds.x1 ? node2Bounds : node1Bounds;
     let xDistance = bounds2.x1 - bounds1.x2;
