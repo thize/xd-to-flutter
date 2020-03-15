@@ -91,8 +91,7 @@ function insertNoIn(newNo, inNo) {
     const nodesRelation = relation(newNo, inNo);
     console.log(`relation = ${nodesRelation}, aboveButRowOrColumn = ${(nodesRelation == 'above' && (inNo.type == 'Row' || inNo.type == 'Column'))}`);
     if (nodesRelation == 'inside' || (nodesRelation == 'above' && (inNo.type == 'Row' || inNo.type == 'Column'))) {
-        insertInside(newNo, inNo);
-        return inNo;
+        return insertInside(newNo, inNo);
     } else if (nodesRelation == 'above') {
         return wrapNodesWithType([inNo, newNo], 'Stack');
     } else if (nodesRelation == 'outside') {
@@ -112,17 +111,34 @@ function insertInside(newNo, inNo) {
     if (inNo.children.length == 0) {
         inNo.children.push(newNo);
         newNo.father = inNo;
+        return inNo;
     } else {
         const invertedType = inNo.type == `Row` ? `Column` : inNo.type == `Column` ? `Row` : ``;
+        let insertPosition;
+        let qtdAboves = 0;
         for (let i = 0; i < inNo.children.length; i++) {
             const child = inNo.children[i];
             const nodesRelation = relation(newNo, child);
+            console.log(`childBounds = ${JSON.stringify(child.bounds)}`);
+            console.log(`nodesRelation = ${nodesRelation}`);
+            console.log(`betterOutside(newNo, child) = ${betterOutside(newNo, child)}`);
+            console.log(`invertedType = ${invertedType}`);
+            console.log(`inNo.type = ${inNo.type}`);
             if (nodesRelation == 'inside' || nodesRelation == 'above' || betterOutside(newNo, child) == invertedType) {
-                inNo.children[i] = insertNoIn(newNo, child);
-                return;
+                if (nodesRelation == 'above') {
+                    qtdAboves++;
+                }
+                insertPosition = i;
             }
         }
+        if (qtdAboves > 1) {
+            return wrapNodesWithType([inNo, newNo], `Stack`);
+        } else if (insertPosition != null && qtdAboves < 2) {
+            inNo.children[insertPosition] = insertNoIn(newNo, inNo.children[insertPosition]);
+            return inNo;
+        }
         inNo.children[0] = insertNoIn(newNo, inNo.children[0]);
+        return inNo;
     }
 }
 

@@ -7,7 +7,8 @@ function run() {
     const items = removeItemsFromGroupFolders(scenegraph.selection.items);
     const widgets = generateWidgetsFromItems(items);
     const layout = generateLayout(widgets);
-    console.log(`\n${layout.toDart()}`);
+    layout.toDart()
+    // console.log(`\n${layout.toDart()}`);
 }
 
 module.exports = {
