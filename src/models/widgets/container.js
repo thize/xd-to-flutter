@@ -1,4 +1,5 @@
 const { Bounds } = require("../bounds");
+const { sz } = require("../../utils");
 
 class Container {
     constructor(node) {
@@ -9,10 +10,10 @@ class Container {
 
     toDart(child) {
         let node = this.node;
-        child = child != null ? `child: ${child.toDart()}` : ``;
+        child = child != null ? `child: ${child.toDart()},` : ``;
         return `${node.constructor.name}(
-            width: ${this.bounds.x2 - this.bounds.x1},
-            height: ${this.bounds.y2 - this.bounds.y1},
+            width: ${sz(this.bounds.x2 - this.bounds.x1, true)},
+            height: ${sz(this.bounds.y2 - this.bounds.y1, false)},
             ${child}
         )`;
     }

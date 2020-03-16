@@ -7,9 +7,15 @@ function run() {
     const items = removeItemsFromGroupFolders(scenegraph.selection.items);
     const widgets = generateWidgetsFromItems(items);
     const layout = generateLayout(widgets);
-    const dartLayout = layout.toDart();
+    let dartLayout = layout.toDart();
+    dartLayout.trim();
+    dartLayout = myTrim(dartLayout);
     clipboard.copyText(dartLayout);
     console.log(`\n${dartLayout}`);
+}
+
+function myTrim(x) {
+    return x.replace(/\s/g,'', '');
 }
 
 module.exports = {

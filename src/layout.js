@@ -56,7 +56,8 @@ class No {
             this.bounds = new Bounds(widgetBounds.x1, widgetBounds.x2, widgetBounds.y1, widgetBounds.y2);
         } else {
             if (this.children.length > 0) {
-                const thisBounds = this.children[0].bounds;
+                const widgetBounds = this.children[0].bounds;
+                const thisBounds = new Bounds(widgetBounds.x1, widgetBounds.x2, widgetBounds.y1, widgetBounds.y2);
                 this.children.forEach(child => {
                     thisBounds.x1 = Math.min(thisBounds.x1, child.bounds.x1);
                     thisBounds.x2 = Math.max(thisBounds.x2, child.bounds.x2);
@@ -70,7 +71,8 @@ class No {
 
     toDart() {
         if (this.widget == null) this.widget = new Children(this.type, this);
-        return this.widget.toDart();
+        const child = this.children != null ? this.children[0] : null
+        return this.widget.toDart(child);
     }
 
     debug(depth) {
