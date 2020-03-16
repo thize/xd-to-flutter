@@ -14,7 +14,6 @@ module.exports = {
     generateLayout: generateLayout,
 };
 
-
 class Layout {
     /**
     * @param {[any]} widgets list of all selection widgets
@@ -69,6 +68,10 @@ class No {
         }
     }
 
+    /**
+    * @param {number} depth depth in the Tree to indent the code
+    * @return {string} Generated dart code
+    */
     toDart(depth) {
         if (this.widget == null) this.widget = new Children(this.type, this);
         const child = this.children != null ? this.children[0] : null
@@ -84,7 +87,7 @@ class No {
         for (let i = 0; i < depth; i++) {
             tabs += '| ';
         }
-        console.log(`${tabs}${this.type}${children}`);
+        return `${tabs}${this.type}${children}`;
     }
 
     isChildren() {

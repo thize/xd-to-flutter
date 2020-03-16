@@ -2,29 +2,20 @@ let clipboard = require("clipboard");
 let scenegraph = require("scenegraph");
 const { Container } = require("./models/widgets/container");
 const { generateLayout } = require("./layout");
-const { formatDartCode } = require("./utils");
 
 function run() {
     const items = removeItemsFromGroupFolders(scenegraph.selection.items);
     const widgets = generateWidgetsFromItems(items);
     const layout = generateLayout(widgets);
     let dartCode = formatDartCode(layout.toDart());
+    console.log(dartCode);
+    console.log(layout.no.debug(0));
     clipboard.copyText(dartCode);
-    console.log(`\n${dartCode}`);
 }
-
-function trim(x) {
-    return x.replace(/\s/g, '', '');
-}
-
-String.prototype.splice = function (idx, rem, str) {
-    return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
-};
 
 module.exports = {
     run: run,
 };
-
 
 /**
 * Recursive function to remove items from Group folders
@@ -64,4 +55,16 @@ function generateWidgetsFromItems(items) {
 
 function generateWidgetByType(child) {
     return new Container(child);
+}
+
+/**
+* Indent Dart Code
+* @param {string} dartCode
+* @return {string} Indented Dart Code
+*/
+function formatDartCode(dartCode) {
+    dartCode = dartCode.split('[').join('[\n');
+    dartCode = dartCode.split(',').join(',\n');
+    dartCode = dartCode.split(':').join(': ');
+    return dartCode;
 }
