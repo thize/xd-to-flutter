@@ -1,4 +1,4 @@
-const { sz } = require("../../utils");
+const { sz, tab } = require("../../utils");
 
 class Children {
     /**
@@ -11,39 +11,35 @@ class Children {
         this.distances = [];
     }
 
-    toDart() {
+    toDart(depth) {
         const withSpacer = true;
         this.withSpacer = withSpacer;
         let widgets = [];
         this.updateBounds();
         this.node.children.forEach(child => {
-            widgets.push(child.toDart());
+            widgets.push(`${tab(depth + 2)}${child.toDart(depth + 2)}`);
         });
         this.updateDistances();
         for (let i = 0, qtd = 0; i < widgets.length; i += 2, qtd++) {
-            const distance = this.distanceToDart(this.distances[qtd]);
+            const distance = this.distanceToDart(this.distances[qtd], depth + 2);
             if (distance != ``) {
                 widgets.splice(i, 0, distance);
             }
         }
         if (withSpacer) {
-            const distance = this.distanceToDart(this.distances[this.distances.length - 1]);
+            const distance = this.distanceToDart(this.distances[this.distances.length - 1], depth + 2);
             if (distance != ``) {
                 widgets.push(distance);
             }
         }
-        return `${this.type}(
-            children: [
-                ${widgets},
-            ],
-        )`;
+        return `${this.type}(\n${tab(depth + 1)}children:[${widgets},${tab(depth + 1)}],${tab(depth)})`;
     }
 
     updateBounds() {
         if (this.node.father != null) {
             const type = this.type;
-            const fatherType = this.node.father.type;
-            const fatherIsChildren = fatherType == 'Column' || fatherType == 'Row' || fatherType == 'Stack';
+            // const fatherType = this.node.father.type; 
+            const fatherIsChildren = this.node.father.isChildren();
             if (type == `Column` || type == `Stack` || !fatherIsChildren) {
                 this.node.bounds.y1 = this.node.father.bounds.y1;
                 this.node.bounds.y2 = this.node.father.bounds.y2;
@@ -68,15 +64,15 @@ class Children {
         this.distances.push(bounds - this.getBounds2(this.node.children[this.node.children.length - 1]));
     }
 
-    distanceToDart(distance) {
+    distanceToDart(distance, depth) {
         if (distance > 0) {
             if (this.withSpacer) {
-                return `Spacer(flex: ${Math.round(distance)})`
+                return `${tab(depth)}Spacer(flex:${Math.round(distance)})`
             }
-            const width = this.type == 'Row' ? `width: ${sz(distance, true)}` : ``;
-            const height = this.type == 'Column' ? `height: ${sz(distance, false)}` : ``;
+            const width = this.type == 'Row' ? `width:${sz(distance, true)}` : ``;
+            const height = this.type == 'Column' ? `height:${sz(distance, false)}` : ``;
             if (width != `` || height != ``) {
-                return `SizedBox(${width}${height})`
+                return `${tab(depth)}SizedBox(${width}${height})`
             }
         }
         return ``;

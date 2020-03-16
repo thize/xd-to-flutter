@@ -28,7 +28,7 @@ class Layout {
     }
 
     toDart() {
-        return this.no.toDart();
+        return this.no.toDart(0);
     }
 }
 
@@ -69,10 +69,10 @@ class No {
         }
     }
 
-    toDart() {
+    toDart(depth) {
         if (this.widget == null) this.widget = new Children(this.type, this);
         const child = this.children != null ? this.children[0] : null
-        return this.widget.toDart(child);
+        return this.widget.toDart(depth, child);
     }
 
     debug(depth) {
@@ -85,6 +85,10 @@ class No {
             tabs += '| ';
         }
         console.log(`${tabs}${this.type}${children}`);
+    }
+
+    isChildren() {
+        return this.widget == null || this.widget instanceof Children;
     }
 }
 

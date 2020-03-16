@@ -29,7 +29,25 @@ function sz(number, width) {
     return `${number}`;
 }
 
+
+function formatDartCode(dartCode) {
+    dartCode = dartCode.split('[').join('[\n');
+    dartCode = dartCode.split(',').join(',\n');
+    dartCode = dartCode.split(':').join(': ');
+    return dartCode;
+}
+
+function tab(depth) {
+    let res = ``;
+    for (let i = 0; i < depth; i++) {
+        res += `  `;
+    }
+    return res;
+}
+
 module.exports = {
     fixDouble: fixDouble,
+    formatDartCode: formatDartCode,
     sz: sz,
+    tab: tab,
 };

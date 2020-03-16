@@ -2,21 +2,24 @@ let clipboard = require("clipboard");
 let scenegraph = require("scenegraph");
 const { Container } = require("./models/widgets/container");
 const { generateLayout } = require("./layout");
+const { formatDartCode } = require("./utils");
 
 function run() {
     const items = removeItemsFromGroupFolders(scenegraph.selection.items);
     const widgets = generateWidgetsFromItems(items);
     const layout = generateLayout(widgets);
-    let dartLayout = layout.toDart();
-    dartLayout.trim();
-    dartLayout = myTrim(dartLayout);
-    clipboard.copyText(dartLayout);
-    console.log(`\n${dartLayout}`);
+    let dartCode = formatDartCode(layout.toDart());
+    clipboard.copyText(dartCode);
+    console.log(`\n${dartCode}`);
 }
 
-function myTrim(x) {
-    return x.replace(/\s/g,'', '');
+function trim(x) {
+    return x.replace(/\s/g, '', '');
 }
+
+String.prototype.splice = function (idx, rem, str) {
+    return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
+};
 
 module.exports = {
     run: run,
