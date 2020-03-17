@@ -27,7 +27,7 @@ class Layout {
     }
 
     toDart() {
-        return this.no.toDart(0);
+        return this.no.toDart();
     }
 }
 
@@ -72,10 +72,10 @@ class No {
     * @param {number} depth depth in the Tree to indent the code
     * @return {string} Generated dart code
     */
-    toDart(depth) {
+    toDart() {
         if (this.widget == null) this.widget = new Children(this.type, this);
         const child = this.children != null ? this.children[0] : null
-        return this.widget.toDart(depth, child);
+        return this.widget.toDart(child);
     }
 
     debug(depth) {

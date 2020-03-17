@@ -1,4 +1,5 @@
-const { run } = require("./src/run");
+const { exportWidget } = require("./src/export_widget");
+const { exportColor } = require("./src/export_color");
 let scenegraph = require("scenegraph");
 let panel;
 
@@ -9,16 +10,21 @@ module.exports = {
             update
         }
     },
+    commands: {
+        exportWidget: exportWidget,
+        exportColor: exportColor
+    }
 };
 
 function create() {
     panel = document.createElement("div");
     panel.innerHTML = generateHtml();
     panel.querySelector("#ExportForm").addEventListener("submit", function () {
-        run();
+        exportWidget();
     });
     return panel;
 }
+
 
 function update() {
     const selection = scenegraph.selection;
@@ -60,3 +66,5 @@ ${_row(`<button id="button" type="submit">Generate</button>`)}
 function _row(content) {
     return `<label class="row">${content}</label>`;
 }
+
+

@@ -23,8 +23,26 @@
   "uiEntryPoints": [
     {
       "type": "panel",
-      "label": "Create Widgets",
+      "label": "Complete Menu",
       "panelId": "createWidgets"
+    },
+    {
+      "type": "menu",
+      "label": "Generate Widget (Ctrl + W)",
+      "commandId": "exportWidget",
+      "shortcut": {
+        "mac": "Ctrl+W",
+        "win": "Ctrl+W"
+      }
+    },
+    {
+      "type": "menu",
+      "label": "Generate Color (Ctrl + F)",
+      "commandId": "exportColor",
+      "shortcut": {
+        "mac": "Ctrl+F",
+        "win": "Ctrl+F"
+      }
     }
   ],
   "version": "2.0.0",

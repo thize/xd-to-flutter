@@ -1,5 +1,3 @@
-const { sz, tab } = require("../../utils");
-
 // TODO: add Stack positioneds
 
 class Children {
@@ -13,33 +11,33 @@ class Children {
         this.distances = [];
     }
 
-    toDart(depth) {
+    toDart() {
         let widgets = [];
         this.updateBounds();
         this.node.children.forEach(child => {
-            widgets.push(`${tab(depth + 2)}${child.toDart(depth + 2)}`);
+            widgets.push(`${child.toDart()}`);
         });
         this.updateDistances();
-        this.addDistancesToWidget(widgets, depth);
-        return `${this.type}(\n${tab(depth + 1)}children:[${widgets},${tab(depth + 1)}],${tab(depth)})`;
+        this.addDistancesToWidget(widgets);
+        return `${this.type}(children:[${widgets},],)`;
     }
 
     /**
     * Call distanceToDart() in distance and put in Widgets list
     * widgets.push(distanceToDart(distance));
     */
-    addDistancesToWidget(widgets, depth) {
+    addDistancesToWidget(widgets) {
         if (this.distances.length > 0) {
             const withSpacer = true;
             this.withSpacer = withSpacer;
             for (let i = 0, qtd = 0; i < widgets.length; i += 2, qtd++) {
-                const distance = this.distanceToDart(this.distances[qtd], depth + 2);
+                const distance = this.distanceToDart(this.distances[qtd]);
                 if (distance != ``) {
                     widgets.splice(i, 0, distance);
                 }
             }
             if (withSpacer) {
-                const distance = this.distanceToDart(this.distances[this.distances.length - 1], depth + 2);
+                const distance = this.distanceToDart(this.distances[this.distances.length - 1]);
                 if (distance != ``) {
                     widgets.push(distance);
                 }
@@ -90,15 +88,15 @@ class Children {
     /**
     * @return {String} Distance Dart code (Spacer or SizedBox)
     */
-    distanceToDart(distance, depth) {
+    distanceToDart(distance) {
         if (distance > 0) {
             if (this.withSpacer) {
-                return `${tab(depth)}Spacer(flex:${Math.round(distance)})`
+                return `Spacer(flex:${Math.round(distance)})`
             }
             const width = this.type == 'Row' ? `width:${sz(distance, true)}` : ``;
             const height = this.type == 'Column' ? `height:${sz(distance, false)}` : ``;
             if (width != `` || height != ``) {
-                return `${tab(depth)}SizedBox(${width}${height})`
+                return `SizedBox(${width}${height})`
             }
         }
         return ``;

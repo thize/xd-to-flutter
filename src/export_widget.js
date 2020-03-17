@@ -3,7 +3,7 @@ let scenegraph = require("scenegraph");
 const { Container } = require("./models/widgets/container");
 const { generateLayout } = require("./layout");
 
-function run() {
+async function exportWidget() {
     const items = removeItemsFromGroupFolders(scenegraph.selection.items);
     const widgets = generateWidgetsFromItems(items);
     const layout = generateLayout(widgets);
@@ -14,8 +14,9 @@ function run() {
 }
 
 module.exports = {
-    run: run,
+    exportWidget: exportWidget,
 };
+
 
 /**
 * Recursive function to remove items from Group folders
@@ -63,8 +64,7 @@ function generateWidgetByType(child) {
 * @return {string} Indented Dart Code
 */
 function formatDartCode(dartCode) {
-    dartCode = dartCode.split('[').join('[\n');
-    dartCode = dartCode.split(',').join(',\n');
-    dartCode = dartCode.split(':').join(': ');
+    // dartCode = dartCode.split('[').join('[\n');
+    // dartCode = dartCode.split(',').join(',\n');
     return dartCode;
 }

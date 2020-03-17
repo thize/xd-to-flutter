@@ -1,4 +1,4 @@
-const { fixDouble } = require("../utils");
+const { fixDouble } = require("./widgets/utils/fix_double");
 
 class Bounds {
     /**
