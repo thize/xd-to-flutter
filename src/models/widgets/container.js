@@ -62,7 +62,7 @@ class XDRectangle {
     toDart(child) {
         const node = this.node;
         const fill = (this.withDecoration() || !node.fillEnabled) ? '' : `${this.color()}`;
-        return `Container(${height(node)}${width(node)}${fill}${this.decoration()}${child})`;
+        return `Container(alignment: Alignment.center,${height(node)}${width(node)}${fill}${this.decoration()}${child})`;
     }
 
     ellipseRadius() {
@@ -153,24 +153,3 @@ class XDRectangle {
         return ``;
     }
 }
-/*const { Bounds } = require("../bounds");
-const { sz, tab } = require("../../utils");
-
-class Container {
-    constructor(node) {
-        this.node = node;
-        const bounds = node.globalBounds;
-        this.bounds = new Bounds(bounds.x, bounds.x + bounds.width, bounds.y, bounds.y + bounds.height);
-    }
-
-    toDart(depth, child) {
-        let node = this.node;
-        child = child != null ? `child:${child.toDart(depth + 1)},` : ``;
-        let dartCode = `${node.constructor.name}(width:${sz(this.bounds.x2 - this.bounds.x1, true)},height:${sz(this.bounds.y2 - this.bounds.y1, false)},${child}${tab(depth)})`;
-        return dartCode;
-    }
-}
-
-module.exports = {
-    Container: Container,
-};*/

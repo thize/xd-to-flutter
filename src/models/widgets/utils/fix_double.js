@@ -1,8 +1,7 @@
 function fixDouble(double) {
-    return double;//.toFixed(2).replace('.00', '.0');
+    return Math.round(double * 100) / 100;
 }
 
 module.exports = {
     fixDouble: fixDouble,
 };
-

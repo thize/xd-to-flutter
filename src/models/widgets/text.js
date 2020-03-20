@@ -1,3 +1,4 @@
+const { Bounds } = require("../bounds");
 const { width, height } = require("./utils/width_height");
 const { fillToColor } = require("./utils/fill_to_color");
 const { doubleWithTag } = require("./utils/double_with_tag");
@@ -7,7 +8,10 @@ const { googleFonts } = require("./utils/google_fonts");
 class Text {
     constructor(node) {
         this.node = node;
+        const bounds = node.globalBounds;
+        this.bounds = new Bounds(bounds.x, bounds.x + bounds.width, bounds.y, bounds.y + bounds.height);
     }
+    
     toDart() {
         let node = this.node;
         return new XDText(node).toDart();
@@ -26,12 +30,7 @@ class XDText {
 
     toDart() {
         const widget = `
-        Text(
-            '${this.text()}',
-            ${this.align()}
-            ${this.textStyle()}
-        )
-        `
+        Text(■${this.text()}■,${this.align()}${this.textStyle()})`
         return this.areaBox(widget);
     }
 
@@ -39,12 +38,7 @@ class XDText {
         const node = this.node;
         let withAreaBox = node.areaBox != null;
         if (withAreaBox) {
-            return `SizedBox(
-                ${width(node)}
-                ${height(node)}
-                child: ${widget},
-            )
-            `
+            return `SizedBox(${width(node)}${height(node)}child: ${widget},)`
         }
         return widget;
     }
@@ -58,22 +52,11 @@ class XDText {
         const node = this.node;
         let family = node.fontFamily.replace(/\s+/g, '');
         family = family[0].toLowerCase() + family.substring(1, family.length);
-        const content = `
-        ${this.fontSize()}
-        ${this.color()}
-        ${this.decoration()}
-        ${this.shadow()}
-        ${this.fontWeight()}
-        `;
+        const content = `${this.fontSize()}${this.color()}${this.decoration()}${this.shadow()}${this.fontWeight()}`;
         if (googleFonts.includes(family)) {
-            return `style: GoogleFonts.${family}(
-            ${content}
-          ),`;
+            return `style: GoogleFonts.${family}(${content}),`;
         }
-        return `style: TextStyle(
-          fontFamily: '${node.fontFamily}',
-          ${content}         
-        ),`;
+        return `style: TextStyle(fontFamily: '${node.fontFamily}',${content}),`;
     }
 
     text() {
@@ -84,9 +67,7 @@ class XDText {
     shadow() {
         const node = this.node;
         if (node.shadow != null && node.shadow.visible) {
-            return `shadows: [
-                ${shadow(node)}
-            ],`;
+            return `shadows: [${shadow(node)}],`;
         }
         return '';
     }
@@ -118,9 +99,7 @@ class XDText {
         const node = this.node;
         let content;
         if (node.strikethrough && node.underline) {
-            content = `TextDecoration.combine(
-                [TextDecoration.lineThrough, TextDecoration.underline],
-                )`;
+            content = `TextDecoration.combine([TextDecoration.lineThrough, TextDecoration.underline],)`;
         } else if (node.strikethrough) {
             content = "TextDecoration.lineThrough";
         } else if (node.underline) {

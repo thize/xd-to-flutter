@@ -18,12 +18,7 @@ function radialGradient(fill) {
     const colors = getColors(fill.colorStops);
     const radius = doubleWithTag('radius', fill.endR);
     const stops = getStops(fill.colorStops);
-    return `RadialGradient(
-        ${centerAlignment}
-        ${radius}
-        ${colors}
-        ${stops}
-    )`;
+    return `RadialGradient(${centerAlignment}${radius}${colors}${stops})`;
 }
 
 function linearGradient(fill) {
@@ -31,12 +26,7 @@ function linearGradient(fill) {
     const endAlignment = `end: ${alignment(fill.endX, fill.endY)},`;
     const colors = getColors(fill.colorStops);
     const stops = getStops(fill.colorStops);
-    return `LinearGradient(
-        ${beginAlignment}
-        ${endAlignment}
-        ${colors}
-        ${stops}
-    )`;
+    return `LinearGradient(${beginAlignment}${endAlignment}${colors}${stops})`;
 }
 
 

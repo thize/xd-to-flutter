@@ -19,7 +19,7 @@ class Children {
         });
         this.updateDistances();
         this.addDistancesToWidget(widgets);
-        return `${this.type}(children:[${widgets},],)`;
+        return `${this.type}(children: [${widgets},],)`;
     }
 
     /**
