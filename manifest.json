@@ -1,10 +1,10 @@
 {
-  "summary": "Xd to Flutter",
+  "summary": "Xd to Json",
   "languages": [
     "en"
   ],
   "author": "Thize (Giovani Lobato)",
-  "name": "Xd to Flutter",
+  "name": "Xd to Json",
   "releaseNotes": "Linear and Gradient, Full Layout, Division, SimpleCode and more!",
   "host": {
     "app": "XD",
@@ -12,7 +12,7 @@
   },
   "description": "Select item/items and Click on plugin to copy code to clipboard\n\nHelp improve the plugin on github! (link on help url)",
   "helpUrl": "https://github.com/thize/Xd-to-Flutter",
-  "id": "b9d42c73",
+  "id": "b9d42c732",
   "keywords": [
     "utility",
     "productivity",
@@ -23,8 +23,26 @@
   "uiEntryPoints": [
     {
       "type": "panel",
-      "label": "Create Widgets",
+      "label": "Complete Menu",
       "panelId": "createWidgets"
+    },
+    {
+      "type": "menu",
+      "label": "Generate Widget (Ctrl + W)",
+      "commandId": "exportWidget",
+      "shortcut": {
+        "mac": "Ctrl+W",
+        "win": "Ctrl+W"
+      }
+    },
+    {
+      "type": "menu",
+      "label": "Generate Color (Ctrl + F)",
+      "commandId": "exportColor",
+      "shortcut": {
+        "mac": "Ctrl+F",
+        "win": "Ctrl+F"
+      }
     }
   ],
   "version": "2.0.0",
