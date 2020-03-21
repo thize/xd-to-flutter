@@ -11,7 +11,7 @@ class Text {
         const bounds = node.globalBounds;
         this.bounds = new Bounds(bounds.x, bounds.x + bounds.width, bounds.y, bounds.y + bounds.height);
     }
-    
+
     toDart() {
         let node = this.node;
         return new XDText(node).toDart();
@@ -30,7 +30,7 @@ class XDText {
 
     toDart() {
         const widget = `
-        Text(■${this.text()}■,${this.align()}${this.textStyle()})`
+        Text(${this.text()},${this.align()}${this.textStyle()})`
         return this.areaBox(widget);
     }
 
@@ -61,7 +61,17 @@ class XDText {
 
     text() {
         const node = this.node;
-        return node.text.replace(new RegExp("\n", 'g'), "\\n");
+        let text = node.text.replace(new RegExp("\n", 'g'), "\\n");
+        if (text.includes("'")) {
+            if (text.includes('"')) {
+                text = `'${text.split("'").join("\\'")}'`;
+            } else {
+                text = `"${text}"`;
+            }
+        } else {
+            text = `'${text}'`;
+        }
+        return text;
     }
 
     shadow() {

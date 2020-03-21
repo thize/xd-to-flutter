@@ -2,12 +2,13 @@ let clipboard = require("clipboard");
 let scenegraph = require("scenegraph");
 const { Container } = require("./models/widgets/container");
 const { Text } = require("./models/widgets/text");
-const { generateLayout } = require("./layout");
+const { Svg } = require("./models/widgets/svg");
+const { Layout } = require("./models/layout");
 
 async function exportWidget() {
     const items = removeItemsFromGroupFolders(scenegraph.selection.items);
     const widgets = generateWidgetsFromItems(items);
-    const layout = generateLayout(widgets);
+    const layout = new Layout(widgets);
     let dartCode = formatDartCode(layout.toDart());
     console.log(layout.no.debug(0));
     clipboard.copyText(dartCode);
@@ -28,7 +29,9 @@ function removeItemsFromGroupFolders(items) {
     let removedItems = [];
     items.forEach(item => {
         const itemName = item.constructor.name;
-        if (itemName == 'Group' || itemName == 'Artboard') {
+        if (itemName == 'Group' && item.name.includes('svg_')) {
+            removedItems.push(item);
+        } else if (itemName == 'Group' || itemName == 'Artboard') {
             if (itemName == 'Artboard') {
                 removedItems.push(item);
             }
@@ -56,6 +59,7 @@ function generateWidgetsFromItems(items) {
 
 function generateWidgetByType(child) {
     if (child.constructor.name == 'Text') return new Text(child);
+    if (child.constructor.name == 'Path' || child.constructor.name == 'BooleanGroup' || child.constructor.name == 'Group') return new Svg(child);
     return new Container(child);
 }
 /**
@@ -64,7 +68,9 @@ function generateWidgetByType(child) {
 * @return {string} Indented Dart Code
 */
 function formatDartCode(dartCode, inside) {
-    if (inside == null) inside = 0;
+    if (inside) { }
+    return dartCode;
+    /*if (inside == null) inside = 0;
     let parenthesis = dartCode.indexOf("(");
     let bracket = dartCode.indexOf("[");
     if (parenthesis == -1 && bracket == -1) {
@@ -98,7 +104,7 @@ function formatDartCode(dartCode, inside) {
     if (mid[mid.length - 1] == ',') {
         return (tab(inside) + dartCode.substring(0, ini) + '\n' + formatDartCode(mid, inside + 1) + '\n' + tab(inside) + dartCode.substring(end, dartCode.length));
     }
-    return dartCode;
+    return dartCode;*/
 }
 
 function tab(inside) {
@@ -112,11 +118,6 @@ function tab(inside) {
 String.prototype.splice = function (idx, rem, str) {
     return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
 };
-
-function replaceInRange(string, start, end, replace) {
-    return string.substring(0, start) + replace + string.substring(end, string.length);
-}
-
 /*
 Column(children: [Container(height: 18,width: 59,decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(42),),),Container(height: 18,width: 59,color: Colors.white,),],)
 */

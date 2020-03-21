@@ -36,8 +36,9 @@ class XDLine {
 
     parseToRectangle() {
         const node = this.node;
-        let rect = new Rectangle();
+        let rect;
         application.editDocument(function () {
+            rect = new Rectangle();
             const horizontal = node.globalBounds.width >= node.globalBounds.height;
             const width = horizontal ? node.globalBounds.width : node.strokeWidth;
             const height = !horizontal ? node.globalBounds.height : node.strokeWidth;
@@ -62,7 +63,9 @@ class XDRectangle {
     toDart(child) {
         const node = this.node;
         const fill = (this.withDecoration() || !node.fillEnabled) ? '' : `${this.color()}`;
-        return `Container(alignment: Alignment.center,${height(node)}${width(node)}${fill}${this.decoration()}${child})`;
+        let alignment = '';
+        if (child != '') alignment = 'alignment: Alignment.center,';
+        return `Container(${alignment}${height(node)}${width(node)}${fill}${this.decoration()}${child})`;
     }
 
     ellipseRadius() {
@@ -140,6 +143,7 @@ class XDRectangle {
 
     color() {
         const node = this.node;
+        if (!node.fillEnabled) return '';
         const color = fillToColor(node.fill);
         return `color: ${color},`;
     }

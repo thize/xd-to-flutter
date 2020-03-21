@@ -30,10 +30,11 @@ class Children {
         if (this.distances.length > 0) {
             const withSpacer = true;
             this.withSpacer = withSpacer;
-            for (let i = 0, qtd = 0; i < widgets.length; i += 2, qtd++) {
+            for (let i = 0, qtd = 0; i < widgets.length; i++, qtd++) {
                 const distance = this.distanceToDart(this.distances[qtd]);
                 if (distance != ``) {
                     widgets.splice(i, 0, distance);
+                    i++;
                 }
             }
             if (withSpacer) {
@@ -45,19 +46,20 @@ class Children {
         }
     }
 
+
     /**
     * This function update Children Bounds to be compatible with Father's Bounds
     */
     updateBounds() {
         if (this.node.father != null) {
             const type = this.type;
-            // const fatherType = this.node.father.type; 
             const fatherIsChildren = this.node.father.isChildren();
-            if (type == `Column` || type == `Stack` || !fatherIsChildren) {
+            const isStack = type == `Stack` && !fatherIsChildren;
+            if (type == `Column` || isStack) {
                 this.node.bounds.y1 = this.node.father.bounds.y1;
                 this.node.bounds.y2 = this.node.father.bounds.y2;
             }
-            if (type == `Row` || type == `Stack` || !fatherIsChildren) {
+            if (type == `Row` || isStack) {
                 this.node.bounds.x1 = this.node.father.bounds.x1;
                 this.node.bounds.x2 = this.node.father.bounds.x2;
             }
@@ -117,7 +119,7 @@ class Children {
     }
 
     alignment() {
-        // TODO: improve row and column distances: Unnecessary distances to MainAlignment.better
+        // TODO: improve row and column distances: (Unnecessary distances) to (MainAlignment.better)
         /*
         ? Row and Column
        start
