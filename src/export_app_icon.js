@@ -1,5 +1,5 @@
 const scenegraph = require("scenegraph");
-const AppIcon = require("./models/app_icon");
+const { AppIcon } = require("./models/app_icon");
 const fs = require("uxp").storage.localFileSystem;
 
 async function exportAppIcon(platform) {
