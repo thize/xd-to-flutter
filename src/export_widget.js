@@ -4,13 +4,15 @@ const { Container } = require("./models/widgets/container");
 const { Text } = require("./models/widgets/text");
 const { Svg } = require("./models/widgets/svg");
 const { Layout } = require("./models/layout");
+const { formatDart } = require("./dart_style");
 
 async function exportWidget() {
     const items = removeItemsFromGroupFolders(scenegraph.selection.items);
     const widgets = generateWidgetsFromItems(items);
     const layout = new Layout(widgets);
-    let dartCode = formatDartCode(layout.toDart());
-    console.log(layout.no.debug(0));
+    let dartCode = layout.toDart() + ';';
+    dartCode = formatDart(dartCode, true);
+    dartCode = "  " + dartCode;
     clipboard.copyText(dartCode);
 }
 
@@ -62,62 +64,3 @@ function generateWidgetByType(child) {
     if (child.constructor.name == 'Path' || child.constructor.name == 'BooleanGroup' || child.constructor.name == 'Group') return new Svg(child);
     return new Container(child);
 }
-/**
-* Indent Dart Code
-* @param {string} dartCode
-* @return {string} Indented Dart Code
-*/
-function formatDartCode(dartCode, inside) {
-    if (inside) { }
-    return dartCode;
-    /*if (inside == null) inside = 0;
-    let parenthesis = dartCode.indexOf("(");
-    let bracket = dartCode.indexOf("[");
-    if (parenthesis == -1 && bracket == -1) {
-        return dartCode;
-    }
-    if (parenthesis == -1) parenthesis = bracket + 1;
-    if (bracket == -1) bracket = parenthesis + 1;
-    let search = ')';
-    let front = '(';
-    let ini = parenthesis + 1;
-    if (bracket < parenthesis) {
-        search = ']';
-        front = '[';
-        ini = bracket + 1;
-    }
-    let end = -1;
-    let inFront = 0;
-    for (let i = ini; i < dartCode.length; i++) {
-        const char = dartCode[i];
-        if (char == front) {
-            inFront++;
-        } else if (char == search) {
-            if (inFront == 0) {
-                end = i; break;
-            }
-            inFront--;
-        }
-    }
-
-    let mid = dartCode.substring(ini, end);
-    if (mid[mid.length - 1] == ',') {
-        return (tab(inside) + dartCode.substring(0, ini) + '\n' + formatDartCode(mid, inside + 1) + '\n' + tab(inside) + dartCode.substring(end, dartCode.length));
-    }
-    return dartCode;*/
-}
-
-function tab(inside) {
-    let value = '';
-    for (let i = 0; i < inside; i++) {
-        value += '  ';
-    }
-    return value;
-}
-
-String.prototype.splice = function (idx, rem, str) {
-    return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
-};
-/*
-Column(children: [Container(height: 18,width: 59,decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(42),),),Container(height: 18,width: 59,color: Colors.white,),],)
-*/

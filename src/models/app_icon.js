@@ -1,4 +1,5 @@
 const application = require("application");
+const { Color } = require("scenegraph");
 
 class AppIcon {
     constructor(item, flutterProjectFolder) {
@@ -8,6 +9,8 @@ class AppIcon {
     }
 
     async export(platform) {
+        console.log('platform');
+
         try {
             if (platform == 'ios') {
                 await this.exportIosIcons();
@@ -25,7 +28,7 @@ class AppIcon {
         const names = ['1024x1024@1', '83.5x83.5@2', '20x20@1', '20x20@2', '20x20@3', '29x29@1', '29x29@2', '29x29@3', '40x40@1', '40x40@2', '40x40@3', '60x60@2', '60x60@3', '76x76@1', '76x76@2',];
         for (let i = 0; i < Math.min(scales.length, names.length); i++) {
             const file = await assetsFolder.createFile(`Icon-App-${names[i]}x.png`, { overwrite: true });
-            const obj = this.generateRenditionObject(scales[i], file);
+            const obj = this.generateRenditionObject(scales[i], file, true);
             this.renditions.push(obj);
         }
         this.createRenditions();
@@ -44,12 +47,15 @@ class AppIcon {
         this.createRenditions();
     }
 
-    generateRenditionObject(scale, file) {
+    generateRenditionObject(scale, file, withoutAlpha) {
         let obj = {};
         obj.node = this.item;
         obj.outputFile = file;
         obj.type = application.RenditionType.PNG;
         obj.scale = scale / 1024;
+        if (withoutAlpha) {
+            obj.background = new Color("#FFFFFF");
+        }
         return obj;
     }
 
@@ -64,15 +70,14 @@ class AppIcon {
 
 }
 
-
-module.exports = {
-    AppIcon: AppIcon,
-};
-
 function showDialog(text, error) {
     const dialog = createDialog(text, error);
     return dialog.showModal();
 }
+
+module.exports = {
+    AppIcon: AppIcon, showDialog: showDialog,
+};
 
 function createDialog(text, error) {
     document.body.innerHTML = `
