@@ -72,14 +72,14 @@ class Children {
                 this.node.bounds.y1 = this.node.father.bounds.y1;
                 this.node.bounds.y2 = this.node.father.bounds.y2;
                 if (!fatherIsChildren) {
-                    this.node.bounds.x1 = this.node.father.bounds.x1;
-                    this.node.bounds.x2 = this.node.father.bounds.x2;
+                    // this.node.bounds.x1 = this.node.father.bounds.x1;
+                    // this.node.bounds.x2 = this.node.father.bounds.x2;
                 }
             }
             if (type == `Row` || isStack) {
                 if (!fatherIsChildren) {
-                    this.node.bounds.y1 = this.node.father.bounds.y1;
-                    this.node.bounds.y2 = this.node.father.bounds.y2;
+                    // this.node.bounds.y1 = this.node.father.bounds.y1;
+                    // this.node.bounds.y2 = this.node.father.bounds.y2;
                 }
                 this.node.bounds.x1 = this.node.father.bounds.x1;
                 this.node.bounds.x2 = this.node.father.bounds.x2;

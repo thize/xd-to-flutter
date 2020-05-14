@@ -1,4 +1,5 @@
 const { Bounds } = require("../bounds");
+const { wrapWithInkWell } = require("./inkwell");
 
 class Component {
     constructor(node, widget) {
@@ -29,8 +30,10 @@ class XDComponent {
     async toDart(child, isFirst) {
         if (child != null) { }
         if (isFirst) {
-            return this.widget.substr(0, this.widget.length - 1);
+            return wrapWithInkWell(this.node, this.widget.substr(0, this.widget.length - 1));
+
         }
+        this.widget = wrapWithInkWell(this.node, this.widget);
         return `const ${this.node.name}()`;
     }
 }

@@ -91,8 +91,6 @@ async function generateWidgetsFromItems(items, components) {
 
 async function generateWidgetByType(child, components, itemsLength) {
     if (child.constructor.name == 'Text') return new Text(child);
-    if (child.constructor.name == 'Group' && !child.name.includes('svg_') && child.triggeredInteractions[0] != null && child.triggeredInteractions[0].trigger.type == 'tap') return new InkWell(child);
-    if (child.constructor.name == 'Path' || child.constructor.name == 'BooleanGroup' || child.constructor.name == 'Group') return new Svg(child);
     if (child.constructor.name == 'SymbolInstance') {
         const component = new Component(child, await exportSelectionItems(child, components));
         if (itemsLength > 1 && !containsComponent(child, components)) {
@@ -100,6 +98,8 @@ async function generateWidgetByType(child, components, itemsLength) {
         }
         return component;
     }
+    if (child.constructor.name == 'Path' || child.constructor.name == 'BooleanGroup' || child.constructor.name == 'Group') return new Svg(child);
+    if (child.constructor.name == 'Group' && !child.name.includes('svg_') && child.triggeredInteractions[0] != null && child.triggeredInteractions[0].trigger.type == 'tap') return new InkWell(child);
     return new Container(child);
 }
 

@@ -23,7 +23,6 @@ module.exports = {
     Text: Text,
 };
 
-
 class XDText {
     constructor(node) {
         this.node = node;
@@ -55,9 +54,9 @@ class XDText {
         let family = node.fontFamily.replace(/\s+/g, '');
         family = family[0].toLowerCase() + family.substring(1, family.length);
         const content = `${this.fontSize()}${this.color()}${this.decoration()}${this.shadow()}${this.fontWeight()}`;
-        if (googleFonts.includes(family)) {
-            return `style: GoogleFonts.${family}(${content}),`;
-        }
+        // if (googleFonts.includes(family)) {
+        //     return `style: GoogleFonts.${family}(${content}),`;
+        // }
         return `style: TextStyle(fontFamily: '${node.fontFamily}',${content}),`;
     }
 
