@@ -28,15 +28,6 @@
     },
     {
       "type": "menu",
-      "label": "Generate Widget (Ctrl + W)",
-      "commandId": "exportWidget",
-      "shortcut": {
-        "mac": "Ctrl+W",
-        "win": "Ctrl+W"
-      }
-    },
-    {
-      "type": "menu",
       "label": "Generate Color (Ctrl + F)",
       "commandId": "exportColor",
       "shortcut": {

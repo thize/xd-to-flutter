@@ -15,13 +15,13 @@ class Container {
         this.bounds = new Bounds(bounds.x, bounds.x + bounds.width, bounds.y, bounds.y + bounds.height);
     }
 
-    toDart(child) {
+    async toDart(child) {
         let node = this.node;
         const name = node.constructor.name;
         if (name == 'Line') {
             node = new XDLine(node).parseToRectangle();
         }
-        child = child != null ? `child:${child.toDart()},` : ``;
+        child = child != null ? `child:${await child.toDart()},` : ``;
         const dartCode = (new XDRectangle(node).toDart(child));
         return wrapWithInkWell(this.node, dartCode);
     }

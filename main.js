@@ -10,7 +10,6 @@ module.exports = {
         }
     },
     commands: {
-        exportWidget: exportWidget,
         exportColor: exportColor
     }
 };

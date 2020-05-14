@@ -2,24 +2,30 @@
 let formatter, columns = 80, ___scope = {}, delim="/*|*/";
 
 function formatDart(str, nestInFunct) {
-	// This method provides a clean interface to the generated code.
+	try {
+		let auxStr = str;
+		// This method provides a clean interface to the generated code.
 	let result, o=___scope.dart_style;
-	if (nestInFunct) { str = `f(){ return ${delim}${str}${delim} }`; }
+	if (nestInFunct) { auxStr = `f(){ return ${delim}${str}${delim} }`; }
 	try {
 		// note that these two lines may need to be updated when the code below is regenerated, because the minified names may have changed.
 		// search for "__teststring__" in the generated code to find the correct names.
 		if (!formatter) { formatter = new o.U.ik(columns,0,o.P.z(o.Q.b5)); }
-		result = formatter.oF(str);
+		result = formatter.oF(auxStr);
 		if (nestInFunct) { result = result.split(delim)[1].trim(); }
 	} catch (e) {
 		if (nestInFunct == null) {
 			// Automatically re-execute with nestInFunct enabled.
-			return formatDart(str, true);
+			return formatDart(auxStr, true);
 		} else {
 			throw(e);
 		}
 	}
 	return result;
+	} catch (e) {
+		return str;
+	}
+	
 }
 
 exports.formatDart = formatDart;

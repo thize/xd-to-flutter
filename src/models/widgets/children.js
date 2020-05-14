@@ -13,12 +13,13 @@ class Children {
         this.distances = [];
     }
 
-    toDart() {
+    async toDart() {
         let widgets = [];
         this.updateBounds();
-        this.node.children.forEach(child => {
-            widgets.push(`${child.toDart()}`);
+        let promises = this.node.children.map(async child => {
+            widgets.push(`${await child.toDart()}`);
         });
+        await Promise.all(promises);
         this.updateDistances();
         this.addDistancesToWidget(widgets);
         const dartCode = `${this.type}(children: [${widgets},],)`;
