@@ -41,6 +41,7 @@ function strToHtml(str) {
 
 async function createDialog({
     title,
+    buttonText,
     icon = 'plugin-icon',
     msgs,
     prompt,
@@ -121,13 +122,16 @@ async function createDialog({
     }
     .container {
         zoverflow-x: hidden;
-        overflow-y: auto;
+        overflow-y: auto;        
         height: ${height === 'auto' ? height : `${height}px`};
+    }
+    .button {
+        color: green !important;
     }
 </style>
 <form method="dialog">
     <h1 class="h1">
-        <span ${isError ? `class="color-red"` : ""}>${title}</span>
+        <span ${isError || title == 'Error' || title == 'Invalid Tapped' ? `class="color-red"` : title == 'Sucess' ? `class="color-green"` : ""}>${title}</span>
         ${icon ? `<img ${usingPluginIcon ? `class="plugin-icon" title="${manifest.name}"` : ''} src="${icon}" />` : ''}
     </h1>
     <hr />
@@ -146,7 +150,7 @@ async function createDialog({
         }
     </div>
     <footer>
-        ${buttons.map(({ label, type, variant } = {}, idx) => `<button id="btn${idx}" type="${type}" uxp-variant="${variant}">${label}</button>`).join('')}
+        ${buttons.map(({ label, type, variant } = {}, idx) => `<button id="btn${idx}" type="${type}" uxp-variant="${variant}">${buttonText}</button>`).join('')}
     </footer>
 </form>
     `;
@@ -185,8 +189,8 @@ async function createDialog({
     }
 }
 
-async function exportDialog(title, ...msgs) {
-    return createDialog({ title, msgs });
+async function exportDialog(title, buttonText, ...msgs) {
+    return createDialog({ title, buttonText, msgs, });
 }
 
 module.exports = {

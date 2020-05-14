@@ -11,8 +11,12 @@ async function exportWidget() {
     const widgets = generateWidgetsFromItems(items);
     const layout = new Layout(widgets);
     let dartCode = layout.toDart() + ';';
-    dartCode = formatDart(dartCode, true);
-    dartCode = "  " + dartCode;
+    try {
+        dartCode = formatDart(dartCode, true);
+        dartCode = "  " + dartCode;
+    } catch (error) {
+
+    }
     clipboard.copyText(dartCode);
 }
 
