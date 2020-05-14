@@ -21,7 +21,7 @@ Remaster of Plugin with new functionalities
 * [ ] Path
 * [ ] BooleanGroup
 * [ ] RepeatGrid
-* [ ] SimbolInstance
+* [x] SimbolInstance
 * [x] Rectangle
 * [x] Artboard
 * [x] Line
@@ -45,6 +45,7 @@ Remaster of Plugin with new functionalities
 * [ ] Generate with SText
 * [ ] Blending mode (is possible?)
 
+* [x] Artboard with Components
 * [x] Prototype Interactions
 * [x] Export Widget Shortcut
 * [x] Export Color Shortcut
