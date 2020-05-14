@@ -55,11 +55,19 @@ class Children {
             const type = this.type;
             const fatherIsChildren = this.node.father.isChildren();
             const isStack = type == `Stack` && !fatherIsChildren;
-            if (type == `Column` || isStack) {
+            if (type == `Column`) {
                 this.node.bounds.y1 = this.node.father.bounds.y1;
                 this.node.bounds.y2 = this.node.father.bounds.y2;
+                if (!fatherIsChildren) {
+                    this.node.bounds.x1 = this.node.father.bounds.x1;
+                    this.node.bounds.x2 = this.node.father.bounds.x2;
+                }
             }
             if (type == `Row` || isStack) {
+                if (!fatherIsChildren) {
+                    this.node.bounds.y1 = this.node.father.bounds.y1;
+                    this.node.bounds.y2 = this.node.father.bounds.y2;
+                }
                 this.node.bounds.x1 = this.node.father.bounds.x1;
                 this.node.bounds.x2 = this.node.father.bounds.x2;
             }
@@ -93,6 +101,9 @@ class Children {
     distanceToDart(distance) {
         if (distance > 0) {
             if (this.withSpacer) {
+                if (Math.round(distance) < 1) {
+                    return '';
+                }
                 return `Spacer(flex:${Math.round(distance)})`
             }
             const width = this.type == 'Row' ? `width:${sz(distance, true)}` : ``;

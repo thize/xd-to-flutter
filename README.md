@@ -15,18 +15,35 @@ Remaster of Plugin with new functionalities
 * [ ] Improve Interface
 
 ### Adobe Xd Types
-* [x] Rectangle
-* [x] Artboard
-* [x] Line
-* [x] Ellipse
+
 * [ ] Text
 * [ ] Image
 * [ ] Path
 * [ ] BooleanGroup
 * [ ] RepeatGrid
 * [ ] SimbolInstance
+* [x] Rectangle
+* [x] Artboard
+* [x] Line
+* [x] Ellipse
 
 ### Util
+
+* [ ] Choose a preferred level of double precision.
+* [ ] Export Global TextStyles
+* [ ] Export Global Colors
+* [ ] Export All Artboards at once
+* [ ] Rotation
+* [ ] Opacity
+* [ ] Conts
+* [ ] Generate with SimpleCode (sz)
+* [ ] Prototype Interactions
+* [ ] Blur
+* [ ] Export Global Components
+* [ ] Export Adaptive Icon Android
+* [ ] Generate with SContainer
+* [ ] Generate with SText
+* [ ] Blending mode (is possible?)
 
 * [x] Export Widget Shortcut
 * [x] Export Color Shortcut
@@ -35,21 +52,6 @@ Remaster of Plugin with new functionalities
 * [x] Google Fonts
 * [x] Material Colors
 * [x] Code indentation
-* [ ] Choose a preferred level of double precision.
-* [ ] Export Adaptive Icon Android
-* [ ] Export Global TextStyles
-* [ ] Export Global Components
-* [ ] Export Global Colors
-* [ ] Export All Artboards at once
-* [ ] Rotation
-* [ ] Opacity
-* [ ] Conts
-* [ ] Generate with SimpleCode (sz)
-* [ ] Generate with SContainer
-* [ ] Generate with SText
-* [ ] Blur
-* [ ] Prototype Interactions
-* [ ] Blending mode (is possible?)
 
 ### Rewrite Code
 
