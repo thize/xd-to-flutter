@@ -30,7 +30,7 @@ class Children {
         if (fatherIsChildren || this.node.father == null || this.node.father.widget instanceof InkWell) {
             const width = `width:${fixDouble(this.node.bounds.x2 - this.node.bounds.x1, true)}`;
             const height = `height:${fixDouble(this.node.bounds.y2 - this.node.bounds.y1, false)}`;
-            return `SizedBox(${width},${height}, child: ${dartCode})`;
+            return `SizedBox(${width},${height}, child: ${dartCode},)`;
         }
         return dartCode;
     }
