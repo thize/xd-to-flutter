@@ -4,6 +4,7 @@ const { fillToColor } = require("./utils/fill_to_color");
 const { doubleWithTag } = require("./utils/double_with_tag");
 const { shadow } = require("./utils/shadow");
 const { googleFonts } = require("./utils/google_fonts");
+const { wrapWithInkWell } = require("./inkwell");
 
 class Text {
     constructor(node) {
@@ -31,7 +32,8 @@ class XDText {
     toDart() {
         const widget = `
         Text(${this.text()},${this.align()}${this.textStyle()})`
-        return this.areaBox(widget);
+        const dartCode = this.areaBox(widget);
+        return wrapWithInkWell(this.node, dartCode);
     }
 
     areaBox(widget) {

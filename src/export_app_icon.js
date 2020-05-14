@@ -28,8 +28,6 @@ class AppIcon {
     }
 
     async export(platform) {
-        console.log('platform');
-
         try {
             if (platform == 'ios') {
                 await this.exportIosIcons();

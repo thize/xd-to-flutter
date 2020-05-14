@@ -11,6 +11,7 @@ class Layout {
             const widget = widgets[i];
             this.no = insertNoIn(new No(widget), this.no);
         }
+        console.log(this.no.debug(0));
     }
 
     toDart() {
@@ -78,7 +79,7 @@ class No {
         for (let i = 0; i < depth; i++) {
             tabs += '| ';
         }
-        return `${tabs}${this.type}, h = ${this.bounds.y2 - this.bounds.y1},${children}`;
+        return `${tabs}${this.type}, h = ${this.bounds.y2 - this.bounds.y1}, w = ${this.bounds.x2 - this.bounds.x1} ${children}`;
     }
 
     isChildren() {

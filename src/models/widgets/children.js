@@ -1,5 +1,7 @@
-// TODO: add Stack positioneds
+const { InkWell } = require("./inkwell");
+const { fixDouble } = require("./utils/fix_double");
 
+// TODO: add Stack positioneds
 class Children {
     /**
     * @param {string} type (Column, Row or Stack)
@@ -19,7 +21,18 @@ class Children {
         });
         this.updateDistances();
         this.addDistancesToWidget(widgets);
-        return `${this.type}(children: [${widgets},],)`;
+        const dartCode = `${this.type}(children: [${widgets},],)`;
+        return this.sizedBox(dartCode);
+    }
+
+    sizedBox(dartCode) {
+        const fatherIsChildren = this.node.father != null && this.node.father.isChildren();
+        if (fatherIsChildren || this.node.father == null || this.node.father.widget instanceof InkWell) {
+            const width = `width:${fixDouble(this.node.bounds.x2 - this.node.bounds.x1, true)}`;
+            const height = `height:${fixDouble(this.node.bounds.y2 - this.node.bounds.y1, false)}`;
+            return `SizedBox(${width},${height}, child: ${dartCode})`;
+        }
+        return dartCode;
     }
 
     /**
@@ -45,7 +58,6 @@ class Children {
             }
         }
     }
-
 
     /**
     * This function update Children Bounds to be compatible with Father's Bounds
@@ -106,8 +118,8 @@ class Children {
                 }
                 return `Spacer(flex:${Math.round(distance)})`
             }
-            const width = this.type == 'Row' ? `width:${sz(distance, true)}` : ``;
-            const height = this.type == 'Column' ? `height:${sz(distance, false)}` : ``;
+            const width = this.type == 'Row' ? `width:${fixDouble(distance, true)}` : ``;
+            const height = this.type == 'Column' ? `height:${fixDouble(distance, false)}` : ``;
             if (width != `` || height != ``) {
                 return `SizedBox(${width}${height})`
             }

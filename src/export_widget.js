@@ -2,6 +2,7 @@ let clipboard = require("clipboard");
 let scenegraph = require("scenegraph");
 const { Container } = require("./models/widgets/container");
 const { Text } = require("./models/widgets/text");
+const { InkWell } = require("./models/widgets/inkwell");
 const { Svg } = require("./models/widgets/svg");
 const { Layout } = require("./models/layout");
 const { formatDart } = require("./dart_style");
@@ -14,9 +15,7 @@ async function exportWidget() {
     try {
         dartCode = formatDart(dartCode, true);
         dartCode = "  " + dartCode;
-    } catch (error) {
-
-    }
+    } catch (error) { }
     clipboard.copyText(dartCode);
 }
 
@@ -38,7 +37,7 @@ function removeItemsFromGroupFolders(items) {
         if (itemName == 'Group' && item.name.includes('svg_')) {
             removedItems.push(item);
         } else if (itemName == 'Group' || itemName == 'Artboard') {
-            if (itemName == 'Artboard') {
+            if (itemName == 'Artboard' || (item.triggeredInteractions[0] != null && item.triggeredInteractions[0].trigger.type == 'tap')) {
                 removedItems.push(item);
             }
             removeItemsFromGroupFolders(item.children).forEach(child => {
@@ -59,12 +58,15 @@ function removeItemsFromGroupFolders(items) {
 */
 function generateWidgetsFromItems(items) {
     const widgets = [];
-    items.forEach(child => widgets.push(generateWidgetByType(child)));
+    items.forEach(child => {
+        widgets.push(generateWidgetByType(child));
+    });
     return widgets;
 }
 
 function generateWidgetByType(child) {
     if (child.constructor.name == 'Text') return new Text(child);
+    if (child.constructor.name == 'Group' && !child.name.includes('svg_') && child.triggeredInteractions[0] != null && child.triggeredInteractions[0].trigger.type == 'tap') return new InkWell(child);
     if (child.constructor.name == 'Path' || child.constructor.name == 'BooleanGroup' || child.constructor.name == 'Group') return new Svg(child);
     return new Container(child);
 }

@@ -5,6 +5,7 @@ const { fixDouble } = require("./utils/fix_double");
 const { fillToGradient } = require("./utils/fill_to_gradient");
 const { shadow } = require("./utils/shadow");
 const { Rectangle } = require("scenegraph");
+const { wrapWithInkWell } = require("./inkwell");
 let application = require("application");
 
 class Container {
@@ -21,7 +22,8 @@ class Container {
             node = new XDLine(node).parseToRectangle();
         }
         child = child != null ? `child:${child.toDart()},` : ``;
-        return new XDRectangle(node).toDart(child);
+        const dartCode = (new XDRectangle(node).toDart(child));
+        return wrapWithInkWell(this.node, dartCode);
     }
 }
 

@@ -37,14 +37,15 @@ Remaster of Plugin with new functionalities
 * [ ] Opacity
 * [ ] Conts
 * [ ] Generate with SimpleCode (sz)
-* [ ] Prototype Interactions
 * [ ] Blur
+* [ ] Svg
 * [ ] Export Global Components
 * [ ] Export Adaptive Icon Android
 * [ ] Generate with SContainer
 * [ ] Generate with SText
 * [ ] Blending mode (is possible?)
 
+* [x] Prototype Interactions
 * [x] Export Widget Shortcut
 * [x] Export Color Shortcut
 * [x] Export IOS Icons
