@@ -6,7 +6,6 @@ const { Text } = require("./models/widgets/text");
 const { InkWell } = require("./models/widgets/inkwell");
 const { Svg } = require("./models/widgets/svg");
 const { Layout } = require("./models/layout");
-const { statelessWidget } = require("./models/widgets/utils/stateless");
 const { Component } = require("./models/widgets/component");
 
 async function exportWidget() {
@@ -18,8 +17,6 @@ async function exportWidget() {
         clipboard.copyText(dartCode);
     });
 }
-
-//TODO: gerar componentes dps de gerar a tela
 
 async function exportSelectionItems(node, components) {
     const selection = node == null ? scenegraph.selection.items : node.children;
@@ -84,7 +81,8 @@ async function generateWidgetsFromItems(items, components) {
     const widgets = [];
     for (let i = 0; i < items.length; i++) {
         const child = items[i];
-        widgets.push(await generateWidgetByType(child, components, items.length));
+        const widget = await generateWidgetByType(child, components, items.length);
+        widgets.push(widget);
     }
     return widgets;
 }

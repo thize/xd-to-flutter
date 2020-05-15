@@ -16,10 +16,10 @@ class Children {
     async toDart() {
         let widgets = [];
         this.updateBounds();
-        let promises = this.node.children.map(async child => {
+        for (let index = 0; index < this.node.children.length; index++) {
+            const child = this.node.children[index];
             widgets.push(`${await child.toDart()}`);
-        });
-        await Promise.all(promises);
+        }
         this.updateDistances();
         this.addDistancesToWidget(widgets);
         const dartCode = `${this.type}(children: [${widgets},],)`;

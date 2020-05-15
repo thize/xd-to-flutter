@@ -9,8 +9,6 @@ class Svg {
     }
 
     toDart() {
-
-
         let node = this.node;
         return new XDSvg(node).toDart();
     }
