@@ -21,6 +21,8 @@ async function exportWidget() {
 async function exportSelectionItems(node, components) {
     const selection = node == null ? scenegraph.selection.items : node.children;
     const items = removeItemsFromGroupFolders(selection);
+    console.log('items.length = ' + items.length);
+
     const widgets = await generateWidgetsFromItems(items, components);
     const layout = new Layout(widgets);
     let dartCode = await layout.toDart();
@@ -96,8 +98,8 @@ async function generateWidgetByType(child, components, itemsLength) {
         }
         return component;
     }
-    if (child.constructor.name == 'Path' || child.constructor.name == 'BooleanGroup' || child.constructor.name == 'Group') return new Svg(child);
     if (child.constructor.name == 'Group' && !child.name.includes('svg_') && child.triggeredInteractions[0] != null && child.triggeredInteractions[0].trigger.type == 'tap') return new InkWell(child);
+    if (child.constructor.name == 'Path' || child.constructor.name == 'BooleanGroup' || child.constructor.name == 'Group') return new Svg(child);
     return new Container(child);
 }
 

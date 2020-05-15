@@ -13,7 +13,7 @@ class Layout {
             const widget = widgets[i];
             this.no = insertNoIn(new No(widget), this.no);
         }
-        console.log(this.no.debug(0));
+        // console.log(this.no.debug(0));
     }
 
     async toDart(forceStateless) {
@@ -112,8 +112,6 @@ class No {
 function insertNoIn(newNo, inNo) {
     inNo.updateBounds();
     const nodesRelation = relation(newNo, inNo);
-    console.log('nodesRelation =  ' + nodesRelation);
-
     if (nodesRelation == 'inside' || (nodesRelation == 'above' && (inNo.type == 'Row' || inNo.type == 'Column'))) {
         return insertInside(newNo, inNo);
     } else if (nodesRelation == 'above') {
