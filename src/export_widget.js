@@ -21,8 +21,6 @@ async function exportWidget() {
 async function exportSelectionItems(node, components) {
     const selection = node == null ? scenegraph.selection.items : node.children;
     const items = removeItemsFromGroupFolders(selection);
-    console.log('items.length = ' + items.length);
-
     const widgets = await generateWidgetsFromItems(items, components);
     const layout = new Layout(widgets);
     let dartCode = await layout.toDart();
