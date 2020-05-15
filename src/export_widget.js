@@ -6,6 +6,7 @@ const { Text } = require("./models/widgets/text");
 const { InkWell } = require("./models/widgets/inkwell");
 const { Svg } = require("./models/widgets/svg");
 const { Layout } = require("./models/layout");
+const { Artboard } = require("./models/widgets/artboard");
 const { Component } = require("./models/widgets/component");
 
 async function exportWidget() {
@@ -36,7 +37,7 @@ async function generateComponents(components) {
         setWidgets.add(await layout.toDart());
     }
     setWidgets.forEach(widget => {
-        widgets += '\n ' + widget;
+        widgets = widget + '\n ' + widgets;
     });
     return widgets;
 }
@@ -96,6 +97,7 @@ async function generateWidgetByType(child, components, itemsLength) {
         }
         return component;
     }
+    if (child.constructor.name == 'Artboard') return new Artboard(child);
     if (child.constructor.name == 'Group' && !child.name.includes('svg_') && child.triggeredInteractions[0] != null && child.triggeredInteractions[0].trigger.type == 'tap') return new InkWell(child);
     if (child.constructor.name == 'Path' || child.constructor.name == 'BooleanGroup' || child.constructor.name == 'Group') return new Svg(child);
     return new Container(child);

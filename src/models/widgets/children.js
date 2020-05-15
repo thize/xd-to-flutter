@@ -29,9 +29,12 @@ class Children {
     sizedBox(dartCode) {
         const fatherIsChildren = this.node.father != null && this.node.father.isChildren();
         if (fatherIsChildren || this.node.father == null || this.node.father.widget instanceof InkWell) {
-            const width = `width:${fixDouble(this.node.bounds.x2 - this.node.bounds.x1, true)}`;
-            const height = `height:${fixDouble(this.node.bounds.y2 - this.node.bounds.y1, false)}`;
-            return `SizedBox(${width},${height}, child: ${dartCode},)`;
+            const type = this.type;
+            const withWidth = type == `Row` || type == `Stack`;
+            const withHeight = type == `Column` || type == `Stack`;
+            const width = withWidth ? `width:${fixDouble(this.node.bounds.x2 - this.node.bounds.x1, true)},` : '';
+            const height = withHeight ? `height:${fixDouble(this.node.bounds.y2 - this.node.bounds.y1, false)},` : '';
+            return `SizedBox(${width}${height}child: ${dartCode},)`;
         }
         return dartCode;
     }

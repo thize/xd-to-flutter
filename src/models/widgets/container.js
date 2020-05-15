@@ -22,7 +22,7 @@ class Container {
             node = new XDLine(node).parseToRectangle();
         }
         child = child != null ? `child:${await child.toDart()},` : ``;
-        const dartCode = (new XDRectangle(node).toDart(child));
+        const dartCode = new XDRectangle(node).toDart(child);
         return wrapWithInkWell(this.node, dartCode);
     }
 }
