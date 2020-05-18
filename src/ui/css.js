@@ -1,6 +1,9 @@
 function build_css() {
     return `
     <style>
+    .outputDiv {
+        margin: 5px;
+    }
     .uiTextField {
         width: 100%;
         margin: 0;

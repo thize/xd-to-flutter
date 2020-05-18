@@ -1,3 +1,5 @@
+const { exportSelectionColor, exporColorsFromAssetsPanel } = require('./color');
+
 function onTapExport(type) {
     switch (type) {
         case 'Selection':
@@ -10,13 +12,13 @@ function onTapExport(type) {
             exportComponents();
             break;
         case 'Colors':
-            exporColors();
+            exporColorsFromAssetsPanel();
             break;
         case 'FontStyles':
             exportFontStyles();
             break;
         case 'SingleColor':
-            exportSingleColorButton();
+            exportSelectionColor();
             break;
         default:
             console.log('Type not mapped');
@@ -40,14 +42,6 @@ function exportComponents() {
     console.log('exportComponents');
 }
 
-function exporColors() {
-    console.log('exporColors');
-}
-
 function exportFontStyles() {
     console.log('exportFontStyles');
-}
-
-function exportSingleColorButton() {
-    console.log('exportSingleColorButton');
 }

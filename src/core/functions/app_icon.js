@@ -1,14 +1,15 @@
 const scenegraph = require("scenegraph");
 const application = require("application");
-const fs = require("uxp").storage.localFileSystem;
+const { getFolder } = require("../functions/util/project_folder");
+const { changeOutputUiText } = require("../../ui/components/output_ui");
 const { Color } = require("scenegraph");
 
 async function exportAppIcon(platform) {
     const item = scenegraph.selection.items[0];
-    if (item == null) return showDialog("Select something", true);
-    if (validateSize(item)) return showDialog("Selected object is not 1024x1024.", true);
-    const flutterProjectFolder = await fs.getFolder();
-    if (!flutterProjectFolder) return;
+    if (item == null) return changeOutputUiText("Select something", 'red');
+    if (validateSize(item)) return changeOutputUiText("Selected object is not 1024x1024.", 'red');
+    const flutterProjectFolder = getFolder();
+    if (!flutterProjectFolder) return changeOutputUiText("Project folder not selected", 'red');
     new AppIcon(item, flutterProjectFolder).export(platform);
 }
 
@@ -35,7 +36,7 @@ class AppIcon {
                 await this.exportAndroidIcons();
             }
         } catch (error) {
-            return showDialog("Folder is not a Flutter Project", true);
+            return changeOutputUiText("Folder is not a Flutter Project", 'red');
         }
     }
 
@@ -48,7 +49,7 @@ class AppIcon {
             const obj = this.generateRenditionObject(scales[i], file, true);
             this.renditions.push(obj);
         }
-        this.createRenditions();
+        this.createRenditions('iOS');
 
     }
 
@@ -61,7 +62,7 @@ class AppIcon {
             const obj = this.generateRenditionObject(scales[i], file);
             this.renditions.push(obj);
         }
-        this.createRenditions();
+        this.createRenditions('Android');
     }
 
     generateRenditionObject(scale, file, withoutAlpha) {
@@ -76,44 +77,12 @@ class AppIcon {
         return obj;
     }
 
-    async createRenditions() {
+    async createRenditions(platform) {
         try {
             await application.createRenditions(this.renditions);
-            return showDialog('Generate with Sucess');
+            return changeOutputUiText(`Generate ${platform} icons with Sucess`);
         } catch (err) {
-            return showDialog('Try Again', true);
+            return changeOutputUiText('Error when generating', 'red');
         }
     }
-
-}
-
-function showDialog(text, error) {
-    const dialog = createDialog(text, error);
-    return dialog.showModal();
-}
-
-function createDialog(text, error) {
-    document.body.innerHTML = `
-      <style>
-      form {
-        width: 400px;
-      }
-      </style>
-      <dialog id="dialog">
-          <form method="dialog">
-              <h1 ${error ? `class="color-red"` : `class="color-green"`}>${error ? 'Error' : 'Sucess'}</h1>
-              <hr>
-              <h1> </h1><h1> </h1><h1> </h1><h1> </h1>
-              <p>${text}</p>
-              <footer>
-              <button type="submit" uxp-variant="primary" id="ok-button">Close</button>
-              </footer>
-          </form>
-      </dialog>
-    `;
-    const dialog = document.querySelector("#dialog");
-    dialog.addEventListener("close", function () {
-        dialog.close();
-    });
-    return dialog;
 }
