@@ -1,6 +1,8 @@
+const { colorToMaterialColor } = require('../../widgets/util/material_colors');
+
 function dartColor(value) {
     const color = '0xFF' + value.toHex(true).substr(1).toUpperCase();
-    return `Color(${color})`;
+    return colorToMaterialColor(`Color(${color})`);
 }
 
 function gradientColorList(gradient) {

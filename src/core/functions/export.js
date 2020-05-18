@@ -1,4 +1,5 @@
 const { exportSelectionColor, exporColorsFromAssetsPanel } = require('./color');
+const { exporTextStylesFromAssetsPanel } = require('./text_style');
 
 function onTapExport(type) {
     switch (type) {
@@ -15,7 +16,7 @@ function onTapExport(type) {
             exporColorsFromAssetsPanel();
             break;
         case 'FontStyles':
-            exportFontStyles();
+            exporTextStylesFromAssetsPanel();
             break;
         case 'SingleColor':
             exportSelectionColor();
@@ -40,8 +41,4 @@ function exportArtboards() {
 
 function exportComponents() {
     console.log('exportComponents');
-}
-
-function exportFontStyles() {
-    console.log('exportFontStyles');
 }

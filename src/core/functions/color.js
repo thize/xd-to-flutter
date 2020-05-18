@@ -4,7 +4,7 @@ const { exportFiles } = require("./util/project_folder");
 const { formatDart } = require("./util/format_dart");
 const { widgetPrefix, exportTo, copyToClipboard } = require("./util/util");
 const { changeOutputUiText } = require("../../ui/components/output_ui");
-const { dartColor, gradientColorList, isGradient } = require("../widgets/util");
+const { dartColor, gradientColorList, isGradient } = require("../widgets/util/util");
 
 async function exportSelectionColor() {
     document.addEventListener('keydown', keydownFunc);
@@ -18,7 +18,7 @@ function exporColorsFromAssetsPanel() {
         const name = assetsColor.name != null ? assetsColor.name : `color${index + 1}`;
         const generatedColor = isGradient(assetsColor) ? gradientColorList(assetsColor) : dartColor(assetsColor.color);
         const staticType = isGradient(assetsColor) ? 'List<Color>' : 'Color';
-        const generatedStaticColor = `static ${staticType} get ${name} => const ${generatedColor};`
+        const generatedStaticColor = `static ${staticType} get ${name} => ${generatedColor};`
         resColors += generatedStaticColor;
     });
     if (resColors == '') {
@@ -31,11 +31,16 @@ function exporColorsFromAssetsPanel() {
             copyToClipboard(appColorsClass);
             changeOutputUiText('class AppColors copied to clipboard');
         } else {
-            changeOutputUiText('Exporting Dart File');
+            changeOutputUiText('Exporting app_colors.dart');
             exportFiles(['app_colors.dart'], [appColorsClass]);
         }
     }
 }
+
+module.exports = {
+    exportSelectionColor: exportSelectionColor,
+    exporColorsFromAssetsPanel: exporColorsFromAssetsPanel,
+};
 
 const keydownFunc = function (event) {
     const item = scenegraph.selection.items[0];
@@ -60,9 +65,4 @@ const keydownFunc = function (event) {
     } else {
         changeOutputUiText('Tapped not mapped', 'red');
     }
-};
-
-module.exports = {
-    exportSelectionColor: exportSelectionColor,
-    exporColorsFromAssetsPanel: exporColorsFromAssetsPanel,
 };
