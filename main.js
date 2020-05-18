@@ -1,15 +1,10 @@
-const { exportWidget } = require("./src/export_widget");
-const { exportColor } = require("./src/export_color");
-const { update, show } = require("./src/panel_ui");
+const { update, show } = require("./src/ui/main_panel_ui");
 
 module.exports = {
     panels: {
-        createWidgets: {
+        main_panel: {
             show,
             update
         }
-    },
-    commands: {
-        exportColor: exportColor
     }
 };

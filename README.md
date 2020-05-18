@@ -75,5 +75,4 @@ Remaster of Plugin with new functionalities
 * [ ] export_icon.js
 * [ ] export_color.js
 * [ ] exportWidget Function (export_widget.js)
-* [ ] formatDartCode Function
 * [ ] generateWidgetByType Function
