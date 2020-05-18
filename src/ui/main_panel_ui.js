@@ -7,8 +7,8 @@ const { projectFolderUi } = require("./components/project_folder_ui");
 const { exportedCodePath } = require("./components/exported_code_path_ui");
 const { exportButtonsUi } = require("./components/export_buttons_ui");
 const { exportWithCheckBoxsUi } = require("./components/export_with_checkboxs_ui");
-const { changeProjectFolder } = require("../core/functions/project_folder");
-const { getFolder } = require('../core/functions/project_folder');
+const { getFolder, changeProjectFolder } = require('../core/functions/util/project_folder');
+const { onTapExport } = require("../core/functions/export");
 
 let panel;
 
@@ -32,22 +32,26 @@ function show(event) {
 function update() {
     const items = scenegraph.selection.items;
     const singleColorButton = document.getElementById('singleColorButton');
-    if (items.length == 1 && (items[0].children.length == 0 || items[0].constructor.name == 'Artboard')) {
-        singleColorButton.setAttribute("uxp-variant", "cta");
-    } else {
-        singleColorButton.setAttribute("uxp-variant", "");
-    }
+    const selectionButton = document.getElementById('selectionButton');
+    const isToActiveSelectionButton = items.length > 0;
+    _changeButtonState(selectionButton, isToActiveSelectionButton);
+    const isToActiveSingleColorButton = items.length == 1 && (items[0].children.length == 0 || items[0].constructor.name == 'Artboard');
+    _changeButtonState(singleColorButton, isToActiveSingleColorButton);
 }
 
 function buildTaps() {
     let singleColorButton = document.getElementById('singleColorButton');
     singleColorButton.onclick = _checkActive(singleColorButton, function () {
-        console.log('singleColorButton on');
+        onTapExport('SingleColor');
+    });
+    let selectionButton = document.getElementById('selectionButton');
+    selectionButton.onclick = _checkActive(selectionButton, function () {
+        onTapExport('Selection');
     });
     let exportAllButton = document.getElementById('exportAllButton');
     exportAllButton.onclick = _checkActive(exportAllButton, function () {
         let exportAllRadio = document.querySelector('input[name="exportAllRadio"]:checked');
-        console.log('exportAllRadio.value = ' + exportAllRadio.value);
+        onTapExport(exportAllRadio.value);
     });
     let changeProjectFolderButton = document.getElementById('changeProjectFolderButton');
     changeProjectFolderButton.onclick = async function () {
@@ -64,6 +68,14 @@ function _checkActive(element, runFunction) {
         } else {
             console.log('Button is not activated');
         }
+    }
+}
+
+function _changeButtonState(element, isToActive) {
+    if (isToActive) {
+        element.setAttribute("uxp-variant", "cta");
+    } else {
+        element.setAttribute("uxp-variant", "");
     }
 }
 
