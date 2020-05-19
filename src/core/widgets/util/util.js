@@ -18,10 +18,16 @@ function isGradient(fill) {
 }
 
 function titleCase(str) {
-    return str.replace(
+    str = str.replace(
         /\w\S*/g,
         function (txt) {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }
+    ).split('\\N').join('\\n');;
+    return str.replace(
+        /\\n./g,
+        function (txt) {
+            return txt.substr(0, txt.length - 1) + txt.charAt(txt.length - 1).toUpperCase();
         }
     );
 }

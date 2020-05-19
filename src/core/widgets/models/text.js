@@ -213,7 +213,7 @@ class XDText {
 
     textTransform(text) {
         if (this.node.textTransform == 'none') return text;
-        if (this.node.textTransform == 'uppercase') return text.toUpperCase();
+        if (this.node.textTransform == 'uppercase') return text.toUpperCase().split('\\N').join('\\n');
         if (this.node.textTransform == 'lowercase') return text.toLowerCase();
         if (this.node.textTransform == 'titlecase') return titleCase(text);
         throw this.node.textTransform;

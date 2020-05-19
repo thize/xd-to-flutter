@@ -1,4 +1,5 @@
 const { Bounds } = require("../bounds");
+const { withInkWell } = require("../../functions/util/util");
 
 class InkWell {
     constructor(node) {
@@ -10,13 +11,16 @@ class InkWell {
 
     toDart(child) {
         const node = this.node;
-        child = child != null ? `child:${child.toDart()},` : ``;
-        return new XDInkWell(node).toDart(child);
+        if (withInkWell()) {
+            child = child != null ? `child:${child.toDart()},` : ``;
+            return new XDInkWell(node).toDart(child);
+        }
+        return child.toDart();
     }
 }
 
 function wrapWithInkWell(node, child) {
-    if ((node.triggeredInteractions[0] != null && node.triggeredInteractions[0].trigger.type == 'tap')) {
+    if (withInkWell() && (node.triggeredInteractions[0] != null && node.triggeredInteractions[0].trigger.type == 'tap')) {
         const xdInkWell = new XDInkWell(node);
         return xdInkWell.toDart(`child: ${child},`);
     }

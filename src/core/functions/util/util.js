@@ -19,6 +19,12 @@ function exportType() {
     return value;
 }
 
+function withInkWell() {
+    let withInkWell = document.querySelector('input[name="prototypeInteractions"]');
+    const value = withInkWell.checked;
+    return value;
+}
+
 function copyToClipboard(value) {
     clipboard.copyText(value);
 }
@@ -27,5 +33,6 @@ module.exports = {
     widgetPrefix: widgetPrefix,
     exportTo: exportTo,
     exportType: exportType,
+    withInkWell: withInkWell,
     copyToClipboard: copyToClipboard,
 };
