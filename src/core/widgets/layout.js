@@ -101,9 +101,11 @@ class No {
 function insertNoIn(newNo, inNo) {
     inNo.updateBounds();
     const nodesRelation = relation(newNo, inNo);
-    if (nodesRelation == 'inside' || (nodesRelation == 'above' && (inNo.type == 'Row' || inNo.type == 'Column'))) {
+    const inNoName = inNo.widget != null ? inNo.widget.constructor.name : '';
+    const canInside = inNoName != 'Component' && inNoName != 'Text';
+    if ((nodesRelation == 'inside' && canInside) || (nodesRelation == 'above' && (inNo.type == 'Row' || inNo.type == 'Column'))) {
         return insertInside(newNo, inNo);
-    } else if (nodesRelation == 'above') {
+    } else if (nodesRelation == 'above' || (!canInside && nodesRelation == 'inside')) {
         return wrapNodesWithType([inNo, newNo], 'Stack');
     } else if (nodesRelation == 'outside') {
         const better = betterOutside(newNo, inNo);
@@ -167,7 +169,7 @@ function relation(node1, node2) {
     const boundsY2 = node1Bounds.y1 <= node2Bounds.y1 ? node2Bounds : node1Bounds;
     const canBeInsideX = boundsX1.x2 >= boundsX2.x2;
     const canBeInsideY = boundsY1.y2 >= boundsY2.y2;
-    if (canBeInsideX && canBeInsideY) return 'inside';
+    if (canBeInsideX && canBeInsideY && boundsX1 == boundsY1) return 'inside';
     const insideX = boundsX1.x2 > boundsX2.x1;
     const insideY = boundsY1.y2 > boundsY2.y1;
     if ((canBeInsideY && insideX) || (canBeInsideX && insideY) || (insideX && insideY)) return 'above';
