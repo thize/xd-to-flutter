@@ -25,6 +25,12 @@ function withInkWell() {
     return value;
 }
 
+function withGoogleFonts() {
+    let withGoogleFonts = document.querySelector('input[name="googleFonts"]');
+    const value = withGoogleFonts.checked;
+    return value;
+}
+
 function copyToClipboard(value) {
     clipboard.copyText(value);
 }
@@ -34,5 +40,6 @@ module.exports = {
     exportTo: exportTo,
     exportType: exportType,
     withInkWell: withInkWell,
+    withGoogleFonts: withGoogleFonts,
     copyToClipboard: copyToClipboard,
 };

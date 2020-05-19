@@ -5,7 +5,7 @@ function shadow(node) {
     const shadow = node.shadow;
     const x = shadow.x;
     const y = shadow.y;
-    const color = fillToColor(shadow.color);
+    const color = fillToColor(shadow.color, node);
     const blurRadius = shadow.blur;
     return `Shadow(${doubleWithTag('blurRadius', blurRadius)}color: ${color},offset: Offset(${x},${y}),),`;
 }

@@ -40,7 +40,7 @@ class XDArtboard {
     gradient(child) {
         const node = this.node;
         if (node.fillEnabled && node.fill.startX != null) {
-            return `body: Container(alignment: Alignment.center, decoration: BoxDecoration(gradient: ${fillToGradient(node.fill)},),${child}),`;
+            return `body: Container(alignment: Alignment.center, decoration: BoxDecoration(gradient: ${fillToGradient(node)},),${child}),`;
         }
         return '';
     }

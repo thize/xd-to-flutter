@@ -4,9 +4,13 @@ const { fillToColor } = require("./utils/fill_to_color");
 const { fixDouble } = require("./utils/fix_double");
 const { fillToGradient } = require("./utils/fill_to_gradient");
 const { shadow } = require("./utils/shadow");
+const { wrapWithRotation } = require("./utils/rotation");
 const { Rectangle } = require("scenegraph");
 const { wrapWithInkWell } = require("./inkwell");
+const { alignment } = require("./utils/alignment");
+
 let application = require("application");
+const xd = require("scenegraph");
 const ImageFill = require("scenegraph").ImageFill;
 
 class Container {
@@ -22,9 +26,9 @@ class Container {
         if (name == 'Line') {
             node = new XDLine(node).parseToRectangle();
         }
-        child = child != null ? `child:${child.toDart()},` : ``;
-        const dartCode = new XDRectangle(node).toDart(child);
-        return wrapWithInkWell(this.node, dartCode);
+        let childWidget = child != null ? `child:${child.toDart()},` : ``;
+        const dartCode = new XDRectangle(node, child).toDart(childWidget);
+        return wrapWithRotation(wrapWithInkWell(this.node, dartCode), node);
     }
 }
 
@@ -59,16 +63,47 @@ class XDLine {
 }
 
 class XDRectangle {
-    constructor(node) {
+    constructor(node, childNode) {
         this.node = node;
+        this.childNode = childNode;
     }
 
     toDart(child) {
         const node = this.node;
         const fill = (this.withDecoration() || !node.fillEnabled) ? '' : `${this.color()}`;
         let alignment = '';
-        if (child != '') alignment = 'alignment: Alignment.center,';
-        return `Container(${alignment}${height(node)}${width(node)}${fill}${this.decoration()}${child})`;
+        if (child != '') alignment = this.alignment();
+        let widget = `Container(${alignment}${height(node)}${width(node)}${fill}${this.decoration()}${child})`;
+        return this.blur(widget);
+    }
+
+    alignment() {
+        const childNode = this.childNode;
+        const node = this.node;
+        let left = childNode.bounds.x1 - node.globalBounds.x;
+        let top = childNode.bounds.y1 - node.globalBounds.y;
+        let right = (node.globalBounds.x + node.globalBounds.width) - (childNode.bounds.x2);
+        let bot = (node.globalBounds.y + node.globalBounds.height) - (childNode.bounds.y2);
+        const widgetAlignment = alignment((left / (left + right)), (top / (top + bot)));
+        if (widgetAlignment == 'Alignment.topLeft') return '';
+        return `alignment: ${widgetAlignment},`;
+    }
+
+    blur(widget) {
+        const node = this.node;
+        const clipType = node instanceof xd.Rectangle ? "ClipRect" : node instanceof xd.Ellipse ? "ClipOval" : null;
+        if (node.blur && clipType != null) {
+            const blur = node.blur;
+            widget = widget.replace(
+                /Color.*\, /g,
+                function (txt) {
+                    return txt = txt.substr(0, txt.length - 2) + `.withOpacity(${blur.fillOpacity}),`;
+                }
+            )
+            let filter = `filter: ImageFilter.blur(sigmaX: ${blur.blurAmount}, sigmaY: ${blur.blurAmount}),`;
+            return `${clipType}(child: BackdropFilter(${filter} child: ${widget},),)`;
+        }
+        return widget;
     }
 
     ellipseRadius() {
@@ -140,7 +175,7 @@ class XDRectangle {
     gradient() {
         const node = this.node;
         if (node.fillEnabled && node.fill.startX != null) {
-            return `gradient: ${fillToGradient(node.fill)},`;
+            return `gradient: ${fillToGradient(node)},`;
         }
         return '';
     }
@@ -155,7 +190,7 @@ class XDRectangle {
                 fit: BoxFit.fill,),`;
         }
         const color = fillToColor(node.fill);
-        return `color: ${color},`;
+        return `color: ${color}, `;
     }
 
     decoration() {

@@ -10,6 +10,7 @@ const { shadow } = require("./utils/shadow");
 const { googleFonts } = require("./utils/google_fonts");
 const { wrapWithInkWell } = require("./inkwell");
 const { titleCase } = require("../util/util");
+const { withGoogleFonts } = require("../../functions/util/util");
 
 class Text {
     constructor(node) {
@@ -77,9 +78,8 @@ function _getText(xdNode, params) {
     let textParam = params["text"]
         ? params["text"] : `${fixText(xdNode.text, xdNode)}`;
     return 'Text('
-        + `${textParam},` +
+        + `${textParam},` + _getTextAlignParam(xdNode) +
         _getStyleParam(_getTextStyleParamList(xdNode, null, params), xdNode) +
-        _getTextAlignParam(xdNode) +
         ')';
 }
 
@@ -154,7 +154,7 @@ function _getStyleParam(params, node) {
 function _getFontFamily(node, withGoogle) {
     let family = node.fontFamily.replace(/\s+/g, '');
     family = family[0].toLowerCase() + family.substring(1, family.length);
-    if (googleFonts.includes(family)) {
+    if (withGoogleFonts() && googleFonts.includes(family)) {
         if (!withGoogle) {
             return '';
         }

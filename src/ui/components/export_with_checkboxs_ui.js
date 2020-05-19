@@ -3,8 +3,8 @@ const { rowUi } = require("./util");
 function exportWithCheckBoxsUi() {
     const title = '<h1>Export with</h1>';
     const checkboxs =
-        googleFontsUi() +
         prototypeInteractionsUi() +
+        googleFontsUi() +
         simpleCodeUi() + styledWidgetUi();
     return title + checkboxs;
 }
@@ -16,7 +16,7 @@ module.exports = {
 
 
 function googleFontsUi() {
-    return rowUi(`<input type="checkbox" id="googleFonts" name="googleFonts" checked>Google Fonts`);
+    return rowUi(`<input type="checkbox" id="googleFonts" name="googleFonts">Google Fonts`);
 }
 
 function prototypeInteractionsUi() {

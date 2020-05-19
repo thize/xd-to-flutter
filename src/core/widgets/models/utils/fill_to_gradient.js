@@ -3,28 +3,30 @@ const { fillToColor } = require("./fill_to_color");
 const { doubleWithTag } = require("./double_with_tag");
 const { alignment } = require("./alignment");
 
-function fillToGradient(fill) {
-    const isRadial = fill.startR != null;
-    if (isRadial) return radialGradient(fill);
-    return linearGradient(fill);
+function fillToGradient(node) {
+    const isRadial = node.fill.startR != null;
+    if (isRadial) return radialGradient(node);
+    return linearGradient(node);
 }
 
 module.exports = {
     fillToGradient: fillToGradient,
 };
 
-function radialGradient(fill) {
+function radialGradient(node) {
+    const fill = node.fill;
     const centerAlignment = `center: ${alignment(fill.startX, fill.startY)},`;
-    const colors = getColors(fill.colorStops);
+    const colors = getColors(fill.colorStops, node);
     const radius = doubleWithTag('radius', fill.endR);
     const stops = getStops(fill.colorStops);
     return `RadialGradient(${centerAlignment}${radius}${colors}${stops}${getTransformParam(fill)})`;
 }
 
-function linearGradient(fill) {
+function linearGradient(node) {
+    const fill = node.fill;
     const beginAlignment = `begin: ${alignment(fill.startX, fill.startY)},`;
     const endAlignment = `end: ${alignment(fill.endX, fill.endY)},`;
-    const colors = getColors(fill.colorStops);
+    const colors = getColors(fill.colorStops, node);
     const stops = getStops(fill.colorStops);
     return `LinearGradient(${beginAlignment}${endAlignment}${colors}${stops})`;
 }
@@ -47,10 +49,10 @@ function getStops(colorStops) {
     return `stops: [${stopList}],`
 }
 
-function getColors(colorStops) {
+function getColors(colorStops, node) {
     const colors = [];
     colorStops.forEach(colorStop => {
-        colors.push(fillToColor(colorStop.color));
+        colors.push(fillToColor(colorStop.color, node));
     });
     return `colors: [${colors},],`;
 }

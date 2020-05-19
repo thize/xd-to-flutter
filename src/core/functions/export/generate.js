@@ -45,6 +45,7 @@ function removeItemsFromGroupFolders(items) {
     let removedItems = [];
     items.forEach(item => {
         const itemName = item.constructor.name;
+        if (itemName == 'Group' && item.mask) throw 'MaskGroup';
         if (itemName == 'Group' && item.name.includes('svg_')) {
             removedItems.push(item);
         } else if (itemName == 'Group' || itemName == 'Artboard') {
@@ -78,6 +79,7 @@ function generateWidgetsFromItems(items) {
 }
 
 function generateWidgetByType(child) {
+    if (child.constructor.name == 'RepeatGrid') throw 'RepeatGrid';
     if (child.constructor.name == 'Text') return new Text(child);
     if (child.constructor.name == 'SymbolInstance') return new Component(child);
     if (child.constructor.name == 'Artboard') return new Artboard(child);

@@ -160,9 +160,9 @@ function insertInside(newNo, inNo) {
 * @param {No} node2 The Second Node
 * @returns {string} (inside, outside or above);
 */
-function relation(node1, node2) {
-    const node1Bounds = node1.bounds;
-    const node2Bounds = node2.bounds;
+function relation(newNo, inNo) {
+    const node1Bounds = inNo.bounds;
+    const node2Bounds = newNo.bounds;
     const boundsX1 = node1Bounds.x1 <= node2Bounds.x1 ? node1Bounds : node2Bounds;
     const boundsX2 = node1Bounds.x1 <= node2Bounds.x1 ? node2Bounds : node1Bounds;
     const boundsY1 = node1Bounds.y1 <= node2Bounds.y1 ? node1Bounds : node2Bounds;
