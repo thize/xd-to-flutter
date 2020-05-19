@@ -7,16 +7,18 @@ const { InkWell } = require("../../widgets/models/inkwell");
 const { Svg } = require("../../widgets/models/svg");
 const { Artboard } = require("../../widgets/models/artboard");
 const { Component } = require("../../widgets/models/component");
+const { wrapWithInkWell } = require("../../widgets/models/inkwell");
 
 function generateWidgetFromItems(items) {
     let dartCode = generateWidget(items);
-    dartCode = dartCode + ';';
+    dartCode = dartCode;
     return dartCode;
 }
 
 function generateComponent(component) {
-    const widget = generateWidgetFromItems(component.children);
-    const generatedClass = statelessWidget(component.name, widget);
+    let widget = generateWidgetFromItems(component.children);
+    widget = wrapWithInkWell(component, widget);
+    const generatedClass = formatDart(statelessWidget(component.name, widget));
     return generatedClass;
 }
 

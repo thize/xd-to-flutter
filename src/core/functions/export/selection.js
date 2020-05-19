@@ -16,6 +16,8 @@ function exportSelection() {
         const exportTypeValue = exportType();
         if (exportTypeValue == 'stateless') {
             generated = statelessWidget('GeneratedWidget', generated);
+        } else {
+            generated = generated + ';';
         }
         generated = formatDart(generated);
         const exportToValue = exportTo();

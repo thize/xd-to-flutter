@@ -7,7 +7,7 @@ function statelessWidget(name, child) {
           
           @override
           Widget build(BuildContext context) {
-            return ${child}
+            return ${child};
           }
         }`;
 }
