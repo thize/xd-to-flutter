@@ -1,3 +1,7 @@
+/*
+Copyright 2020 Adobe
+All Rights Reserved.
+*/
 
 let formatter, columns = 80, ___scope = {}, delim="/*|*/";
 

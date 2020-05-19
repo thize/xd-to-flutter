@@ -1,3 +1,8 @@
+/*
+Copyright 2020 Adobe
+All Rights Reserved.
+*/
+
 const { colorToMaterialColor } = require('../../widgets/models/utils/material_colors');
 
 function dartColor(value) {
@@ -32,9 +37,21 @@ function titleCase(str) {
     );
 }
 
+function getOpacity(xdNode) {
+    // TODO: CE: Calculate opacity based off of parents compositing mode (whether or not it exports a blend mask widget that has it's own opacity and forces compositing)
+    let o = xdNode, opacity = 1.0;
+    while (o) {
+        if (o.opacity != null) { opacity *= o.opacity; }
+        o = o.parent;
+    }
+    return opacity;
+}
+
+
 module.exports = {
     dartColor: dartColor,
     gradientColorList: gradientColorList,
     isGradient: isGradient,
     titleCase: titleCase,
+    getOpacity: getOpacity,
 };
