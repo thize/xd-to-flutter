@@ -1,5 +1,5 @@
 const { fixDouble } = require("./fix_double");
-const { materialColors } = require("./material_colors");
+const { colorToMaterialColor } = require("./material_colors");
 
 function fillToColor(fill) {
     const hex = fill.toHex(true).replace("#", "").toUpperCase();
@@ -17,13 +17,4 @@ function withOpacity(fill) {
         return `.withOpacity(${opacity})`;
     }
     return ``;
-}
-
-
-function colorToMaterialColor(color) {
-    if (materialColors[color] != null) {
-        return materialColors[color];
-    } else {
-        return `const ${color}`;
-    }
 }

@@ -13,12 +13,12 @@ class Children {
         this.distances = [];
     }
 
-    async toDart() {
+    toDart() {
         let widgets = [];
         this.updateBounds();
         for (let index = 0; index < this.node.children.length; index++) {
             const child = this.node.children[index];
-            widgets.push(`${await child.toDart()}`);
+            widgets.push(`${child.toDart()}`);
         }
         this.updateDistances();
         this.addDistancesToWidget(widgets);

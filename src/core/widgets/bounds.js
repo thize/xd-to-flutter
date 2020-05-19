@@ -1,4 +1,4 @@
-const { fixDouble } = require("./widgets/utils/fix_double");
+const { fixDouble } = require("./models/utils/fix_double");
 
 class Bounds {
     /**

@@ -1,6 +1,5 @@
 const { Bounds } = require("../bounds");
 const { wrapWithInkWell } = require("./inkwell");
-const { fixClassName } = require("./utils/stateless");
 
 class Component {
     constructor(node, widget) {
@@ -11,10 +10,10 @@ class Component {
         this.widget = widget;
     }
 
-    async toDart(child, isFirst) {
+    toDart(child) {
         const node = this.node;
-        child = child != null ? `child: ${await child.toDart()},` : ``;
-        return await new XDComponent(node, this.widget).toDart(child, isFirst);
+        child = child != null ? `child: ${child.toDart()},` : ``;
+        return new XDComponent(node, this.widget).toDart(child);
     }
 }
 
@@ -28,12 +27,9 @@ class XDComponent {
         this.widget = widget;
     }
 
-    async toDart(child, isFirst) {
+    toDart(child) {
         if (child != null) { }
-        if (isFirst) {
-            return wrapWithInkWell(this.node, this.widget.substr(0, this.widget.length - 1));
-        }
         this.widget = wrapWithInkWell(this.node, this.widget);
-        return `const ${fixClassName(this.node.name)}()`;
+        return `const ${this.node.name}()`;
     }
 }

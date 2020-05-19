@@ -23,6 +23,9 @@ function formatDart(str, nestInFunct) {
 	}
 	return result;
 	} catch (e) {
+		if(!nestInFunct){
+			return formatDart(str, true);
+		}
 		return str;
 	}
 	

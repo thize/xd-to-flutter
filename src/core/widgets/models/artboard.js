@@ -9,9 +9,9 @@ class Artboard {
         this.bounds = new Bounds(bounds.x, bounds.x + bounds.width, bounds.y, bounds.y + bounds.height);
     }
 
-    async toDart(child) {
+    toDart(child) {
         let node = this.node;
-        const dartCode = await new XDArtboard(node).toDart(child);
+        const dartCode = new XDArtboard(node).toDart(child);
         return dartCode;
     }
 }
@@ -25,14 +25,14 @@ class XDArtboard {
         this.node = node;
     }
 
-    async toDart(child) {
+    toDart(child) {
         const hasGradient = this.gradient() != '';
         if (hasGradient) {
-            child = child != null ? `child:${await child.toDart()},` : ``;
+            child = child != null ? `child:${child.toDart()},` : ``;
             const gradient = this.gradient(child);
             return `Scaffold(${gradient})`;
         }
-        child = child != null ? `body: Center(child: ${await child.toDart()},),` : ``;
+        child = child != null ? `body: Center(child: ${child.toDart()},),` : ``;
         const fill = `${this.color()}`;
         return `Scaffold(${fill}${child})`;
     }

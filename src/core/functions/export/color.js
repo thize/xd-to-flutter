@@ -1,10 +1,10 @@
 const scenegraph = require("scenegraph");
 const assets = require("assets");
-const { exportFiles } = require("./util/project_folder");
-const { formatDart } = require("./util/format_dart");
-const { widgetPrefix, exportTo, copyToClipboard } = require("./util/util");
-const { changeOutputUiText } = require("../../ui/components/output_ui");
-const { dartColor, gradientColorList, isGradient } = require("../widgets/util/util");
+const { exportFiles } = require("../util/project_folder");
+const { formatDart } = require("../util/format_dart");
+const { widgetPrefix, exportTo, copyToClipboard } = require("../util/util");
+const { changeOutputUiText } = require("../../../ui/components/output_ui");
+const { dartColor, gradientColorList, isGradient } = require("../../widgets/util/util");
 
 async function exportSelectionColor() {
     document.addEventListener('keydown', keydownFunc);

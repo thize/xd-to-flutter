@@ -1,7 +1,7 @@
 const scenegraph = require("scenegraph");
 const application = require("application");
-const { getFolder } = require("../functions/util/project_folder");
-const { changeOutputUiText } = require("../../ui/components/output_ui");
+const { getFolder } = require("../util/project_folder");
+const { changeOutputUiText } = require("../../../ui/components/output_ui");
 const { Color } = require("scenegraph");
 
 async function exportAppIcon(platform) {

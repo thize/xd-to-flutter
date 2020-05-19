@@ -13,6 +13,12 @@ function exportTo() {
     return value;
 }
 
+function exportType() {
+    let exportToRadio = document.querySelector('input[name="exportType"]:checked');
+    const value = exportToRadio.value;
+    return value;
+}
+
 function copyToClipboard(value) {
     clipboard.copyText(value);
 }
@@ -20,5 +26,6 @@ function copyToClipboard(value) {
 module.exports = {
     widgetPrefix: widgetPrefix,
     exportTo: exportTo,
+    exportType: exportType,
     copyToClipboard: copyToClipboard,
 };

@@ -9,8 +9,8 @@ const { exportedCodePath } = require("./components/exported_code_path_ui");
 const { exportButtonsUi } = require("./components/export_buttons_ui");
 const { exportWithCheckBoxsUi } = require("./components/export_with_checkboxs_ui");
 const { getFolderPath, changeProjectFolder } = require('../core/functions/util/project_folder');
-const { onTapExport } = require("../core/functions/export");
-const { exportAppIcon } = require("../core/functions/app_icon");
+const { onTapExport } = require("../core/functions/export/export");
+const { exportAppIcon } = require("../core/functions/export/app_icon");
 
 let panel;
 
@@ -32,6 +32,7 @@ function show(event) {
     }
 }
 
+let oldItemsLengh;
 function update() {
     const items = scenegraph.selection.items;
     const singleColorButton = document.getElementById('singleColorButton');
@@ -46,8 +47,10 @@ function update() {
     _changeButtonState(iosIconButton, isToActiveIosIconButton);
     const isToActiveAndroidIconButton = items.length == 1;
     _changeButtonState(androidIconButton, isToActiveAndroidIconButton);
-    if (items.length == 0)
+    if (items.length == 0 && oldItemsLengh != 0) {
         changeOutputUiText('Nothing...', 'grey');
+    }
+    oldItemsLengh = items.length;
 }
 
 function buildTaps() {

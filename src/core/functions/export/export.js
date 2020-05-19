@@ -1,5 +1,8 @@
 const { exportSelectionColor, exporColorsFromAssetsPanel } = require('./color');
 const { exporTextStylesFromAssetsPanel } = require('./text_style');
+const { exporComponentsFromAssetsPanel } = require('./components');
+const { exportAllArtboards } = require('./artboards');
+const { exportSelection } = require('./selection');
 
 function onTapExport(type) {
     switch (type) {
@@ -7,10 +10,10 @@ function onTapExport(type) {
             exportSelection();
             break;
         case 'Artboards':
-            exportArtboards();
+            exportAllArtboards();
             break;
         case 'Components':
-            exportComponents();
+            exporComponentsFromAssetsPanel();
             break;
         case 'Colors':
             exporColorsFromAssetsPanel();
@@ -30,15 +33,3 @@ function onTapExport(type) {
 module.exports = {
     onTapExport: onTapExport,
 };
-
-function exportSelection() {
-    console.log('exportSelection');
-}
-
-function exportArtboards() {
-    console.log('exportArtboards');
-}
-
-function exportComponents() {
-    console.log('exportComponents');
-}

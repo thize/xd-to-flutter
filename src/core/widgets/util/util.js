@@ -1,4 +1,4 @@
-const { colorToMaterialColor } = require('../../widgets/util/material_colors');
+const { colorToMaterialColor } = require('../../widgets/models/utils/material_colors');
 
 function dartColor(value) {
     const color = '0xFF' + value.toHex(true).substr(1).toUpperCase();

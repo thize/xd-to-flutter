@@ -1,15 +1,19 @@
+const { widgetPrefix } = require("../functions/util/util");
 
-function statelessWidget(node, child) {
+function statelessWidget(name, child) {
   return `
-      class ${fixClassName(node.name)} extends StatelessWidget {
-          const ${fixClassName(node.name)}({Key key}) : super(key: key);    
+      class ${widgetPrefix()}${name} extends StatelessWidget {
+          const ${name}({Key key}) : super(key: key);    
           
           @override
           Widget build(BuildContext context) {
-            return ${child};
+            return ${child}
           }
         }`;
 }
+module.exports = {
+  statelessWidget: statelessWidget,
+};
 
 function fixClassName(value) {
   value = value.trim();
@@ -28,9 +32,3 @@ function fixClassName(value) {
   });
   return value.replace('–', '');
 }
-
-
-module.exports = {
-  statelessWidget: statelessWidget,
-  fixClassName: fixClassName,
-};

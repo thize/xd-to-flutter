@@ -1,9 +1,9 @@
-const { widgetPrefix, exportTo, copyToClipboard } = require("./util/util");
+const { widgetPrefix, exportTo, copyToClipboard } = require("../util/util");
 const assets = require("assets");
-const { formatDart } = require("./util/format_dart");
-const { dartColor } = require("../widgets/util/util");
-const { exportFiles } = require("./util/project_folder");
-const { changeOutputUiText } = require("../../ui/components/output_ui");
+const { formatDart } = require("../util/format_dart");
+const { dartColor } = require("../../widgets/util/util");
+const { exportFiles } = require("../util/project_folder");
+const { changeOutputUiText } = require("../../../ui/components/output_ui");
 
 function exporTextStylesFromAssetsPanel() {
     const assetsTextStyles = assets.characterStyles.get();

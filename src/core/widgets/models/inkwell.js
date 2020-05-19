@@ -8,9 +8,9 @@ class InkWell {
         this.bounds = new Bounds(bounds.x - aux, bounds.x + bounds.width + aux, bounds.y - aux, bounds.y + bounds.height + aux);
     }
 
-    async toDart(child) {
+    toDart(child) {
         const node = this.node;
-        child = child != null ? `child:${await child.toDart()},` : ``;
+        child = child != null ? `child:${child.toDart()},` : ``;
         return new XDInkWell(node).toDart(child);
     }
 }

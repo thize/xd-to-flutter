@@ -1,7 +1,5 @@
 const { Bounds } = require("./bounds");
-const { Children } = require("./widgets/children");
-const { statelessWidget } = require("./widgets/utils/stateless");
-const { formatDart } = require("../util/dart_style");
+const { Children } = require("./models/children");
 
 class Layout {
     /**
@@ -16,18 +14,9 @@ class Layout {
         // console.log(this.no.debug(0));
     }
 
-    async toDart(forceStateless) {
-        const widget = await this.no.toDart(true);
-        try {
-            const widgetNode = this.no.widget.node;
-            const name = widgetNode.constructor.name;
-            if (name == 'Artboard' || name == 'SymbolInstance' || forceStateless) {
-                const stateless = statelessWidget(widgetNode, widget);
-                return formatDart(`${stateless}`, false);;
-            }
-        } catch (error) {
-        }
-        return formatDart(`${widget};`, true);;
+    toDart() {
+        const widget = this.no.toDart();
+        return widget;
     }
 }
 
@@ -76,10 +65,10 @@ class No {
     * @param {number} depth depth in the Tree to indent the code
     * @return {string} Generated dart code
     */
-    async toDart(isFirst) {
+    toDart() {
         if (this.widget == null) this.widget = new Children(this.type, this);
         const child = this.children != null ? this.children[0] : null
-        return await this.widget.toDart(child, isFirst);
+        return this.widget.toDart(child);
     }
 
     debug(depth) {
