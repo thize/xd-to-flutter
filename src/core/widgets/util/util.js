@@ -17,8 +17,18 @@ function isGradient(fill) {
     return fill.startY != null || (fill.colorStops != null && fill.colorStops.length > 0);
 }
 
+function titleCase(str) {
+    return str.replace(
+        /\w\S*/g,
+        function (txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }
+    );
+}
+
 module.exports = {
     dartColor: dartColor,
     gradientColorList: gradientColorList,
     isGradient: isGradient,
+    titleCase: titleCase,
 };

@@ -160,9 +160,10 @@ class XDRectangle {
 
     decoration() {
         if (this.withDecoration()) {
-            let fill = this.gradient();
-            if (fill == '') fill = `${this.color()}`;
-            return `decoration: BoxDecoration(${fill}${this.border()}${this.borderRadius()}${this.shadow()}),`;
+            let gradient = this.gradient();
+            let fill = '';
+            if (gradient == '') fill = `${this.color()}`;
+            return `decoration: BoxDecoration(${fill}${this.border()}${this.borderRadius()}${this.shadow()}${gradient}),`;
         }
         return ``;
     }

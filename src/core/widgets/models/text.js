@@ -5,6 +5,7 @@ const { doubleWithTag } = require("./utils/double_with_tag");
 const { shadow } = require("./utils/shadow");
 const { googleFonts } = require("./utils/google_fonts");
 const { wrapWithInkWell } = require("./inkwell");
+const { titleCase } = require("../util/util");
 
 class Text {
     constructor(node) {
@@ -29,17 +30,72 @@ class XDText {
     }
 
     toDart() {
-        const widget = `
-        Text(${this.text()},${this.align()}${this.textStyle()})`
+        this.checkForUnsupportedFeatures();
+        let widget;
+        if (this.node.styleRanges.length > 1) {
+            this.defaultTextSyle = this.textStyle();
+            widget = this.richText();
+        } else {
+            widget = `
+            Text(
+                ${this.text()},
+                ${this.align()}                
+                ${this.textStyle()}
+            )`;
+        }
         const dartCode = this.areaBox(widget);
         return wrapWithInkWell(this.node, dartCode);
+    }
+
+    checkForUnsupportedFeatures() {
+        const node = this.node;
+        if (node.strokeEnabled && node.stroke) {
+            throw "TextBorder";
+        }
+        if (node.textScript !== 'none') {
+            throw "Superscript";
+        }
+        if (node.paragraphSpacing) {
+            throw "ParagraphSpacing";
+        }
+        if (node.styleRanges.length > 1) {
+            throw "RichText";
+        }
+    }
+
+    richText() {
+        let text = this.node.text;
+        let styles = this.node.styleRanges;
+        let textsSpans = ''; let j = 0;
+        for (let i = 0; i < styles.length; i++) {
+            let style = styles[i], l = style.length;
+            if (style.length === 0) { continue; }
+            if (i === styles.length - 1) { l = text.length - j; }
+            textsSpans += this.textSpan(text.substr(j, l), this.textStyle(styles)) + ', ';
+            j += l;
+        }
+        return `
+        Text.rich(TextSpan(
+              ${this.textStyle(styles)}
+              children: [${textsSpans}],
+              ${this.align()}
+        )`;
+    }
+
+    textSpan(text, textStyle) {
+        return `TextSpan(text:${this.fixText(text)}, ${textStyle})`;
     }
 
     areaBox(widget) {
         const node = this.node;
         let withAreaBox = node.areaBox != null;
         if (withAreaBox) {
-            return `SizedBox(${width(node)}${height(node)}child: ${widget},)`
+            return `
+            SizedBox(
+                ${width(node)}
+                ${height(node)}
+                child: ${widget},
+            )`
         }
         return widget;
     }
@@ -53,25 +109,16 @@ class XDText {
         const node = this.node;
         let family = node.fontFamily.replace(/\s+/g, '');
         family = family[0].toLowerCase() + family.substring(1, family.length);
-        const content = `${this.fontSize()}${this.color()}${this.decoration()}${this.shadow()}${this.fontWeight()}`;
-        // if (googleFonts.includes(family)) {
-        //     return `style: GoogleFonts.${family}(${content}),`;
-        // }
+        const content = `${this.fontSize()}${this.color()}${this.letterSpacing()}${this.height()}${this.fontWeight()}${this.decoration()}${this.fontItalic()}${this.shadow()}`;
+        if (googleFonts.includes(family)) {
+            return `style: GoogleFonts.${family}(${content}),`;
+        }
         return `style: TextStyle(fontFamily: '${node.fontFamily}',${content}),`;
     }
 
     text() {
         const node = this.node;
-        let text = node.text.replace(new RegExp("\n", 'g'), "\\n");
-        if (text.includes("'")) {
-            if (text.includes('"')) {
-                text = `'${text.split("'").join("\\'")}'`;
-            } else {
-                text = `"${text}"`;
-            }
-        } else {
-            text = `'${text}'`;
-        }
+        let text = this.fixText(node.text);
         return text;
     }
 
@@ -85,6 +132,11 @@ class XDText {
 
     border() {
         return '';
+    }
+
+    letterSpacing() {
+        return (this.node.charSpacing === 0 ? '' :
+            `letterSpacing: ${this.node.charSpacing / 1000 * this.node.fontSize}, `);
     }
 
     color() {
@@ -122,31 +174,87 @@ class XDText {
         return "";
     }
 
+    fontItalic() {
+        let style = this.node.fontStyle.toLowerCase();
+        let match = style.match(FONT_STYLES_RE);
+        let val = match && FONT_STYLES[match];
+        style = val ? 'FontStyle.' + val : null;
+        return style ? `fontStyle: ${style}, ` : '';
+    }
+
     fontWeight() {
-        const tag = 'fontWeight:';
-        const node = this.node;
-        let fontWeight = node.fontStyle.toLowerCase().replace("-", "");
-        fontWeight = fontWeight.toLowerCase().replace("-", "");
-        if (fontWeight == "thin") {
-            fontWeight = "FontWeight.w100";
-        } else if (fontWeight == "extraligth") {
-            fontWeight = "FontWeight.w200";
-        } else if (fontWeight == "light") {
-            fontWeight = "FontWeight.w300";
-        } else if (fontWeight == "medium") {
-            fontWeight = "FontWeight.w500";
-        } else if (fontWeight == "semibold") {
-            fontWeight = "FontWeight.w600";
-        } else if (fontWeight == "bold") {
-            fontWeight = "FontWeight.bold";
-        } else if (fontWeight == "extrabold") {
-            fontWeight = "FontWeight.w800";
-        } else if (fontWeight == "black") {
-            fontWeight = "FontWeight.w900";
+        let style = this.node.fontStyle.toLowerCase();
+        let match = style.match(FONT_WEIGHTS_RE);
+        let val = match && FONT_WEIGHTS[match];
+        let weight = val ? 'FontWeight.' + val : null;
+        return weight ? `fontWeight: ${weight}, ` : '';
+    }
+
+    height() {
+        return (this.node.lineSpacing === 0 ? '' :
+            `height: ${this.node.lineSpacing / this.node.fontSize}, `);
+    }
+
+    fixText(text) {
+        text = text.replace(/(['\\$])/g, '\\$1') // escaped characters
+            .replace(/\n/g, '\\n');
+        text = this.textTransform(text);
+        if (text.includes("'")) {
+            if (text.includes('"')) {
+                text = `'${text.split("'").join("\\'")}'`;
+            } else {
+                text = `"${text}"`;
+            }
         } else {
-            fontWeight = "FontWeight.w400";
-            return "";
+            text = `'${text}'`;
         }
-        return `${tag} ${fontWeight},`;
+        return text;
+    }
+
+    textTransform(text) {
+        if (this.node.textTransform == 'none') return text;
+        if (this.node.textTransform == 'uppercase') return text.toUpperCase();
+        if (this.node.textTransform == 'lowercase') return text.toLowerCase();
+        if (this.node.textTransform == 'titlecase') return titleCase(text);
+        throw this.node.textTransform;
     }
 }
+
+const FONT_WEIGHTS = {
+    'thin': 'w100',
+    'hairline': 'w100',
+    'extralight': 'w200',
+    'ultralight': 'w200',
+    'light': 'w300',
+    'book': 'w300',
+    'demi': 'w300',
+
+    'normal': null,
+    'regular': null,
+    'plain': null,
+
+    'medium': 'w500',
+    'semibold': 'w600',
+    'demibold': 'w600',
+    'bold': 'bold',
+    'extrabold': 'w800',
+    'heavy': 'w800',
+    'black': 'w900',
+    'poster': 'w900',
+}
+
+function _buildStyleRegExp(map) {
+    let list = [];
+    for (let n in map) { list.push(n); }
+    return new RegExp(list.join('|'), 'ig');
+}
+
+const FONT_WEIGHTS_RE = _buildStyleRegExp(FONT_WEIGHTS);
+
+const FONT_STYLES = {
+    'italic': 'italic',
+    'oblique': 'italic',
+}
+const FONT_STYLES_RE = _buildStyleRegExp(FONT_STYLES);
+
+

@@ -79,9 +79,7 @@ function generateWidgetsFromItems(items) {
 
 function generateWidgetByType(child) {
     if (child.constructor.name == 'Text') return new Text(child);
-    if (child.constructor.name == 'SymbolInstance') {
-        return new Component(child, 'generateWidget(child)');
-    }
+    if (child.constructor.name == 'SymbolInstance') return new Component(child);
     if (child.constructor.name == 'Artboard') return new Artboard(child);
     if (child.constructor.name == 'Group' && !child.name.includes('svg_') && child.triggeredInteractions[0] != null && child.triggeredInteractions[0].trigger.type == 'tap') return new InkWell(child);
     if (child.constructor.name == 'Path' || child.constructor.name == 'Polygon' || child.constructor.name == 'BooleanGroup' || child.constructor.name == 'Group') return new Svg(child);

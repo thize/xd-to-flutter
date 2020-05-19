@@ -18,7 +18,7 @@ function radialGradient(fill) {
     const colors = getColors(fill.colorStops);
     const radius = doubleWithTag('radius', fill.endR);
     const stops = getStops(fill.colorStops);
-    return `RadialGradient(${centerAlignment}${radius}${colors}${stops})`;
+    return `RadialGradient(${centerAlignment}${radius}${colors}${stops}${getTransformParam(fill)})`;
 }
 
 function linearGradient(fill) {
@@ -53,4 +53,13 @@ function getColors(colorStops) {
         colors.push(fillToColor(colorStop.color));
     });
     return `colors: [${colors},],`;
+}
+
+function getTransformParam(fill) {
+    // The GradientXDTransform is needed even if there is no transformation in order to fix the aspect ratio.
+    let o = fill.gradientTransform;
+    return 'transform: GradientXDTransform(' +
+        `${o.a}, ${o.b}, ${o.c}, ` +
+        `${o.d}, ${o.e}, ${o.f}, ` +
+        `${alignment(fill.startX, fill.startY)}), `;
 }

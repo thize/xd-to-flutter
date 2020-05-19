@@ -1,19 +1,15 @@
 const { Bounds } = require("../bounds");
-const { wrapWithInkWell } = require("./inkwell");
 
 class Component {
-    constructor(node, widget) {
+    constructor(node) {
         this.node = node;
         const bounds = node.globalBounds;
-        let aux = 0.01;
-        this.bounds = new Bounds(bounds.x - aux, bounds.x + bounds.width + aux, bounds.y - aux, bounds.y + bounds.height + aux);
-        this.widget = widget;
+        this.bounds = new Bounds(bounds.x, bounds.x + bounds.width, bounds.y, bounds.y + bounds.height);
     }
 
-    toDart(child) {
+    toDart() {
         const node = this.node;
-        child = child != null ? `child: ${child.toDart()},` : ``;
-        return new XDComponent(node, this.widget).toDart(child);
+        return new XDComponent(node).toDart();
     }
 }
 
@@ -22,14 +18,11 @@ module.exports = {
 };
 
 class XDComponent {
-    constructor(node, widget) {
+    constructor(node) {
         this.node = node;
-        this.widget = widget;
     }
 
-    toDart(child) {
-        if (child != null) { }
-        this.widget = wrapWithInkWell(this.node, this.widget);
+    toDart() {
         return `const ${this.node.name}()`;
     }
 }
