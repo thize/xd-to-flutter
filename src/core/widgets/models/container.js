@@ -7,6 +7,7 @@ const { shadow } = require("./utils/shadow");
 const { Rectangle } = require("scenegraph");
 const { wrapWithInkWell } = require("./inkwell");
 let application = require("application");
+const ImageFill = require("scenegraph").ImageFill;
 
 class Container {
     constructor(node) {
@@ -83,10 +84,11 @@ class XDRectangle {
 
     withDecoration() {
         const hasRoundedCorners = this.borderRadius() != '';
+        const hasImage = this.node.fill instanceof ImageFill;
         const hasGradient = this.gradient() != '';
         const hasBorder = this.border() != '';
         const hasShadow = this.shadow() != '';
-        return hasRoundedCorners || hasGradient || hasBorder || hasShadow;
+        return hasRoundedCorners || hasGradient || hasBorder || hasShadow || hasImage;
     }
 
     shadow() {
@@ -146,6 +148,12 @@ class XDRectangle {
     color() {
         const node = this.node;
         if (!node.fillEnabled) return '';
+        const isImage = node.fill instanceof ImageFill;
+        if (isImage) {
+            return `image: DecorationImage(//TODO: change image path
+                image: const AssetImage('imagePath'),
+                fit: BoxFit.fill,),`;
+        }
         const color = fillToColor(node.fill);
         return `color: ${color},`;
     }
