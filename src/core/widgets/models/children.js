@@ -1,7 +1,6 @@
 const { InkWell } = require("./inkwell");
 const { fixDouble } = require("./utils/fix_double");
 
-// TODO: add Stack positioneds
 class Children {
     /**
     * @param {string} type (Column, Row or Stack)
@@ -18,33 +17,54 @@ class Children {
         this.updateBounds();
         for (let index = 0; index < this.node.children.length; index++) {
             const child = this.node.children[index];
-            widgets.push(`${child.toDart()}`);
+            widgets.push(`${this.positioned(child)}`);
         }
         this.updateDistances();
-        this.addDistancesToWidget(widgets);
-        const dartCode = `${this.type}(children: [${widgets},],)`;
+        const mainAxisAlignment = this.mainAxisAlignment();
+        this.addDistancesToWidget(widgets, mainAxisAlignment);
+        const dartCode = `${this.type}(${mainAxisAlignment}children: [${widgets},],)`;
         return this.sizedBox(dartCode);
     }
 
-    sizedBox(dartCode) {
-        const fatherIsChildren = this.node.father != null && this.node.father.isChildren();
-        if (fatherIsChildren || this.node.father == null || this.node.father.widget instanceof InkWell) {
-            const type = this.type;
-            const withWidth = type == `Row` || type == `Stack`;
-            const withHeight = type == `Column` || type == `Stack`;
-            const width = withWidth ? `width:${fixDouble(this.node.bounds.x2 - this.node.bounds.x1, true)},` : '';
-            const height = withHeight ? `height:${fixDouble(this.node.bounds.y2 - this.node.bounds.y1, false)},` : '';
-            return `SizedBox(${width}${height}child: ${dartCode},)`;
+    positioned(child) {
+        if (this.type == 'Stack') {
+            const node = this.node;
+            let left = child.bounds.x1 - node.bounds.x1;
+            let top = child.bounds.y1 - node.bounds.y1;
+            let right = node.bounds.x2 - child.bounds.x2;
+            let bot = node.bounds.y2 - child.bounds.y2;
+            let positionedX = `right: ${right},`;
+            if (left < right) {
+                positionedX = `left: ${left},`;
+                if (positionedX == 'left: 0,') {
+                    positionedX = '';
+                }
+            }
+            let positionedY = `bottom: ${bot},`;
+            if (top < bot) {
+                positionedY = `top: ${top},`;
+                if (positionedY == 'top: 0,') {
+                    positionedY = '';
+                }
+            }
+            return `Positioned(${positionedX}${positionedY}child: ${child.toDart()},)`;
         }
-        return dartCode;
+        return child.toDart();
+    }
+
+    sizedBox(dartCode) {
+        const width = `width:${fixDouble(this.node.bounds.x2 - this.node.bounds.x1, true)},`;
+        const height = `height:${fixDouble(this.node.bounds.y2 - this.node.bounds.y1, false)},`;
+        return `Container(color:Colors.blue.withOpacity(0.2),${width}${height}child: ${dartCode},)`;
+        // return `SizedBox(${width}${height}child: ${dartCode},)`;
     }
 
     /**
     * Call distanceToDart() in distance and put in Widgets list
     * widgets.push(distanceToDart(distance));
     */
-    addDistancesToWidget(widgets) {
-        if (this.distances.length > 0) {
+    addDistancesToWidget(widgets, mainAxisAlignment) {
+        if (this.distances.length > 0 && mainAxisAlignment == '') {
             const withSpacer = true;
             this.withSpacer = withSpacer;
             for (let i = 0, qtd = 0; i < widgets.length; i++, qtd++) {
@@ -74,18 +94,18 @@ class Children {
             if (type == `Column`) {
                 this.node.bounds.y1 = this.node.father.bounds.y1;
                 this.node.bounds.y2 = this.node.father.bounds.y2;
-                if (!fatherIsChildren) {
+                if (isStack) {
                     // this.node.bounds.x1 = this.node.father.bounds.x1;
                     // this.node.bounds.x2 = this.node.father.bounds.x2;
                 }
             }
             if (type == `Row` || isStack) {
-                if (!fatherIsChildren) {
+                this.node.bounds.x1 = this.node.father.bounds.x1;
+                this.node.bounds.x2 = this.node.father.bounds.x2;
+                if (isStack) {
                     // this.node.bounds.y1 = this.node.father.bounds.y1;
                     // this.node.bounds.y2 = this.node.father.bounds.y2;
                 }
-                this.node.bounds.x1 = this.node.father.bounds.x1;
-                this.node.bounds.x2 = this.node.father.bounds.x2;
             }
         }
     }
@@ -108,6 +128,9 @@ class Children {
             }
             bounds = this.getBounds2(this.node);
             this.distances.push(bounds - this.getBounds2(this.node.children[this.node.children.length - 1]));
+            for (let index = 0; index < this.distances.length; index++) {
+                this.distances[index] = Math.round(this.distances[index]);
+            }
         }
     }
 
@@ -117,10 +140,10 @@ class Children {
     distanceToDart(distance) {
         if (distance > 0) {
             if (this.withSpacer) {
-                if (Math.round(distance) < 1) {
+                if (distance < 1) {
                     return '';
                 }
-                return `Spacer(flex:${Math.round(distance)})`
+                return `Spacer(flex:${distance})`
             }
             const width = this.type == 'Row' ? `width:${fixDouble(distance, true)}` : ``;
             const height = this.type == 'Column' ? `height:${fixDouble(distance, false)}` : ``;
@@ -145,20 +168,36 @@ class Children {
         return (this.type == 'Row' ? no.bounds.x2 : no.bounds.y2);
     }
 
-    alignment() {
-        // TODO: improve row and column distances: (Unnecessary distances) to (MainAlignment.better)
-        /*
-        ? Row and Column
-       start
-       center
-       end
-       spaceAround
-       spaceBetween
-       spaceEvenly
-       */
+    mainAxisAlignment() {
+        if (this.type == 'Row' || this.type == 'Column') {
+            const dist = this.distances;
+            let set = new Set(dist);
+            if (set.size == 1) {
+                return 'mainAxisAlignment: MainAxisAlignment.spaceEvenly,';
+            }
+            set = new Set(dist.slice(1, dist.length - 1));
+            if (dist[0] == 0 && dist[dist.length - 1] == 0 && set.size == 1) {
+                return 'mainAxisAlignment: MainAxisAlignment.spaceBetween,';
+            }
+            let first = dist[0];
+            if (first != 0 && dist[dist.length - 1] == first && set.size == 1 && set.getByIdx(0) == first * 2) {
+                return 'mainAxisAlignment: MainAxisAlignment.spaceAround,';
+            }
+        }
+        return '';
     }
 }
 
 module.exports = {
     Children: Children,
 };
+
+Set.prototype.getByIdx = function (idx) {
+    if (typeof idx !== 'number') throw new TypeError(`Argument idx must be a Number. Got [${idx}]`);
+
+    let i = 0;
+    for (let iter = this.keys(), curs = iter.next(); !curs.done; curs = iter.next(), i++)
+        if (idx === i) return curs.value;
+
+    throw new RangeError(`Index [${idx}] is out of range [0-${i - 1}]`);
+}

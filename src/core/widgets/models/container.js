@@ -84,7 +84,11 @@ class XDRectangle {
         let top = childNode.bounds.y1 - node.globalBounds.y;
         let right = (node.globalBounds.x + node.globalBounds.width) - (childNode.bounds.x2);
         let bot = (node.globalBounds.y + node.globalBounds.height) - (childNode.bounds.y2);
-        const widgetAlignment = alignment((left / (left + right)), (top / (top + bot)));
+        right = right == 0 && left == 0 ? 1 : right;
+        bot = bot == 0 && top == 0 ? 1 : bot;
+        const alignX = (left / (left + right));
+        const alignY = (top / (top + bot));
+        const widgetAlignment = alignment(alignX, alignY);
         if (widgetAlignment == 'Alignment.topLeft') return '';
         return `alignment: ${widgetAlignment},`;
     }
