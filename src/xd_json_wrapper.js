@@ -192,7 +192,6 @@ class XDGraphicsNodeWrapper {
         }
 
         const node = this.xdNode;
-        let fill;
         try {
             fill = node.fill.toHex(true);
         } catch (error) {

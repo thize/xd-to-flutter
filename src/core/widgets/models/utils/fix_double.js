@@ -1,5 +1,5 @@
-function fixDouble(double) {
-    return Math.round(double * 100) / 100;
+function fixDouble(double, factor = 100) {
+    return Math.round(double * factor) / factor;
 }
 
 module.exports = {

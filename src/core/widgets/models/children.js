@@ -1,5 +1,5 @@
-const { InkWell } = require("./inkwell");
 const { fixDouble } = require("./utils/fix_double");
+const { alignment } = require("./utils/alignment");
 
 class Children {
     /**
@@ -17,7 +17,11 @@ class Children {
         this.updateBounds();
         for (let index = 0; index < this.node.children.length; index++) {
             const child = this.node.children[index];
-            widgets.push(`${this.positioned(child)}`);
+            if (this.type == 'Stack') {
+                widgets.push(`${this.positioned(child)}`);
+            } else {
+                widgets.push(`${this.alignment(child)}`);
+            }
         }
         this.updateDistances();
         const mainAxisAlignment = this.mainAxisAlignment();
@@ -27,36 +31,33 @@ class Children {
     }
 
     positioned(child) {
-        if (this.type == 'Stack') {
-            const node = this.node;
-            let left = child.bounds.x1 - node.bounds.x1;
-            let top = child.bounds.y1 - node.bounds.y1;
-            let right = node.bounds.x2 - child.bounds.x2;
-            let bot = node.bounds.y2 - child.bounds.y2;
-            let positionedX = `right: ${right},`;
-            if (left < right) {
-                positionedX = `left: ${left},`;
-                if (positionedX == 'left: 0,') {
-                    positionedX = '';
-                }
+        const node = this.node;
+        let left = child.bounds.x1 - node.bounds.x1;
+        let top = child.bounds.y1 - node.bounds.y1;
+        let right = node.bounds.x2 - child.bounds.x2;
+        let bot = node.bounds.y2 - child.bounds.y2;
+        let positionedX = `right: ${right},`;
+        if (left < right) {
+            positionedX = `left: ${left},`;
+            if (positionedX == 'left: 0,') {
+                positionedX = '';
             }
-            let positionedY = `bottom: ${bot},`;
-            if (top < bot) {
-                positionedY = `top: ${top},`;
-                if (positionedY == 'top: 0,') {
-                    positionedY = '';
-                }
-            }
-            return `Positioned(${positionedX}${positionedY}child: ${child.toDart()},)`;
         }
-        return child.toDart();
+        let positionedY = `bottom: ${bot},`;
+        if (top < bot) {
+            positionedY = `top: ${top},`;
+            if (positionedY == 'top: 0,') {
+                positionedY = '';
+            }
+        }
+        return `Positioned(${positionedX}${positionedY}child: ${child.toDart()},)`;
     }
 
     sizedBox(dartCode) {
-        const width = `width:${fixDouble(this.node.bounds.x2 - this.node.bounds.x1, true)},`;
-        const height = `height:${fixDouble(this.node.bounds.y2 - this.node.bounds.y1, false)},`;
-        return `Container(color:Colors.blue.withOpacity(0.2),${width}${height}child: ${dartCode},)`;
-        // return `SizedBox(${width}${height}child: ${dartCode},)`;
+        const width = `width:${fixDouble(this.node.bounds.x2 - this.node.bounds.x1)},`;
+        const height = `height:${fixDouble(this.node.bounds.y2 - this.node.bounds.y1)},`;
+        // return `Container(color:Colors.blue.withOpacity(0.2),${width}${height}child: ${dartCode},)`;
+        return `SizedBox(${width}${height}child: ${dartCode},)`;
     }
 
     /**
@@ -81,6 +82,23 @@ class Children {
                 }
             }
         }
+    }
+
+    alignment(child) {
+        const node = this.node;
+        let left = child.bounds.x1 - node.bounds.x1;
+        let top = child.bounds.y1 - node.bounds.y1;
+        let right = node.bounds.x2 - child.bounds.x2;
+        let bot = node.bounds.y2 - child.bounds.y2;
+        let auxRight = right == 0 && left == 0 ? 1 : right;
+        let auxBot = bot == 0 && top == 0 ? 1 : bot;
+        const alignX = (left / (left + auxRight));
+        const alignY = (top / (top + auxBot));
+        let resAlignment = alignment(this.type == 'Row' ? 0.5 : alignX, this.type == 'Column' ? 0.5 : alignY);
+        if ((this.type == 'Row' && alignY != 0.5 && top + bot > 0) || this.type == 'Column' && alignX != 0.5 && left + right > 0) {
+            return `Align(alignment: ${resAlignment}, child: ${child.toDart()},)`;
+        }
+        return child.toDart();
     }
 
     /**
