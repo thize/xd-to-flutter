@@ -46,7 +46,7 @@ function removeItemsFromGroupFolders(items) {
     items.forEach(item => {
         const itemName = item.constructor.name;
         if (itemName == 'Group' && item.mask) throw 'MaskGroup';
-        if (itemName == 'Group' && item.name.includes('svg_')) {
+        if (itemName == 'Group' && (item.name.includes('svg_') || isSvgFolder(item))) {
             removedItems.push(item);
         } else if (itemName == 'Group' || itemName == 'Artboard') {
             if (itemName == 'Artboard' || (item.triggeredInteractions[0] != null && item.triggeredInteractions[0].trigger.type == 'tap')) {
@@ -62,6 +62,21 @@ function removeItemsFromGroupFolders(items) {
     return removedItems;
 }
 
+function isSvgFolder(item) {
+    let onlySvg = true;
+    item.children.forEach(child => {
+        if (onlySvg) {
+            if (child.constructor.name == 'Group') {
+                onlySvg = isSvgFolder(child);
+            } else if (!(child.constructor.name == 'Path' || child.constructor.name == 'Polygon'
+                || (child.constructor.name == 'Line' && child.globalBounds.width != 0 && child.globalBounds.height != 0)
+                || child.constructor.name == 'BooleanGroup')) {
+                onlySvg = false;
+            }
+        }
+    });
+    return onlySvg;
+}
 /**
 * Generate widgets from selection items
 * 

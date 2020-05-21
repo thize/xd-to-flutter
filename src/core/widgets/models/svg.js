@@ -13,11 +13,27 @@ class Svg {
         this.node = node;
         const bounds = node.globalBounds;
         this.bounds = new Bounds(bounds.x, bounds.x + bounds.width, bounds.y, bounds.y + bounds.height);
+        if (node.constructor.name == 'Group') {
+            this.addShapesFromGroup(node);
+        } else {
+            this.shapes.push(node);
+        }
     }
 
     toDart() {
         let node = this.node;
         return new XDSvg(node, this.shapes).toDart();
+    }
+
+
+    addShapesFromGroup(node) {
+        node.children.forEach(child => {
+            if (child.constructor.name == 'Group') {
+                this.addShapesFromGroup(child);
+            } else {
+                this.shapes.push(child);
+            }
+        });
     }
 }
 
@@ -35,7 +51,6 @@ class XDSvg {
         const node = this.node;
         const path = new Path(node);
         path.shapes = this.shapes;
-        path.shapes.push(node);
         return `Container(
             ${height(node)}${width(node)}
             child: ${path.toString()},

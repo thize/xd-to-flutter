@@ -102,7 +102,7 @@ function insertNoIn(newNo, inNo) {
     inNo.updateBounds();
     const nodesRelation = relation(newNo, inNo);
     const inNoName = inNo.widget != null ? inNo.widget.constructor.name : '';
-    const canInside = inNoName != 'Component' && inNoName != 'Text';
+    const canInside = inNoName != 'Component' && inNoName != 'Text' && inNoName != 'Svg';
     if ((nodesRelation == 'inside' && canInside) || (nodesRelation == 'above' && (inNo.type == 'Row' || inNo.type == 'Column'))) {
         return insertInside(newNo, inNo);
     } else if (nodesRelation == 'above' || (!canInside && nodesRelation == 'inside')) {
