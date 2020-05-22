@@ -8,7 +8,8 @@ function exportButtonsUi() {
     const components = buildRadio('Components');
     const fontStyles = buildRadio('FontStyles');
     const switchs = artboards + components + '<br>' + colors + fontStyles;
-    const exportContent = title + exportSelectionButton() + exportSingleColorButton() + exportIosIconButton() + exportAndroidIconButton();
+    // exportSingleColorButton() + 
+    const exportContent = title + exportSelectionButton() + exportIosIconButton() + exportAndroidIconButton();
     const exportAllContent = titleAll + switchs + exportAllButton();
     return exportContent + '<hr>' + exportAllContent;
 }
@@ -26,7 +27,7 @@ function exportSingleColorButton() {
 }
 
 function exportIosIconButton() {
-    return buttonUi('iosIconButton', 'iOS Icons', false);
+    return buttonUi('iosIconButton', 'iOS Icon', false);
 }
 
 function exportAndroidIconButton() {

@@ -37,15 +37,15 @@ function show(event) {
 
 let oldItemsLengh;
 function update() {
+    // const singleColorButton = document.getElementById('singleColorButton');
+    // const isToActiveSingleColorButton = items.length == 1 && (items[0].children.length == 0 || items[0].constructor.name == 'Artboard');
+    // _changeButtonState(singleColorButton, isToActiveSingleColorButton);
     const items = scenegraph.selection.items;
-    const singleColorButton = document.getElementById('singleColorButton');
     const selectionButton = document.getElementById('selectionButton');
     const iosIconButton = document.getElementById('iosIconButton');
     const androidIconButton = document.getElementById('androidIconButton');
     const isToActiveSelectionButton = items.length > 0;
     _changeButtonState(selectionButton, isToActiveSelectionButton);
-    const isToActiveSingleColorButton = items.length == 1 && (items[0].children.length == 0 || items[0].constructor.name == 'Artboard');
-    _changeButtonState(singleColorButton, isToActiveSingleColorButton);
     const isToActiveIosIconButton = items.length == 1;
     _changeButtonState(iosIconButton, isToActiveIosIconButton);
     const isToActiveAndroidIconButton = items.length == 1;
@@ -57,10 +57,10 @@ function update() {
 }
 
 function buildTaps() {
-    let singleColorButton = document.getElementById('singleColorButton');
-    singleColorButton.onclick = _checkActive(singleColorButton, function () {
-        onTapExport('SingleColor');
-    });
+    // let singleColorButton = document.getElementById('singleColorButton');
+    // singleColorButton.onclick = _checkActive(singleColorButton, function () {
+    //     onTapExport('SingleColor');
+    // });
     let selectionButton = document.getElementById('selectionButton');
     selectionButton.onclick = _checkActive(selectionButton, function () {
         onTapExport('Selection');
@@ -70,12 +70,12 @@ function buildTaps() {
         let exportAllRadio = document.querySelector('input[name="exportAllRadio"]:checked');
         onTapExport(exportAllRadio.value);
     });
-    let changeProjectFolderButton = document.getElementById('changeProjectFolderButton');
-    changeProjectFolderButton.onclick = async function () {
-        await changeProjectFolder();
-        const projectFolderInput = document.getElementById('projectFolderInput');
-        projectFolderInput.value = getFolderPath();
-    };
+    // let changeProjectFolderButton = document.getElementById('changeProjectFolderButton');
+    // changeProjectFolderButton.onclick = async function () {
+    //     await changeProjectFolder();
+    //     const projectFolderInput = document.getElementById('projectFolderInput');
+    //     projectFolderInput.value = getFolderPath();
+    // };
     let iosIconButton = document.getElementById('iosIconButton');
     iosIconButton.onclick = function () {
         exportAppIcon('ios');
