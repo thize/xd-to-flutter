@@ -1,74 +1,74 @@
-# Adobe XD Flutter Code Generate - Plugin
-<a href="https://github.com/thize/xd-to-flutter/releases"><img src="https://img.shields.io/badge/Xd%20to%20Flutter-v2.1.0-blue"/></a>
+# Flutter Generate Tool
 
-⚠️ **If you encounter an issue or have any feedback which you think could improve Plugin, please open an issue [here](https://github.com/thize/xd-to-flutter/issues)**
+Remaster of Plugin with new functionalities
 
-## Example
-![Plugin-Example](https://i.imgur.com/neBC735.png)
+## TODO
 
-## About this Project
+### Priority
 
-The idea of the Plugin is:
+* [ ] All Adobe Xd Types
+* [ ] Fix Dialogs (excluding panel after showing it)
+* [ ] Container Alignments
+* [ ] Stack Positioneds
+* [ ] [Fix] Rectangle(w:50,h:5) exactly above Rectangle(w:5,h:50) generating inside and not Stack
+* [ ] (Unnecessary Children distances) to (MainAlignment.better)
+* [ ] Improve Interface
 
-_“Increase productivity and decrease time spent with front-end code”._
+### Adobe Xd Types
 
-## Why?
-
-This project was designed to accelerate my company's software development and to help everyone waste time with simple and repetitive Widget creation processes.\
-I will be happy if you can help me with as many PR's as you like so that we can perfect the plugin more and more
-
-Email-me: thize@bluebookapps.com
-
-Connect with me at [LinkedIn](https://linkedin.com/in/giovani-lobato-68aa57131).
-
-## TODO NOW
-
-* [ ] Generate correct full layout
-* [ ] Generate layout distances (spacer, sizedBox, margin, padding, alingment)
-
-
-## TODO LATER
-
-This list is not very well-ordered. I'm mainly picking up things that seem interesting or useful.
-
-* [ ] Polygon
-* [ ] Show Structure
-* [ ] Automatic detect buttons
-
-## DONE
-
-* [x] Google Fonts
-* [x] Pedantic Analysis Options rules
-* [x] Const
-* [x] Line
-* [x] Generate with Division
-* [x] Generate with SimpleCode
-* [x] Full layout
+* [ ] RepeatGrid
 * [x] Text
-* [x] Container/Elipse
-* [x] Rotation
-* [x] Svg / Svg group folder
 * [x] Image
-* [x] Export Color/Border/Shadow/Gradient
-* [x] Export Global Colors/TextStyles/Components
-* [x] Stops on LinearGradient and RadialGradient
+* [x] Path
+* [x] BooleanGroup
+* [x] SimbolInstance
+* [x] Rectangle
+* [x] Artboard
+* [x] Line
+* [x] Ellipse
 
-## Probably out of scope/non-goals
+### Util
 
-- Auto Detect Material Design Widgets
-- Auto animated
+* [ ] Choose a preferred level of double precision.
+* [ ] Rotation
+* [ ] Conts
+* [ ] Generate with SimpleCode (sz)
+* [ ] Svg
+* [ ] Export Adaptive Icon Android
+* [ ] Blending mode (is possible?)
+* [x] Export Global TextStyles
+* [x] Export Global Colors
+* [x] Export All Artboards at once
+* [x] Blur
+* [x] Opacity
+* [x] Export Global Components
 
-### Installing
+* [x] Artboard with Components
+* [x] Prototype Interactions
+* [x] Export Widget Shortcut
+* [x] Export Color Shortcut
+* [x] Export IOS Icons
+* [x] Export Android Icons
+* [x] Google Fonts
+* [x] Material Colors
+* [x] Code indentation
 
-Download xdx file from: https://github.com/thize/xd-to-flutter/releases
-or Download from Discover plugins Adobe XD
+### Rewrite Code
 
-## Contributing
+* [ x Panel Ui
 
-You can send how many PR's do you want, I'll be glad to analyse and accept them! And if you have any question about the project...
+### JSDoc
 
-Email-me: thize@bluebookapps.com
-
-Connect with me at [LinkedIn](https://linkedin.com/in/giovani-lobato-68aa57131).
-
-Thank you!
+* [x] bounds.js
+* [x] layout.js
+* [x] children.js
+* [ ] utils Folder
+* [ ] dialogs Folder
+* [ ] text.js
+* [ ] svg.js
+* [ ] container.js
+* [ ] panel_ui.js
+* [ ] export_icon.js
+* [ ] export_color.js
+* [ ] exportWidget Function (export_widget.js)
+* [ ] generateWidgetByType Function
