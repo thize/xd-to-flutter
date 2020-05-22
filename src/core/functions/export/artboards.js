@@ -20,7 +20,7 @@ function exportAllArtboards(artboards) {
         generatedArtboards.forEach((e) => stringComponents += e);
         stringComponents = formatDart(stringComponents);
         copyToClipboard(formatDart(stringComponents));
-        changeOutputUiText('Components copied to clipboard');
+        changeOutputUiText('Artboards copied to clipboard');
     } else {
         changeOutputUiText('Exporting Artboard Dart Files');
         exportFiles(fileArtboardsName, generatedArtboards);
