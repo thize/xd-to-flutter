@@ -8,6 +8,7 @@ const { wrapWithRotation } = require("./utils/rotation");
 const { Rectangle } = require("scenegraph");
 const { wrapWithInkWell } = require("./inkwell");
 const { alignment } = require("./utils/alignment");
+const { simpleCode } = require("../util/util");
 
 let application = require("application");
 const xd = require("scenegraph");
@@ -115,8 +116,8 @@ class XDRectangle {
         if (node.isCircle) {
             return "shape: BoxShape.circle,";
         } else {
-            const x = fixDouble(node.radiusX * 2);
-            const y = fixDouble(node.radiusY * 2);
+            const x = simpleCode(fixDouble(node.radiusX * 2));
+            const y = simpleCode(fixDouble(node.radiusY * 2));
             return `borderRadius: BorderRadius.all(Radius.elliptical(${x},${y})),`;
         }
     }
@@ -167,13 +168,13 @@ class XDRectangle {
 
     radiusCircular(tag, value) {
         if (value == 0) return '';
-        return `${tag}: Radius.circular(${fixDouble(value)}),`;
+        return `${tag}: Radius.circular(${simpleCode(fixDouble(value))}),`;
     }
 
     border() {
         const node = this.node;
         if (node.strokeEnabled)
-            return `border: Border.all(width: ${node.strokeWidth},color: ${fillToColor(node.stroke)},),`; return '';
+            return `border: Border.all(width: ${simpleCode(node.strokeWidth)},color: ${fillToColor(node.stroke)},),`; return '';
     }
 
     gradient() {

@@ -1,4 +1,5 @@
 const { Bounds } = require("../bounds");
+const { widgetPrefix } = require("../../functions/util/util");
 
 class Component {
     constructor(node) {
@@ -23,6 +24,6 @@ class XDComponent {
     }
 
     toDart() {
-        return `const ${this.node.name}()`;
+        return `const ${widgetPrefix()}${this.node.name}()`;
     }
 }

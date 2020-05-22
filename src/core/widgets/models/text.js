@@ -9,7 +9,7 @@ const { fillToColor } = require("./utils/fill_to_color");
 const { shadow } = require("./utils/shadow");
 const { googleFonts } = require("./utils/google_fonts");
 const { wrapWithInkWell } = require("./inkwell");
-const { titleCase } = require("../util/util");
+const { titleCase, simpleCode } = require("../util/util");
 const { withGoogleFonts } = require("../../functions/util/util");
 
 class Text {
@@ -111,11 +111,14 @@ function _getTextRich(xdNode, params) {
 // TODO: GS: Evaluate moving all of these into a serialize/text.js file.
 function _getTextSpan(params, text, xdNode) {
     return 'TextSpan(' +
-        ` text: ${$.escapeString(text)},` +
+        ` text: '${escapeString(text)}',` +
         _getStyleParam(params, xdNode) +
         ')';
 }
-
+function escapeString(str) {
+    return str.replace(/(['\\$])/g, '\\$1') // escaped characters
+        .replace(/\n/g, '\\n'); // line breaks
+}
 function _getTextAlignParam(xdNode) {
     const textAlign = _getTextAlign(xdNode.textAlign);
     if (textAlign == '') return '';
@@ -169,7 +172,7 @@ function _getFontFamilyParam(o) {
 }
 
 function _getFontSizeParam(o) {
-    return `fontSize: ${o.fontSize}, `;
+    return `fontSize: ${simpleCode(o.fontSize)}, `;
 }
 
 function _getColorParam(node, params) {

@@ -1,10 +1,10 @@
 const { fixDouble } = require("./fix_double");
 
-function alignment(x, y, factor = 100) {
+function alignment(x, y) {
     /// 0 to 1, have to be -1 to 1
     const dx = applyFunction(x);
     const dy = applyFunction(y);
-    const align = `Alignment(${fixDouble(dx, factor)},${fixDouble(dy, factor)})`;
+    const align = `Alignment(${fixDouble(dx)},${fixDouble(dy)})`;
     return alignmentFix[align] ? alignmentFix[align] : align;
 }
 

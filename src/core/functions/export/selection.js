@@ -6,10 +6,13 @@ const { exportFiles } = require("../util/project_folder");
 const { statelessWidget } = require("./../../widgets/stateless");
 const { formatDart } = require("../util/format_dart");
 const { changeOutputUiText } = require('../../../ui/components/output_ui');
+const { exporComponentsFromAssetsPanel } = require('./components');
 
 function exportSelection() {
     const items = scenegraph.selection.items;
-    if (items[0].constructor.name == 'Artboard') {
+    if (items.length == 1 && items[0].constructor.name == 'SymbolInstance') {
+        exporComponentsFromAssetsPanel(items);
+    } else if (items[0].constructor.name == 'Artboard') {
         exportAllArtboards(items);
     } else {
         let generated = generateWidgetFromItems(items);

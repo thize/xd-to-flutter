@@ -1,8 +1,9 @@
 const { widgetPrefix } = require("../functions/util/util");
 
 function statelessWidget(name, child) {
+  name = widgetPrefix() + name;
   return `
-      class ${widgetPrefix()}${name} extends StatelessWidget {
+      class ${name} extends StatelessWidget {
           const ${name}({Key key}) : super(key: key);    
           
           @override

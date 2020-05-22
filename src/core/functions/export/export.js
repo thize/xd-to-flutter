@@ -31,8 +31,9 @@ function onTapExport(type) {
                 break;
         }
     } catch (error) {
-        console.log('catch erro');
         let words = error.toString().split(' ').length;
+        console.log('teste');
+        
         if (words == 1) {
             changeOutputUiText(`${error} is not supported`, 'red');
         } else {

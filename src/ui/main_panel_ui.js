@@ -11,6 +11,8 @@ const { exportWithCheckBoxsUi } = require("./components/export_with_checkboxs_ui
 const { getFolderPath, changeProjectFolder } = require('../core/functions/util/project_folder');
 const { onTapExport } = require("../core/functions/export/export");
 const { exportAppIcon } = require("../core/functions/export/app_icon");
+const { precisionRowUi } = require("./components/precision_row_ui");
+
 
 let panel;
 
@@ -21,11 +23,12 @@ function show(event) {
             build_css() +
             outputUi() + '<hr>' +
             exportButtonsUi() + '<hr>' +
-            projectFolderUi() + '<hr>' +
-            exportedCodePath() + '<hr>' +
-            widgetsPrefixUi() + '<hr>' +
-            exportTypeUi() + '<hr>' +
             exportToUi() + '<hr>' +
+            // projectFolderUi() + '<hr>' +
+            // exportedCodePath() + '<hr>' +
+            widgetsPrefixUi() + '<hr>' +
+            precisionRowUi() + '<hr>' +
+            exportTypeUi() + '<hr>' +
             exportWithCheckBoxsUi() + '<hr>';
         event.node.appendChild(panel);
         buildTaps();
@@ -80,6 +83,19 @@ function buildTaps() {
     let androidIconButton = document.getElementById('androidIconButton');
     androidIconButton.onclick = function () {
         exportAppIcon('android');
+    };
+    let decrementPrecisionButton = document.getElementById('decrementPrecisionButton');
+    decrementPrecisionButton.onclick = function () {
+        let value = parseInt(document.getElementById('incrementText').innerHTML);
+        value = value > 1 ? value - 1 : value;
+        document.getElementById('incrementText').innerHTML = value.toString();
+    };
+
+    let incrementPrecisionButton = document.getElementById('incrementPrecisionButton');
+    incrementPrecisionButton.onclick = function () {
+        let value = parseInt(document.getElementById('incrementText').innerHTML);
+        value = value < 9 ? value + 1 : value;
+        document.getElementById('incrementText').innerHTML = value.toString();
     };
 }
 

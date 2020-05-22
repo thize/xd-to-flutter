@@ -8,7 +8,7 @@ const { dartColor, gradientColorList, isGradient } = require("../../widgets/util
 
 async function exportSelectionColor() {
     document.addEventListener('keydown', keydownFunc);
-    changeOutputUiText('Tap:\nF to Fill\nB to Border\nS to Shadow', 'yellow');
+    changeOutputUiText('Tap:\nF to Fill\nB to Border\nS to Shadow', 'DodgerBlue');
 }
 
 function exporColorsFromAssetsPanel() {

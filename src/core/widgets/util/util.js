@@ -4,6 +4,7 @@ All Rights Reserved.
 */
 
 const { colorToMaterialColor } = require('../../widgets/models/utils/material_colors');
+const { withSimpleCode } = require('../../functions/util/util');
 
 function dartColor(value) {
     const color = '0xFF' + value.toHex(true).substr(1).toUpperCase();
@@ -20,6 +21,14 @@ function gradientColorList(gradient) {
 
 function isGradient(fill) {
     return fill.startY != null || (fill.colorStops != null && fill.colorStops.length > 0);
+}
+
+function simpleCode(value, prefix) {
+    prefix = prefix ? prefix : '';
+    if (value != 0 && withSimpleCode()) {
+        return `${prefix}sz(${value})`;
+    }
+    return value;
 }
 
 function titleCase(str) {
@@ -60,6 +69,7 @@ module.exports = {
     dartColor: dartColor,
     gradientColorList: gradientColorList,
     isGradient: isGradient,
+    simpleCode: simpleCode,
     titleCase: titleCase,
     getOpacity: getOpacity,
     getRotation: getRotation,

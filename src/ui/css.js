@@ -15,6 +15,9 @@ function build_css() {
     input[type="radio"]{
         vertical-align: baseline;
     }
+    .incrementText{
+        width: 20%;
+    }
     </style>
     `;
 }

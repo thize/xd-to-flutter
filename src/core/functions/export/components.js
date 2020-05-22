@@ -5,20 +5,21 @@ const { copyToClipboard, exportTo } = require('../util/util');
 const { formatDart } = require('../util/format_dart');
 const { changeOutputUiText } = require('../../../ui/components/output_ui');
 
-async function exporComponentsFromAssetsPanel() {
-    const components = [];
-    const usedComponentsId = [];
-    const artboards = scenegraph.selection.editContext.children;
-    artboards.forEach(async artboard => {
-        let isArtboard = artboard.constructor.name == "Artboard";
-        if (isArtboard) {
-            getComponentsFromGroup(artboard, components, usedComponentsId);
-        }
-    });
+async function exporComponentsFromAssetsPanel(components) {
+    if (components == null) {
+        components = [];
+        const usedComponentsId = [];
+        const artboards = scenegraph.selection.editContext.children;
+        artboards.forEach(async artboard => {
+            let isArtboard = artboard.constructor.name == "Artboard";
+            if (isArtboard) {
+                getComponentsFromGroup(artboard, components, usedComponentsId);
+            }
+        });
+    }
     const fileComponentsName = [];
     const componentsWidgets = [];
     components.forEach(component => {
-        //TODO: name to fixDartFileName(name)
         const name = `${component.name}.dart`;
         fileComponentsName.push(name);
         componentsWidgets.push(generateComponent(component));

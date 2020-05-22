@@ -28,5 +28,5 @@ function simpleCodeUi() {
 }
 
 function styledWidgetUi() {
-    return rowUi(`<input type="checkbox" id="stlyedWidget" name="stlyedWidget" disabled="disabled" >Styled Widget (Not yet)`);
+    return rowUi(`<input type="checkbox" id="stlyedWidget" name="stlyedWidget" disabled="disabled" >Styled Widget (Coming soon)`);
 }

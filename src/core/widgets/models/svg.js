@@ -4,7 +4,7 @@ All Rights Reserved.
 */
 
 const { Bounds } = require("../bounds");
-const { width, height } = require("./utils/width_height");
+const { doubleWithTag } = require("./utils/double_with_tag");
 const xd = require("scenegraph");
 
 class Svg {
@@ -51,8 +51,14 @@ class XDSvg {
         const node = this.node;
         const path = new Path(node);
         path.shapes = this.shapes;
-        return `Container(
-            ${height(node)}${width(node)}
+        let height = node.height;
+        height = height != null ? height : node.localBounds.height;
+        height = height == 0 ? 1 : height;
+        let width = node.width;
+        width = width != null ? width : node.localBounds.width;
+        width = width == 0 ? 1 : width;
+        return `SizedBox(
+            ${doubleWithTag('width', width)}${doubleWithTag('height', height)}
             child: ${path.toString()},
         )`;
     }
@@ -145,7 +151,6 @@ function _serializeSvgGroup(node) {
 }
 
 function _serializeSvgShape(o) {
-    // TODO: CE: Pull some of this code out into utility functions
     let pathStr = o.pathData;
     let opacity = getOpacity(o);
     let fill = "none";

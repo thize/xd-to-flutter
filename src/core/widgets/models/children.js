@@ -1,5 +1,7 @@
+const { doubleWithTag } = require("./utils/double_with_tag");
 const { fixDouble } = require("./utils/fix_double");
 const { alignment } = require("./utils/alignment");
+const { simpleCode } = require("../util/util");
 
 class Children {
     /**
@@ -32,20 +34,21 @@ class Children {
 
     positioned(child) {
         const node = this.node;
-        let left = child.bounds.x1 - node.bounds.x1;
-        let top = child.bounds.y1 - node.bounds.y1;
-        let right = node.bounds.x2 - child.bounds.x2;
-        let bot = node.bounds.y2 - child.bounds.y2;
-        let positionedX = `right: ${right},`;
+        let left = fixDouble(child.bounds.x1 - node.bounds.x1);
+        let top = fixDouble(child.bounds.y1 - node.bounds.y1);
+        let right = fixDouble(node.bounds.x2 - child.bounds.x2);
+        let bot = fixDouble(node.bounds.y2 - child.bounds.y2);
+        let positionedX = `${doubleWithTag('right', right)}`;
+
         if (left < right) {
-            positionedX = `left: ${left},`;
+            positionedX = `${doubleWithTag('left', left)}`;
             if (positionedX == 'left: 0,') {
                 positionedX = '';
             }
         }
-        let positionedY = `bottom: ${bot},`;
+        let positionedY = `${doubleWithTag('bottom', bot)}`;
         if (top < bot) {
-            positionedY = `top: ${top},`;
+            positionedY = `${doubleWithTag('top', top)}`;
             if (positionedY == 'top: 0,') {
                 positionedY = '';
             }
@@ -54,8 +57,8 @@ class Children {
     }
 
     sizedBox(dartCode) {
-        const width = `width:${fixDouble(this.node.bounds.x2 - this.node.bounds.x1)},`;
-        const height = `height:${fixDouble(this.node.bounds.y2 - this.node.bounds.y1)},`;
+        const width = doubleWithTag('width', this.node.bounds.x2 - this.node.bounds.x1);
+        const height = doubleWithTag('height', this.node.bounds.y2 - this.node.bounds.y1);
         // return `Container(color:Colors.blue.withOpacity(0.2),${width}${height}child: ${dartCode},)`;
         return `SizedBox(${width}${height}child: ${dartCode},)`;
     }
@@ -163,8 +166,8 @@ class Children {
                 }
                 return `Spacer(flex:${distance})`
             }
-            const width = this.type == 'Row' ? `width:${fixDouble(distance, true)}` : ``;
-            const height = this.type == 'Column' ? `height:${fixDouble(distance, false)}` : ``;
+            const width = this.type == 'Row' ? `width:${fixDouble(distance)}` : ``;
+            const height = this.type == 'Column' ? `height:${fixDouble(distance)}` : ``;
             if (width != `` || height != ``) {
                 return `SizedBox(${width}${height})`
             }
