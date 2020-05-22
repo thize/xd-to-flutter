@@ -26,7 +26,7 @@ function exportSelection() {
         const exportToValue = exportTo();
         if (exportToValue == 'clipboard') {
             copyToClipboard(generated);
-            changeOutputUiText('Generated widget copied to clipboard');
+            changeOutputUiText('Widget copied to clipboard');
         } else {
             changeOutputUiText('Exporting generated_widget.dart');
             exportFiles(['generated_widget.dart'], [generated]);
