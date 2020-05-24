@@ -22,9 +22,9 @@ function show(event) {
         panel.innerHTML =
             build_css() +
             outputUi() + '<hr>' +
+            projectFolderUi() + '<hr>' +
             exportButtonsUi() + '<hr>' +
             exportToUi() + '<hr>' +
-            // projectFolderUi() + '<hr>' +
             // exportedCodePath() + '<hr>' +
             widgetsPrefixUi() + '<hr>' +
             precisionRowUi() + '<hr>' +
@@ -70,12 +70,12 @@ function buildTaps() {
         let exportAllRadio = document.querySelector('input[name="exportAllRadio"]:checked');
         onTapExport(exportAllRadio.value);
     });
-    // let changeProjectFolderButton = document.getElementById('changeProjectFolderButton');
-    // changeProjectFolderButton.onclick = async function () {
-    //     await changeProjectFolder();
-    //     const projectFolderInput = document.getElementById('projectFolderInput');
-    //     projectFolderInput.value = getFolderPath();
-    // };
+    let changeProjectFolderButton = document.getElementById('changeProjectFolderButton');
+    changeProjectFolderButton.onclick = async function () {
+        await changeProjectFolder();
+        const projectFolderInput = document.getElementById('projectFolderInput');
+        projectFolderInput.value = getFolderPath();
+    };
     let iosIconButton = document.getElementById('iosIconButton');
     iosIconButton.onclick = function () {
         exportAppIcon('ios');
