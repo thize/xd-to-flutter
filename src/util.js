@@ -2,6 +2,7 @@ const { Path, Line, Group, Polygon, BooleanGroup, Artboard, ImageFill, RepeatGri
 const { ArtboardWidget } = require("./widgets/artboard");
 const { ComponentWidget } = require("./widgets/component");
 const { ContainerWidget } = require("./widgets/container");
+const { GroupWidget } = require("./widgets/group");
 const { GridWidget } = require("./widgets/grid");
 const { ImageWidget } = require("./widgets/image");
 const { InkWellWidget } = require("./widgets/inkwell");
@@ -32,6 +33,13 @@ function isSvgFolder(item) {
 
 exports.isSvgFolder = isSvgFolder;
 
+function hasInteraction(item) {
+    const hasInteraction = item.triggeredInteractions[0] != null && item.triggeredInteractions[0].trigger.type == 'tap';
+    return hasInteraction;
+}
+
+exports.hasInteraction = hasInteraction;
+
 function xdItemToWidget(item) {
     const isImage = item.fill instanceof ImageFill;
     if (isImage) return new ImageWidget(item);
@@ -39,8 +47,10 @@ function xdItemToWidget(item) {
     if (isGrid) return new GridWidget(item);
     const isInkWell = item instanceof Group && !item.name.includes('svg_') && item.triggeredInteractions[0] != null && item.triggeredInteractions[0].trigger.type == 'tap';
     if (isInkWell) return new InkWellWidget(item);
-    const isSvg = item instanceof Group || item instanceof Path || item instanceof Polygon || item instanceof BooleanGroup || _isSvgLine(item);
+    const isSvg = (item instanceof Group && isSvgFolder(item)) || item instanceof Path || item instanceof Polygon || item instanceof BooleanGroup || _isSvgLine(item);
     if (isSvg) return new SvgWidget(item);
+    const isGroup = item instanceof Group;
+    if (isGroup) return new GroupWidget(item);
     const isComponent = item instanceof SymbolInstance;
     if (isComponent) return new ComponentWidget(item);
     const isArtboard = item instanceof Artboard;
@@ -57,8 +67,35 @@ function widgetCanHaveChild(widget) {
     const isSvg = widget instanceof SvgWidget;
     const isComponent = widget instanceof ComponentWidget;
     const isText = widget instanceof TextWidget;
-    const isAWidgetThatCannotHaveChild = isGrid || isSvg || isComponent || isText;
+    //TODO: decide... will Group have child or not?
+    const isGroup = widget instanceof GroupWidget;
+    const isAWidgetThatCannotHaveChild = isGrid || isSvg || isComponent || isText || isGroup;
     return !isAWidgetThatCannotHaveChild;
 }
 
 exports.widgetCanHaveChild = widgetCanHaveChild;
+
+function removeItemsFromGroup(items) {
+    let removedItems = [];
+    items.forEach(item => {
+        const isGroup = item instanceof Group;
+        const isArtboard = item instanceof Artboard;
+        const isSvgGroup = isGroup && (item.name.includes('svg_') || isSvgFolder(item));
+        const isMaskGroup = isGroup && item.mask;
+        if (isSvgGroup || isMaskGroup) {
+            removedItems.push(item);
+        } else if (isArtboard /* || isGroup */) {
+            // if (isArtboard) {
+            removedItems.push(item);
+            // }
+            removeItemsFromGroup(item.children).forEach(child => {
+                removedItems.push(child);
+            });
+        } else {
+            removedItems.push(item);
+        }
+    });
+    return removedItems;
+}
+
+exports.removeItemsFromGroup = removeItemsFromGroup;

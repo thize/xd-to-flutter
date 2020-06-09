@@ -1,4 +1,4 @@
-const { randomColor } = require("./util/util");
+const { randomColor } = require("./util/widgets_util");
 const { Bounds } = require("../bounds");
 
 class InkWellWidget {

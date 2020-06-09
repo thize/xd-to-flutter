@@ -1,4 +1,4 @@
-const { randomColor } = require("./util/util");
+const { randomColor } = require("./util/widgets_util");
 const { Bounds } = require("../bounds");
 
 class ArtboardWidget {
@@ -8,7 +8,7 @@ class ArtboardWidget {
     }
 
     toDart(child) {
-        let childWidget = child != null ? `child:Center(child:${child.toDart()},),` : ``;
+        let childWidget = child != null ? `child:${child.toDart()},` : ``;
         return `Scaffold(
             backgroundColor: ${randomColor()},
             ${childWidget}

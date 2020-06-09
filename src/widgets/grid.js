@@ -1,4 +1,4 @@
-const { randomColor } = require("./util/util");
+const { randomColor } = require("./util/widgets_util");
 const { Bounds } = require("../bounds");
 
 class GridWidget {
@@ -7,14 +7,12 @@ class GridWidget {
         this.bounds = new Bounds(XdNode);
     }
 
-    toDart(child) {
-        let childWidget = child != null ? `child:${child.toDart()},` : ``;
+    toDart() {
         return `Container(
             alignment: Alignment.center,
             width: ${this.XdNode.localBounds.width},
             height: ${this.XdNode.localBounds.height},
             color: ${randomColor()},
-            ${childWidget}
         )`;
     }
 

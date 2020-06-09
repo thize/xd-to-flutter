@@ -1,5 +1,5 @@
 const { Group, Artboard } = require("scenegraph");
-const { isSvgFolder, xdItemToWidget, widgetCanHaveChild } = require("./util");
+const { isSvgFolder, xdItemToWidget, widgetCanHaveChild, removeItemsFromGroup } = require("./util");
 const { Bounds } = require("./bounds");
 const { Children } = require("./widgets/children");
 const { ArtboardWidget } = require("./widgets/artboard");
@@ -12,30 +12,6 @@ function itemsToDart(items) {
 }
 
 exports.itemsToDart = itemsToDart;
-
-function removeItemsFromGroup(items) {
-    let removedItems = [];
-    items.forEach(item => {
-        const isGroup = item instanceof Group;
-        const isArtboard = item instanceof Artboard;
-        const isSvgGroup = isGroup && (item.name.includes('svg_') || isSvgFolder(item));
-        const isMaskGroup = isGroup && item.mask;
-        const hasInteraction = item.triggeredInteractions[0] != null && item.triggeredInteractions[0].trigger.type == 'tap';
-        if (isSvgGroup || isMaskGroup) {
-            removedItems.push(item);
-        } else if (isGroup || isArtboard) {
-            if (isArtboard || hasInteraction) {
-                removedItems.push(item);
-            }
-            removeItemsFromGroup(item.children).forEach(child => {
-                removedItems.push(child);
-            });
-        } else {
-            removedItems.push(item);
-        }
-    });
-    return removedItems;
-}
 
 function generateWidgetsFromItems(items) {
     const widgets = [];
@@ -298,7 +274,7 @@ class Node {
     }
 
     /**
-    * @param {number} depth depth in the Tree to indent the co'de
+    * @param {number} depth depth in the Tree to indent the code
     * @return {string} Generated dart code
     */
     toDart() {
