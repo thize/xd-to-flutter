@@ -1,10 +1,10 @@
 {
-  "name": "Xd to Flutter by Thize",
+  "name": "Denovo?",
   "host": {
     "app": "XD",
     "minVersion": "21.0"
   },
-  "id": "b9d42c73",
+  "id": "b9d42c71",
   "icons": [
     {
       "path": "images/icon@1x.png",
@@ -19,10 +19,10 @@
   ],
   "uiEntryPoints": [
     {
-      "type": "panel",
-      "label": "UI Panel",
-      "panelId": "main_panel"
+      "label": "Generate Selection",
+      "type": "menu",
+      "commandId": "onTapGenerate"
     }
   ],
-  "version": "3.0.0"
+  "version": "0.0.1"
 }
