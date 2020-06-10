@@ -280,3 +280,19 @@ function randomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function cleanVarName(name, isToCapitalize) {
+    if (!name) { return ''; }
+    name = name.replace(/^[\W\d]+|\W/ig, '');
+    if (isToCapitalize) {
+        return capitalize(name);
+    }
+    return name;
+}
+
+exports.cleanVarName = cleanVarName;
+
+function capitalize(str) {
+    return str[0].toUpperCase() + str.substr(1);
+}
+
+exports.capitalize = capitalize;

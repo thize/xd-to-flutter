@@ -1,4 +1,3 @@
-const { randomColor } = require("./util/widgets_util");
 const { Bounds } = require("../bounds");
 
 class ComponentWidget {
@@ -8,14 +7,14 @@ class ComponentWidget {
     }
 
     toDart() {
-        return `Container(
-            alignment: Alignment.center,
-            width: ${this.XdNode.localBounds.width},
-            height: ${this.XdNode.localBounds.height},
-            color: ${randomColor()},
-        )`;
+        const { findMasterForSymbolId } = require("../util");
+        const { cleanVarName } = require("./util/widgets_util");
+        const master = findMasterForSymbolId(this.XdNode.symbolId);
+        if (!master) {
+            return `const ${cleanVarName(this.XdNode.name, true)}()`;
+        }
+        return `const ${cleanVarName(master.name, true)}()`;
     }
-
 }
 
 exports.ComponentWidget = ComponentWidget;

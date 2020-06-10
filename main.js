@@ -2,7 +2,9 @@ const scenegraph = require("scenegraph");
 const clipboard = require("clipboard");
 const { Artboard, SymbolInstance } = require("scenegraph");
 const { itemsToDart } = require("./src/items_to_dart");
+const { StatelessWidget } = require("./src/widgets/stateless");
 const { formatDart } = require("./src/widgets/util/format_dart");
+const { findMasterForSymbolId } = require("./src/util");
 
 function onTapGenerate() {
     const items = scenegraph.selection.items;
@@ -16,9 +18,7 @@ function onTapGenerate() {
         } else if (isArtboard) {
             generateArtboards(items);
         } else {
-            const dartCode = formatDart(itemsToDart(items) + ";");
-            console.log(dartCode);
-            clipboard.copyText(dartCode);
+            generateSelection(items);
         }
     } else {
         console.log(`Nothing selected`);
@@ -31,23 +31,37 @@ module.exports = {
     }
 };
 
-
-function generateArtboards(artboards) {
-    const dartCode = formatDart(itemsToDart([artboards[0]]) + ";");
-    console.log(dartCode);
-    clipboard.copyText(dartCode);
+function generateComponents(components) {
+    const componentsWidget = [];
+    components.forEach(component => {
+        const master = findMasterForSymbolId(component.symbolId);
+        const componentName = master.name;
+        const dartCode = new StatelessWidget(componentName, itemsToDart([component])).toDart();
+        componentsWidget.push(dartCode);
+    });
+    let stringComponents = '';
+    componentsWidget.forEach(componentWidget => {
+        stringComponents += '\n' + componentWidget;
+    });
+    stringComponents = formatDart(stringComponents);
+    clipboard.copyText(stringComponents);
 }
 
-function generateComponents(components) {
-    console.log('generateComponents');
-    // const componentsWidgets = [];
-    // components.forEach(component => {
-    //     let widget = generateWidgetFromItems(component.children);
-    //     widget = wrapWithInkWell(component, widget);
-    //     const generatedComponent = formatDart(statelessWidget(component.name, widget));
-    //     componentsWidgets.push(generatedComponent);
-    // });
-    // let stringComponents = '';
-    // componentsWidgets.forEach((e) => stringComponents += e);
-    // return stringComponents;
+function generateArtboards(artboards) {
+    const artboardsWidget = [];
+    artboards.forEach(artboard => {
+        const dartCode = new StatelessWidget(artboard.name, itemsToDart([artboard])).toDart();
+        artboardsWidget.push(dartCode);
+    });
+    let stringArtboards = '';
+    artboardsWidget.forEach(artboardWidget => {
+        stringArtboards += '\n' + artboardWidget;
+    });
+    stringArtboards = formatDart(stringArtboards);
+    clipboard.copyText(stringArtboards);
+}
+
+function generateSelection(items) {
+    const dartCode = formatDart(itemsToDart(items) + ";");
+    clipboard.copyText(dartCode);
 }

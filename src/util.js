@@ -1,3 +1,4 @@
+const scenegraph = require("scenegraph");
 const { Path, Line, Group, Polygon, BooleanGroup, Artboard, ImageFill, RepeatGrid, SymbolInstance, Text } = require("scenegraph");
 const { ArtboardWidget } = require("./widgets/artboard");
 const { ComponentWidget } = require("./widgets/component");
@@ -99,3 +100,21 @@ function removeItemsFromGroup(items) {
 }
 
 exports.removeItemsFromGroup = removeItemsFromGroup;
+
+function findMasterForSymbolId(symbolId, xdNode) {
+    let result = null;
+    if (!xdNode) {
+        xdNode = scenegraph.selection.editContext;
+    }
+    if (xdNode instanceof SymbolInstance) {
+        if (xdNode.isMaster && xdNode.symbolId === symbolId) {
+            result = xdNode;
+        }
+    }
+    xdNode.children.forEach((child) => {
+        if (!result) result = findMasterForSymbolId(symbolId, child);
+    });
+    return result;
+}
+
+exports.findMasterForSymbolId = findMasterForSymbolId;

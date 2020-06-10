@@ -1,5 +1,4 @@
-const { Group, Artboard } = require("scenegraph");
-const { isSvgFolder, xdItemToWidget, widgetCanHaveChild, removeItemsFromGroup } = require("./util");
+const { xdItemToWidget, widgetCanHaveChild, removeItemsFromGroup } = require("./util");
 const { Bounds } = require("./bounds");
 const { Children } = require("./widgets/children");
 const { ArtboardWidget } = require("./widgets/artboard");
