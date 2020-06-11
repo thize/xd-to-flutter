@@ -3,9 +3,9 @@ const { Bounds } = require("../bounds");
 const { getAlignmentByFather } = require("./util/alignment_by_father");
 
 class ArtboardWidget {
-    constructor(XdNode) {
-        this.XdNode = XdNode;
-        this.bounds = new Bounds(XdNode);
+    constructor(xdNode) {
+        this.xdNode = xdNode;
+        this.bounds = new Bounds(xdNode);
     }
 
     toDart(child) {

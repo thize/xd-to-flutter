@@ -1,19 +1,19 @@
 const { Bounds } = require("../bounds");
 
 class InkWellWidget {
-    constructor(XdNode) {
-        this.XdNode = XdNode;
-        this.bounds = new Bounds(XdNode);
+    constructor(xdNode) {
+        this.xdNode = xdNode;
+        this.bounds = new Bounds(xdNode);
     }
 
     toDart(childWidget) {
         const { itemsToDart } = require("../items_to_dart");
-        const child = !childWidget ? itemsToDart(this.XdNode.children) : childWidget;
+        const child = !childWidget ? itemsToDart(this.xdNode.children) : childWidget;
         return `
         InkWell(
             onTap: (){
-                //TODO: onTap ${this.XdNode.name}
-                print('onTap ${this.XdNode.name}');
+                //TODO: onTap ${this.xdNode.name}
+                print('onTap ${this.xdNode.name}');
             },
             child: ${child},
         )`;

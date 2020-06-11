@@ -1,14 +1,24 @@
-const { xdItemToWidget, widgetCanHaveChild, removeItemsFromGroup, fixAllNumbers } = require("./util");
+/*
+Copyright 2020 Adobe
+All Rights Reserved.
+NOTICE: Adobe permits you to use, modify, and distribute this file in
+accordance with the terms of the Adobe license agreement accompanying
+it. If you have received this file from a source other than Adobe,
+then your use, modification, or distribution of it requires the prior
+written permission of Adobe. 
+*/
+
+const { xdItemToWidget, widgetCanHaveChild, removeItemsFromGroup, fixAllNumbers, putSimpleCode } = require("./util");
 const { Bounds } = require("./bounds");
 const { Children } = require("./widgets/children");
 const { ArtboardWidget } = require("./widgets/artboard");
 const { wrapWithInkWell, wrapWithRotation } = require("./widgets/util/widgets_util");
 const { ComponentWidget } = require("./widgets/component");
 
-function itemsToDart(items) {
+function itemsToDart(items, withSimpleCode = false) {
     const ungroupedItems = removeItemsFromGroup(items);
     const widgets = generateWidgetsFromItems(ungroupedItems);
-    const tree = new Tree(widgets);
+    const tree = new Tree(widgets, withSimpleCode);
     return tree.toDart();
 }
 
@@ -27,17 +37,21 @@ class Tree {
     /**
     * @param {[any]} widgets list of all selection widgets
     */
-    constructor(widgets) {
+    constructor(widgets, withSimpleCode) {
         this.node = new Node(widgets[0]);
         for (let i = 1; i < widgets.length; i++) {
             const widget = widgets[i];
             this.node = this.insertNodeIn(new Node(widget), this.node);
         }
+        this.withSimpleCode = withSimpleCode;
         // console.log(this.node.debug(0));
     }
 
     toDart() {
         const widget = this.node.toDart();
+        if (this.withSimpleCode) {
+            return putSimpleCode(widget);
+        }
         return widget;
     }
 
@@ -246,7 +260,7 @@ class Node {
     constructor(widget, father, type) {
         this.widget = widget;
         this.father = father;
-        this.type = type == null ? widget.XdNode.name : type;
+        this.type = type == null ? widget.xdNode.name : type;
         this.children = [];
         this.bounds;
         this.updateBounds();
@@ -287,7 +301,7 @@ class Node {
         if (this.widget instanceof ComponentWidget) {
             return dartWidget;
         }
-        return fixAllNumbers(wrapWithRotation(this, wrapWithInkWell(this.widget.XdNode, dartWidget)));
+        return fixAllNumbers(wrapWithRotation(this, wrapWithInkWell(this.widget.xdNode, dartWidget)));
     }
 
     debug(depth) {

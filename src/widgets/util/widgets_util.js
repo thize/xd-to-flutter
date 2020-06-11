@@ -310,7 +310,7 @@ function wrapWithInkWell(node, widget) {
 exports.wrapWithInkWell = wrapWithInkWell;
 
 function wrapWithRotation(node, widget) {
-    const thisRotation = node.widget.XdNode == null ? 0 : node.widget.XdNode.rotation;
+    const thisRotation = node.widget.xdNode == null ? 0 : node.widget.xdNode.rotation;
     const fatherTotalRotation = !node.father ? 0 : getWidgetTotalRotation(node.father);
     const { fix } = require("../../util");
     const rotation = fix(thisRotation - fatherTotalRotation);
@@ -324,8 +324,25 @@ function wrapWithRotation(node, widget) {
 exports.wrapWithRotation = wrapWithRotation;
 
 function getWidgetTotalRotation(node) {
-    let totalRotation = node.widget.XdNode == null ? 0 : node.widget.XdNode.rotation;
+    let totalRotation = node.widget.xdNode == null ? 0 : node.widget.xdNode.rotation;
     return totalRotation;
 }
 
 exports.getWidgetTotalRotation = getWidgetTotalRotation;
+
+function titleCase(str) {
+    str = str.replace(
+        /\w\S*/g,
+        function (txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }
+    ).split('\\N').join('\\n');;
+    return str.replace(
+        /\\n./g,
+        function (txt) {
+            return txt.substr(0, txt.length - 1) + txt.charAt(txt.length - 1).toUpperCase();
+        }
+    );
+}
+
+exports.titleCase = titleCase;

@@ -5,7 +5,6 @@ const { Rectangle, Color, Group } = require("scenegraph");
 //TODO: 
 /*
 * getFolder() return correct
-* console.log change to own console
 * exportAndroidAdaptiveIcons
 */
 

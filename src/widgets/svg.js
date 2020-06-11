@@ -2,15 +2,15 @@ const { randomColor } = require("./util/widgets_util");
 const { Bounds } = require("../bounds");
 
 class SvgWidget {
-    constructor(XdNode) {
-        this.XdNode = XdNode;
-        this.bounds = new Bounds(XdNode);
+    constructor(xdNode) {
+        this.xdNode = xdNode;
+        this.bounds = new Bounds(xdNode);
     }
 
     toDart() {
         return `Container(
-            width: ${this.XdNode.localBounds.width},
-            height: ${this.XdNode.localBounds.height},
+            width: ${this.xdNode.localBounds.width},
+            height: ${this.xdNode.localBounds.height},
             color: ${randomColor()},
         )`;
     }

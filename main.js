@@ -7,6 +7,9 @@ const { formatDart } = require("./src/widgets/util/format_dart");
 const { ComponentWidget } = require("./src/widgets/component");
 const { listToString } = require("./src/util");
 
+//TODO:
+// * console.log change to own console
+
 function onTapGenerate() {
     const items = scenegraph.selection.items;
     const hasSelection = items.length > 0;
@@ -44,14 +47,14 @@ function generateComponents(components) {
 function generateArtboards(artboards) {
     const artboardsWidget = [];
     artboards.forEach(artboard => {
-        const dartCode = new StatelessWidget(artboard.name, itemsToDart([artboard])).toDart();
+        const dartCode = new StatelessWidget(artboard.name, itemsToDart([artboard], true)).toDart();
         artboardsWidget.push(dartCode);
     });
     clipboard.copyText(formatDart(listToString(artboardsWidget)));
 }
 
 function generateSelection(items) {
-    const dartCode = formatDart(itemsToDart(items) + ";");
+    const dartCode = formatDart(itemsToDart(items, true) + ";");
     clipboard.copyText(dartCode);
 }
 

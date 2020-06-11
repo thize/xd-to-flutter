@@ -1,17 +1,17 @@
 const { Bounds } = require("../bounds");
 
 class GridWidget {
-    constructor(XdNode) {
-        this.XdNode = XdNode;
-        this.bounds = new Bounds(XdNode);
+    constructor(xdNode) {
+        this.xdNode = xdNode;
+        this.bounds = new Bounds(xdNode);
     }
 
     toDart() {
         return `
         Container(
-            // [${this.XdNode.name}] Repeat grid aren't supported.
-            width: ${this.XdNode.localBounds.width},
-            height: ${this.XdNode.localBounds.height},
+            // [${this.xdNode.name}] Repeat grid aren't supported.
+            width: ${this.xdNode.localBounds.width},
+            height: ${this.xdNode.localBounds.height},
             color: Colors.red,
         )`;
     }

@@ -863,7 +863,6 @@ dW:function dW(){},
 uI:function(a){return J.nX(a?Object.keys(a):[],null)},
 vG:function(a){return v.mangledGlobalNames[a]},
 oI:function(a){if(typeof dartPrint=="function"){dartPrint(a)
-return}if(typeof console=="object"&&typeof console.log!="undefined"){console.log(a)
 return}if(typeof window=="object")return
 if(typeof print=="function"){print(a)
 return}throw"Unable to print message: "+String(a)}},J={

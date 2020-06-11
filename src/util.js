@@ -11,7 +11,7 @@ const { SvgWidget } = require("./widgets/svg");
 const { TextWidget } = require("./widgets/text");
 const { MaskWidget } = require("./widgets/mask");
 
-function fix(num, digits = 1) {
+function fix(num, digits = 2) {
     let p = Math.pow(10, digits);
     num = Math.round(num * p) / p;
     return num + (num === (num | 0) ? '.0' : '');
@@ -139,9 +139,19 @@ function listToString(list) {
 
 exports.listToString = listToString;
 
+function getOpacity(xdNode) {
+    let o = xdNode, opacity = 1.0;
+    while (o) {
+        if (o.opacity != null) { opacity *= o.opacity; }
+        o = o.parent;
+    }
+    return opacity;
+}
+
+exports.getOpacity = getOpacity;
+
 function fixAllNumbers(str) {
     const onlyFloatNumbers = `\\-?\\d+\\.\\d+`;
-    return str;
     str = str.replace(new RegExp(onlyFloatNumbers, 'g'), (value) => {
         return fix(value);
     });
@@ -149,3 +159,36 @@ function fixAllNumbers(str) {
 }
 
 exports.fixAllNumbers = fixAllNumbers;
+
+function putSimpleCode(str) {
+    const getNumberRegex = '[0-9]+([\\.][0-9]+)?';
+    str = _applySCRegexWithTag(str, getNumberRegex, 'width');
+    str = _applySCRegexWithTag(str, getNumberRegex, 'height');
+    str = _applySCRegexWithTag(str, getNumberRegex, 'fontSize');
+    str = _applySCRegexWithTag(str, getNumberRegex, 'blurRadius');
+    str = _applySCRegexWithTag(str, getNumberRegex, 'right');
+    str = _applySCRegexWithTag(str, getNumberRegex, 'left');
+    str = _applySCRegexWithTag(str, getNumberRegex, 'top');
+    str = _applySCRegexWithTag(str, getNumberRegex, 'bottom');
+    str = _applySCRegexWithTag(str, getNumberRegex, null, 'Offset');
+    str = _applySCRegexWithTag(str, getNumberRegex, null, 'circular');
+    return str;
+}
+
+exports.putSimpleCode = putSimpleCode;
+
+function _applySCRegexWithTag(str, regex, tag, method) {
+    if (method)
+        return str.replace(new RegExp(method + '(.*)', 'g'), (value) => {
+            value = value.replace(new RegExp(regex, 'g'), (number) => {
+                if (number == 0) return number;
+                return `wsz(` + number + ')';
+            });
+            return value;
+        });
+    return str.replace(new RegExp(tag + ': ' + regex, 'g'), (value) => {
+        var matches_array = value.match(regex);
+        if (matches_array[0] == 0) return value;
+        return tag + ': wsz(' + matches_array[0] + ')';
+    });
+}

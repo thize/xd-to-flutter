@@ -3,9 +3,9 @@ const { Bounds } = require("../bounds");
 const { getAlignmentByFather } = require("./util/alignment_by_father");
 
 class ImageWidget {
-    constructor(XdNode) {
-        this.XdNode = XdNode;
-        this.bounds = new Bounds(XdNode);
+    constructor(xdNode) {
+        this.xdNode = xdNode;
+        this.bounds = new Bounds(xdNode);
     }
 
     toDart(child) {
@@ -13,8 +13,8 @@ class ImageWidget {
         let childWidget = child != null ? `child:${child.toDart()},` : ``;
         return `Container(
             ${alignment}
-            width: ${this.XdNode.localBounds.width},
-            height: ${this.XdNode.localBounds.height},
+            width: ${this.xdNode.localBounds.width},
+            height: ${this.xdNode.localBounds.height},
             color: ${randomColor()},
             ${childWidget}
         )`;

@@ -1,22 +1,22 @@
 const { Bounds } = require("../bounds");
 
 class GroupWidget {
-    constructor(XdNode) {
-        this.XdNode = XdNode;
-        this.bounds = new Bounds(XdNode);
+    constructor(xdNode) {
+        this.xdNode = xdNode;
+        this.bounds = new Bounds(xdNode);
     }
 
     toDart() {
         const { itemsToDart } = require("../items_to_dart");
         const { removeItemsFromGroup } = require("../util");
-        const ungroupedItems = removeItemsFromGroup(this.XdNode.children);
+        const ungroupedItems = removeItemsFromGroup(this.xdNode.children);
         const itemsDart = itemsToDart(ungroupedItems);
         return `
         Container(
-            // Group: ${this.XdNode.name}
+            // Group: ${this.xdNode.name}
             alignment: Alignment.center,
-            width: ${this.XdNode.localBounds.width},
-            height: ${this.XdNode.localBounds.height},
+            width: ${this.xdNode.localBounds.width},
+            height: ${this.xdNode.localBounds.height},
             child: ${itemsDart},
         )`;
     }
