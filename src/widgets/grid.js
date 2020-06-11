@@ -1,4 +1,3 @@
-const { randomColor } = require("./util/widgets_util");
 const { Bounds } = require("../bounds");
 
 class GridWidget {

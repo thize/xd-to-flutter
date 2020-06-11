@@ -1,4 +1,4 @@
-const { xdItemToWidget, widgetCanHaveChild, removeItemsFromGroup } = require("./util");
+const { xdItemToWidget, widgetCanHaveChild, removeItemsFromGroup, fixAllNumbers } = require("./util");
 const { Bounds } = require("./bounds");
 const { Children } = require("./widgets/children");
 const { ArtboardWidget } = require("./widgets/artboard");
@@ -287,7 +287,7 @@ class Node {
         if (this.widget instanceof ComponentWidget) {
             return dartWidget;
         }
-        return wrapWithRotation(this, wrapWithInkWell(this.widget.XdNode, dartWidget));
+        return fixAllNumbers(wrapWithRotation(this, wrapWithInkWell(this.widget.XdNode, dartWidget)));
     }
 
     debug(depth) {

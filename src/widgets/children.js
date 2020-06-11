@@ -68,7 +68,6 @@ class Children {
     getColumnOrRowAlignment() {
         const dist = this.childrenSpaces;
         let set = new Set(dist);
-        console.log(`spaces = ${this.childrenSpaces}, set.size = ${set.size}`);
         if (set.size == 1) {
             if (set.getByIdx(0) == 0) return;
             this.columnOrRowAlignment = 'mainAxisAlignment: MainAxisAlignment.spaceEvenly,';

@@ -138,3 +138,14 @@ function listToString(list) {
 }
 
 exports.listToString = listToString;
+
+function fixAllNumbers(str) {
+    const onlyFloatNumbers = `\\-?\\d+\\.\\d+`;
+    return str;
+    str = str.replace(new RegExp(onlyFloatNumbers, 'g'), (value) => {
+        return fix(value);
+    });
+    return str;
+}
+
+exports.fixAllNumbers = fixAllNumbers;

@@ -312,7 +312,8 @@ exports.wrapWithInkWell = wrapWithInkWell;
 function wrapWithRotation(node, widget) {
     const thisRotation = node.widget.XdNode == null ? 0 : node.widget.XdNode.rotation;
     const fatherTotalRotation = !node.father ? 0 : getWidgetTotalRotation(node.father);
-    const rotation = thisRotation - fatherTotalRotation;
+    const { fix } = require("../../util");
+    const rotation = fix(thisRotation - fatherTotalRotation);
     if (rotation == 0) return widget;
     return `Transform.rotate(
         angle: ${rotation} * pi / 180,
