@@ -306,3 +306,4 @@ class Node {
         return this.widget == null || this.widget instanceof Children;
     }
 }
+exports.Node = Node;

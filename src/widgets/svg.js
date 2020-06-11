@@ -9,7 +9,6 @@ class SvgWidget {
 
     toDart() {
         return `Container(
-            alignment: Alignment.center,
             width: ${this.XdNode.localBounds.width},
             height: ${this.XdNode.localBounds.height},
             color: ${randomColor()},

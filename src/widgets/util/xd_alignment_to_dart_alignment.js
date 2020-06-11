@@ -1,7 +1,7 @@
 
 function xdAlignmentToDartAlignment(x, y) {
-    /// 0 to 1, have to be -1 to 1
     const { fix } = require('../../util');
+    /// 0 to 1, have to be -1 to 1
     const dx = fix(fixAlignment(x));
     const dy = fix(fixAlignment(y));
     const align = `Alignment(${dx},${dy})`;

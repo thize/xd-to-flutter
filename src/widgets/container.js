@@ -1,5 +1,6 @@
 const { randomColor } = require("./util/widgets_util");
 const { Bounds } = require("../bounds");
+const { getAlignmentByFather } = require("./util/alignment_by_father");
 
 class ContainerWidget {
     constructor(XdNode) {
@@ -8,16 +9,16 @@ class ContainerWidget {
     }
 
     toDart(child) {
+        const alignment = child != null ? getAlignmentByFather(child, this, true) : '';
         let childWidget = child != null ? `child:${child.toDart()},` : ``;
         return `Container(
-            alignment: Alignment.center,
+            ${alignment}
             width: ${this.XdNode.localBounds.width},
             height: ${this.XdNode.localBounds.height},
             color: ${randomColor()},
             ${childWidget}
         )`;
     }
-
 }
 
 exports.ContainerWidget = ContainerWidget;

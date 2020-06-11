@@ -1,4 +1,3 @@
-const { randomColor } = require("./util/widgets_util");
 const { Bounds } = require("../bounds");
 
 class GroupWidget {
@@ -12,16 +11,15 @@ class GroupWidget {
         const { removeItemsFromGroup } = require("../util");
         const ungroupedItems = removeItemsFromGroup(this.XdNode.children);
         const itemsDart = itemsToDart(ungroupedItems);
-        //TODO: put SizedBox
         return `
-        // ${this.XdNode.name} Group
-        SizedBox(
+        Container(
+            // Group: ${this.XdNode.name}
+            alignment: Alignment.center,
             width: ${this.XdNode.localBounds.width},
             height: ${this.XdNode.localBounds.height},
             child: ${itemsDart},
         )`;
     }
-
 }
 
 exports.GroupWidget = GroupWidget;

@@ -8,11 +8,12 @@ class GridWidget {
     }
 
     toDart() {
-        return `Container(
-            alignment: Alignment.center,
+        return `
+        Container(
+            // [${this.XdNode.name}] Repeat grid aren't supported.
             width: ${this.XdNode.localBounds.width},
             height: ${this.XdNode.localBounds.height},
-            color: ${randomColor()},
+            color: Colors.red,
         )`;
     }
 

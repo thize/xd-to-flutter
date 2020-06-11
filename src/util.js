@@ -9,6 +9,7 @@ const { ImageWidget } = require("./widgets/image");
 const { InkWellWidget } = require("./widgets/inkwell");
 const { SvgWidget } = require("./widgets/svg");
 const { TextWidget } = require("./widgets/text");
+const { MaskWidget } = require("./widgets/mask");
 
 function fix(num, digits = 1) {
     let p = Math.pow(10, digits);
@@ -59,6 +60,8 @@ function xdItemToWidget(item) {
     const isSvg = (item instanceof Group && isSvgFolder(item)) || item instanceof Path || item instanceof Polygon || item instanceof BooleanGroup || _isSvgLine(item);
     if (isSvg) return new SvgWidget(item);
     const isGroup = item instanceof Group;
+    const isMaskGroup = isGroup && item.mask;
+    if (isMaskGroup) return new MaskWidget(item);
     if (isGroup) return new GroupWidget(item);
     const isComponent = item instanceof SymbolInstance;
     if (isComponent) return new ComponentWidget(item);
@@ -76,7 +79,6 @@ function widgetCanHaveChild(widget) {
     const isSvg = widget instanceof SvgWidget;
     const isComponent = widget instanceof ComponentWidget;
     const isText = widget instanceof TextWidget;
-    //TODO: decide... will Group have child or not?
     const isGroup = widget instanceof GroupWidget;
     const isAWidgetThatCannotHaveChild = isGrid || isSvg || isComponent || isText || isGroup;
     return !isAWidgetThatCannotHaveChild;

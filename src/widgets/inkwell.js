@@ -1,4 +1,3 @@
-const { randomColor } = require("./util/widgets_util");
 const { Bounds } = require("../bounds");
 
 class InkWellWidget {
@@ -14,6 +13,7 @@ class InkWellWidget {
         InkWell(
             onTap: (){
                 //TODO: onTap ${this.XdNode.name}
+                print('onTap ${this.XdNode.name}');
             },
             child: ${child},
         )`;
