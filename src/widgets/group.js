@@ -13,14 +13,11 @@ class GroupWidget {
         const ungroupedItems = removeItemsFromGroup(this.XdNode.children);
         const itemsDart = itemsToDart(ungroupedItems);
         //TODO: put SizedBox
-        // SizedBox(
         return `
         // ${this.XdNode.name} Group
-        Container(
-            alignment: Alignment.center,
+        SizedBox(
             width: ${this.XdNode.localBounds.width},
             height: ${this.XdNode.localBounds.height},
-            color: ${randomColor()},
             child: ${itemsDart},
         )`;
     }

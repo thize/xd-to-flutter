@@ -2,6 +2,8 @@ const { xdItemToWidget, widgetCanHaveChild, removeItemsFromGroup } = require("./
 const { Bounds } = require("./bounds");
 const { Children } = require("./widgets/children");
 const { ArtboardWidget } = require("./widgets/artboard");
+const { wrapWithInkWell, wrapWithRotation } = require("./widgets/util/widgets_util");
+const { ComponentWidget } = require("./widgets/component");
 
 function itemsToDart(items) {
     const ungroupedItems = removeItemsFromGroup(items);
@@ -281,7 +283,11 @@ class Node {
             this.widget = new Children(this.type, this);
         }
         const child = this.children != null ? this.children[0] : null
-        return this.widget.toDart(child);
+        const dartWidget = this.widget.toDart(child);
+        if (this.widget instanceof ComponentWidget) {
+            return dartWidget;
+        }
+        return wrapWithRotation(this, wrapWithInkWell(this.widget.XdNode, dartWidget));
     }
 
     debug(depth) {

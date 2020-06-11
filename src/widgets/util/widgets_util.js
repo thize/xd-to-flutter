@@ -1,3 +1,5 @@
+const { InkWellWidget } = require("../inkwell");
+
 function randomColor() {
     var colors = ["Color(0xFF000000)",
         "Color(0xDD000000)",
@@ -296,3 +298,20 @@ function capitalize(str) {
 }
 
 exports.capitalize = capitalize;
+
+function wrapWithInkWell(node, widget) {
+    const isInkWell = !node ? false : node.triggeredInteractions[0] != null && node.triggeredInteractions[0].trigger.type == 'tap';
+    if (isInkWell) {
+        widget = new InkWellWidget(node).toDart(widget);
+    }
+    return widget;
+}
+
+exports.wrapWithInkWell = wrapWithInkWell;
+
+function wrapWithRotation(node, widget) {
+    const thisRotation = node.widget.XdNode == null ? 0 : node.widget.XdNode.rotation;
+    console.log(`thisRotation = ${thisRotation}`);
+}
+
+exports.wrapWithRotation = wrapWithRotation;

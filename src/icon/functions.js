@@ -126,8 +126,27 @@ class AppIcon {
     }
 
     async exportAndroidAdaptiveIcons() {
-        console.log('exportAndroidAdaptiveIcons');
-
+        const mainFolder = await this.flutterProjectFolder.getEntry('android/app/src/main');
+        const resFolder = mainFolder.getEntry('res');
+        const entrys = [await resFolder.getEntry('mipmap-hdpi'), await resFolder.getEntry('mipmap-mdpi'), await resFolder.getEntry('mipmap-xhdpi'), await resFolder.getEntry('mipmap-xxhdpi'), await resFolder.getEntry('mipmap-xxxhdpi')];
+        const scales = [72, 48, 96, 144, 192];
+        for (let i = 0; i < entrys.length; i++) {
+            const file = await entrys[i].createFile(`ic_launcher.png`, { overwrite: true });
+            const obj = this.generateRenditionObject(scales[i], file);
+            this.renditions.push(obj);
+        }
+        // getEntry('mipmap-anydpi-v26'); dont exist, it have to be created
+        const anyDpiFolder = await resFolder.getEntry('mipmap-anydpi-v26');
+        const icLauncherXml = await anyDpiFolder.createFile(`ic_launcher.xml`, { overwrite: true });
+        const icLauncherRoundXml = await anyDpiFolder.createFile(`ic_launcher.xml`, { overwrite: true });
+        const xml = `<?xml version="1.0" encoding="utf-8"?>
+        <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+            <background android:drawable="@mipmap/ic_launcher_background"/>
+            <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+        </adaptive-icon>`;
+        icLauncherXml.write(xml);
+        icLauncherRoundXml.write(xml);
+        this.createRenditions('Android Adaptive');
     }
 
     generateRenditionObject(scale, file, withoutAlpha) {

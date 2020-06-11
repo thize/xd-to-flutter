@@ -10,6 +10,14 @@ const { InkWellWidget } = require("./widgets/inkwell");
 const { SvgWidget } = require("./widgets/svg");
 const { TextWidget } = require("./widgets/text");
 
+function fix(num, digits = 1) {
+    let p = Math.pow(10, digits);
+    num = Math.round(num * p) / p;
+    return num + (num === (num | 0) ? '.0' : '');
+}
+
+exports.fix = fix;
+
 function _isSvgLine(item) {
     return item instanceof Line && item.globalBounds.width != 0 && item.globalBounds.height != 0;
 }
@@ -118,3 +126,13 @@ function findMasterForSymbolId(symbolId, xdNode) {
 }
 
 exports.findMasterForSymbolId = findMasterForSymbolId;
+
+function listToString(list) {
+    var string = '';
+    list.forEach(item => {
+        string += '\n' + item;
+    });
+    return string;
+}
+
+exports.listToString = listToString;

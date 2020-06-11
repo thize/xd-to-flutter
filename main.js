@@ -4,7 +4,8 @@ const { Artboard, SymbolInstance } = require("scenegraph");
 const { itemsToDart } = require("./src/items_to_dart");
 const { StatelessWidget } = require("./src/widgets/stateless");
 const { formatDart } = require("./src/widgets/util/format_dart");
-const { findMasterForSymbolId } = require("./src/util");
+const { ComponentWidget } = require("./src/widgets/component");
+const { listToString } = require("./src/util");
 
 function onTapGenerate() {
     const items = scenegraph.selection.items;
@@ -34,17 +35,10 @@ module.exports = {
 function generateComponents(components) {
     const componentsWidget = [];
     components.forEach(component => {
-        const master = findMasterForSymbolId(component.symbolId);
-        const componentName = master.name;
-        const dartCode = new StatelessWidget(componentName, itemsToDart([component])).toDart();
+        const dartCode = new ComponentWidget(component).toDartClass();
         componentsWidget.push(dartCode);
     });
-    let stringComponents = '';
-    componentsWidget.forEach(componentWidget => {
-        stringComponents += '\n' + componentWidget;
-    });
-    stringComponents = formatDart(stringComponents);
-    clipboard.copyText(stringComponents);
+    clipboard.copyText(formatDart(listToString(componentsWidget)));
 }
 
 function generateArtboards(artboards) {
@@ -53,15 +47,11 @@ function generateArtboards(artboards) {
         const dartCode = new StatelessWidget(artboard.name, itemsToDart([artboard])).toDart();
         artboardsWidget.push(dartCode);
     });
-    let stringArtboards = '';
-    artboardsWidget.forEach(artboardWidget => {
-        stringArtboards += '\n' + artboardWidget;
-    });
-    stringArtboards = formatDart(stringArtboards);
-    clipboard.copyText(stringArtboards);
+    clipboard.copyText(formatDart(listToString(artboardsWidget)));
 }
 
 function generateSelection(items) {
     const dartCode = formatDart(itemsToDart(items) + ";");
     clipboard.copyText(dartCode);
 }
+

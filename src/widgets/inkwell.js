@@ -7,17 +7,17 @@ class InkWellWidget {
         this.bounds = new Bounds(XdNode);
     }
 
-    toDart(child) {
-        let childWidget = child != null ? `child:${child.toDart()},` : ``;
-        return `Container(
-            alignment: Alignment.center,
-            width: ${this.XdNode.localBounds.width},
-            height: ${this.XdNode.localBounds.height},
-            color: ${randomColor()},
-            ${childWidget}
+    toDart(childWidget) {
+        const { itemsToDart } = require("../items_to_dart");
+        const child = !childWidget ? itemsToDart(this.XdNode.children) : childWidget;
+        return `
+        InkWell(
+            onTap: (){
+                //TODO: onTap ${this.XdNode.name}
+            },
+            child: ${child},
         )`;
     }
-
 }
 
 exports.InkWellWidget = InkWellWidget;
