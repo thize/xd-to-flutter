@@ -3,6 +3,7 @@ const { Parameter, ParameterRef } = require("./util/parameter");
 const { getColor } = require("./util/color");
 const { titleCase } = require("./util/widgets_util");
 const { googleFonts } = require("./util/google_fonts");
+const { changeOutputUiText } = require("../ui/components/output_ui");
 
 class TextWidget {
     constructor(xdNode) {
@@ -41,13 +42,13 @@ exports.TextWidget = TextWidget;
 
 function checkForUnsupportedFeatures(o) {
     if (o.textScript !== 'none') {
-        console.log('Superscript & subscript are not currently supported.');
+        changeOutputUiText('Superscript & subscript are not currently supported.', 'Brown');
     }
     if (o.paragraphSpacing) {
-        console.log('Paragraph spacing is not currently supported.');
+        changeOutputUiText('Paragraph spacing is not currently supported.', 'Brown');
     }
     if (o.strokeEnabled && o.stroke) {
-        console.log('Text border is not currently supported.');
+        changeOutputUiText('Text border is not currently supported.', 'Brown');
     }
 }
 
@@ -220,7 +221,7 @@ function _getShadow(shadow) {
     let o = shadow;
     return `Shadow(color: ${getColor(o.color)}, ` +
         (o.x || o.y ? `offset: Offset(${o.x}, ${o.y}), ` : '') +
-        (o.blur ? `blurRadius: ${o.blur}, ` : '') + ')';
+        (o.blur ? `blurRadius: ${o.blur}, ` : '') + '),';
 }
 
 function _getTextAlign(align) {

@@ -19,13 +19,27 @@
   ],
   "uiEntryPoints": [
     {
-      "label": "Generate Selection",
+      "type": "panel",
+      "label": "UI Panel",
+      "panelId": "main_panel"
+    },
+    {
+      "label": "Copy Selected",
       "type": "menu",
       "commandId": "onTapGenerate",
       "shortcut": {
-				"mac": "Cmd+W",
-				"win": "Ctrl+W"
-			}
+        "mac": "Cmd+W",
+        "win": "Ctrl+W"
+      }
+    },
+    {
+      "label": "Copy Selected Item Color",
+      "type": "menu",
+      "commandId": "exportColor",
+      "shortcut": {
+        "mac": "Cmd+F",
+        "win": "Ctrl+F"
+      }
     }
   ],
   "version": "0.0.1"

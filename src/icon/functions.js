@@ -1,30 +1,23 @@
 const scenegraph = require("scenegraph");
+const application = require("application");
 const commands = require("commands");
+const { getFolder } = require("../project_folder");
 const { Rectangle, Color, Group } = require("scenegraph");
-
-//TODO: 
-/*
-* getFolder() return correct
-* exportAndroidAdaptiveIcons
-*/
-
-function getFolder() {
-    return 'This function is not to be here, this is only to not break';
-}
+const { changeOutputUiText } = require("../ui/components/output_ui");
 
 async function exportAppIcon(platform) {
     const isAdaptiveAndroid = platform == 'adaptive-android';
     const item = scenegraph.selection.items[0];
     if (isAdaptiveAndroid && !_isValidAdaptiveItem(item)) {
-        console.log('Not Valid Adaptive Icon, try export a Adaptive Icon Example');
+        changeOutputUiText(`Not Valid Adaptive Icon, try export a Adaptive Icon Example`, 'red');
     } else if (!item) {
-        console.log('Select something');
+        changeOutputUiText(`Select something`, 'grey');
     } else if (!_is1024SquareItem(item)) {
-        console.log("Selected object is not 1024x1024.");
+        changeOutputUiText("Selected object is not 1024x1024.", 'red');
     } else {
         const flutterProjectFolder = getFolder();
         if (!flutterProjectFolder) {
-            console.log("Project folder not selected");
+            changeOutputUiText("Project folder not selected", 'red');
         } else {
             new AppIcon(item, flutterProjectFolder).export(platform);
         }
@@ -95,7 +88,7 @@ class AppIcon {
                 await this.exportAndroidAdaptiveIcons();
             }
         } catch (error) {
-            console.log("Folder is not a Flutter Project");
+            changeOutputUiText("Folder is not a Flutter Project", 'red');
         }
     }
 
@@ -109,7 +102,6 @@ class AppIcon {
             this.renditions.push(obj);
         }
         this.createRenditions('iOS');
-
     }
 
     async exportAndroidIcons() {
@@ -163,9 +155,9 @@ class AppIcon {
     async createRenditions(platform) {
         try {
             await application.createRenditions(this.renditions);
-            console.log(`Generated ${platform} icons with Sucess`);
+            changeOutputUiText(`Generated ${platform} icons with Success`);
         } catch (err) {
-            console.log('Error when generating');
+            changeOutputUiText('Error when generating', 'red');
         }
     }
 }

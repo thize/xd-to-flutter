@@ -15,15 +15,15 @@ class ComponentWidget {
         return `const ${cleanVarName(componentName, true)}()`;
     }
 
-    toDartClass() {
+    toDartClass(isFirst = false) {
         const { itemsToDart } = require("../items_to_dart");
         const { findMasterForSymbolId } = require("../util");
         const { wrapWithInkWell } = require("./util/widgets_util");
         const master = findMasterForSymbolId(this.xdNode.symbolId);
         const componentName = !master ? this.xdNode.name : master.name;
-        let dartComponent = itemsToDart(this.xdNode.children);
-        dartComponent = wrapWithInkWell(this.xdNode, dartComponent) + ';';
-        return new StatelessWidget(componentName, dartComponent).toDart();
+        let dartComponent = itemsToDart(this.xdNode.children, isFirst);
+        dartComponent = wrapWithInkWell(this.xdNode, dartComponent);
+        return new StatelessWidget(componentName, dartComponent + ';').toDart();
     }
 }
 

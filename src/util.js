@@ -52,8 +52,6 @@ exports.hasInteraction = hasInteraction;
 function xdItemToWidget(item) {
     const isGrid = item instanceof RepeatGrid;
     if (isGrid) return new GridWidget(item);
-    const isInkWell = item instanceof Group && !item.name.includes('svg_') && item.triggeredInteractions[0] != null && item.triggeredInteractions[0].trigger.type == 'tap';
-    if (isInkWell) return new InkWellWidget(item);
     const isSvg = (item instanceof Group && isSvgFolder(item)) || item instanceof Path || item instanceof Polygon || item instanceof BooleanGroup || _isSvgLine(item);
     if (isSvg) return new SvgWidget(item);
     const isGroup = item instanceof Group;
@@ -166,12 +164,16 @@ function applyRegex(str) {
 exports.applyRegex = applyRegex;
 
 function _applySCRegexWithTag(str, regex, tag, method) {
+    const element = document.getElementById('numbersMethodName');
+    let methodName = element != null ? element.value : element;
+    methodName = methodName ? methodName : '';
     if (method)
         return str.replace(new RegExp(method + '\(.*\)', 'g'), (value) => {
             value = value.replace(new RegExp(regex, 'g'), (number) => {
                 if (number == 0) return number;
                 number = fix(number);
-                return `sz(` + number + ')';
+                if (methodName == '') return number;
+                return `${methodName}(` + number + ')';
             });
             return value;
         });
@@ -179,7 +181,8 @@ function _applySCRegexWithTag(str, regex, tag, method) {
         var matches_array = value.match(regex);
         if (matches_array[0] == 0) return value;
         matches_array[0] = fix(matches_array[0]);
-        return tag + ': sz(' + matches_array[0] + ')';
+        if (methodName == '') return tag + ': ' + matches_array[0];
+        return tag + `: ${methodName}(` + matches_array[0] + ')';
     });
 }
 

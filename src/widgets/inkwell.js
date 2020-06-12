@@ -9,6 +9,9 @@ class InkWellWidget {
     toDart(childWidget) {
         const { itemsToDart } = require("../items_to_dart");
         const child = !childWidget ? itemsToDart(this.xdNode.children) : childWidget;
+        let withInkWell = document.querySelector('input[name="prototypeInteractions"]');
+        withInkWell = withInkWell != null ? withInkWell.checked : null;
+        if (!withInkWell) return child;
         return `
         InkWell(
             onTap: (){

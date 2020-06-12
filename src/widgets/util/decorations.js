@@ -15,6 +15,7 @@ const xd = require("scenegraph");
 
 const { getColor } = require("./color");
 const { getGradientParam } = require("./gradients");
+const { changeOutputUiText } = require("../../ui/components/output_ui");
 
 /** BOXDECORATION */
 function getColorOrDecorationParam(xdNode, parameters) {
@@ -58,7 +59,7 @@ function _getFillParam(xdNode, parameters) {
 	if (fill instanceof xd.ImageFill) {
 		return `
 		image: DecorationImage( 
-			image: AssetImage(),
+			image: AssetImage(''),
 			fit: ${getBoxFit(fill.scaleBehavior)},
 			${_getOpacityColorFilterParam(opacity)}
 		), 
@@ -66,7 +67,7 @@ function _getFillParam(xdNode, parameters) {
 	}
 	let gradient = getGradientParam(fill, opacity);
 	if (gradient) { return gradient; }
-	console.log(`Unrecognized fill type ('${fill.constructor.name}').`);
+	changeOutputUiText(`Unrecognized fill type ('${fill.constructor.name}').`, 'red');
 }
 
 function _getOpacityColorFilterParam(opacity) {
@@ -75,15 +76,15 @@ function _getOpacityColorFilterParam(opacity) {
 }
 
 function _getBorderParam(xdNode, parameters) {
-	if (xdNode.strokePosition !== xd.GraphicNode.INNER_STROKE) {
-		console.log('Only inner strokes are supported on rectangles & ellipses.');
+	if (xdNode.strokeEnabled && xdNode.strokePosition !== xd.GraphicNode.INNER_STROKE) {
+		changeOutputUiText('Only inner strokes are supported on rectangles & ellipses.', 'Brown');
 	}
-	if (xdNode.strokeJoins !== xd.GraphicNode.STROKE_JOIN_MITER) {
-		console.log('Only miter stroke joins are supported on rectangles & ellipses.');
+	if (xdNode.strokeEnabled && xdNode.strokeJoins !== xd.GraphicNode.STROKE_JOIN_MITER) {
+		changeOutputUiText('Only miter stroke joins are supported on rectangles & ellipses.', 'Brown');
 	}
 	let dashes = xdNode.strokeDashArray;
-	if (dashes && dashes.length && dashes.reduce((a, b) => a + b)) {
-		console.log('Dashed lines are not supported on rectangles & ellipses.');
+	if (xdNode.strokeEnabled &&dashes && dashes.length && dashes.reduce((a, b) => a + b)) {
+		changeOutputUiText('Dashed lines are not supported on rectangles & ellipses.', 'Brown');
 	}
 	let strokeEnableParamRef = parameters["strokeEnabled"];
 	let strokeEnableParam = strokeEnableParamRef.parameter;

@@ -1,12 +1,8 @@
 /*
-* shortcut (generate color)
-* console.log change to own console
-* number prefix (sz, wsz, hsz)
-* UI
+* export all
 
 ! NOT TO BE DONE NOW:
-
-! flexible icon
-! mask
-! grid
+! Android Adaptive icon
+! Mask
+! Grid
 */
