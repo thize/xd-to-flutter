@@ -54,7 +54,7 @@ function generateArtboards(artboards) {
 }
 
 function generateSelection(items) {
-    const dartCode = formatDart(itemsToDart(items, true) + ";");
+    const dartCode = itemsToDart(items, true);
     clipboard.copyText(dartCode);
 }
 

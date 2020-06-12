@@ -27,15 +27,15 @@ function isSvgFolder(item) {
     let onlySvg = true;
     item.children.forEach(child => {
         if (onlySvg) {
-            if (child instanceof Group) {
-                onlySvg = isSvgFolder(child);
-            } else {
-                const isPath = child instanceof Path;
-                const isPolygon = child instanceof Polygon;
-                const isBooleanGroup = child instanceof BooleanGroup;
-                const isSvgLine = _isSvgLine(child);
-                onlySvg = (isPath || isPolygon || isBooleanGroup || isSvgLine);
-            }
+            // if (child instanceof Group) {
+            //     onlySvg = isSvgFolder(child);
+            // } else {
+            const isPath = child instanceof Path;
+            const isPolygon = child instanceof Polygon;
+            const isBooleanGroup = child instanceof BooleanGroup;
+            const isSvgLine = _isSvgLine(child);
+            onlySvg = (isPath || isPolygon || isBooleanGroup || isSvgLine);
+            // }
         }
     });
     return onlySvg;
@@ -179,7 +179,7 @@ exports.putSimpleCode = putSimpleCode;
 
 function _applySCRegexWithTag(str, regex, tag, method) {
     if (method)
-        return str.replace(new RegExp(method + '(.*)', 'g'), (value) => {
+        return str.replace(new RegExp(method + '(.*)', 'mig'), (value) => {
             value = value.replace(new RegExp(regex, 'g'), (number) => {
                 if (number == 0) return number;
                 return `wsz(` + number + ')';

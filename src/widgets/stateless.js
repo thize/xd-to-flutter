@@ -14,7 +14,7 @@ class StatelessWidget {
           
           @override
           Widget build(BuildContext context) {
-            return ${this.child};
+            return ${this.child}
           }
         }`;
   }

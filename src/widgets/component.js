@@ -22,7 +22,7 @@ class ComponentWidget {
         const master = findMasterForSymbolId(this.xdNode.symbolId);
         const componentName = !master ? this.xdNode.name : master.name;
         let dartComponent = itemsToDart(this.xdNode.children);
-        dartComponent = wrapWithInkWell(this.xdNode, dartComponent);
+        dartComponent = wrapWithInkWell(this.xdNode, dartComponent) + ';';
         return new StatelessWidget(componentName, dartComponent).toDart();
     }
 }

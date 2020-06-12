@@ -14,11 +14,12 @@ const { Children } = require("./widgets/children");
 const { ArtboardWidget } = require("./widgets/artboard");
 const { wrapWithInkWell, wrapWithRotation } = require("./widgets/util/widgets_util");
 const { ComponentWidget } = require("./widgets/component");
+const { formatDart } = require("./widgets/util/format_dart");
 
-function itemsToDart(items, withSimpleCode = false) {
+function itemsToDart(items, isFirst = false) {
     const ungroupedItems = removeItemsFromGroup(items);
     const widgets = generateWidgetsFromItems(ungroupedItems);
-    const tree = new Tree(widgets, withSimpleCode);
+    const tree = new Tree(widgets, isFirst);
     return tree.toDart();
 }
 
@@ -37,19 +38,20 @@ class Tree {
     /**
     * @param {[any]} widgets list of all selection widgets
     */
-    constructor(widgets, withSimpleCode) {
+    constructor(widgets, isFirst) {
         this.node = new Node(widgets[0]);
         for (let i = 1; i < widgets.length; i++) {
             const widget = widgets[i];
             this.node = this.insertNodeIn(new Node(widget), this.node);
         }
-        this.withSimpleCode = withSimpleCode;
+        this.isFirst = isFirst;
         // console.log(this.node.debug(0));
     }
 
     toDart() {
-        const widget = this.node.toDart();
-        if (this.withSimpleCode) {
+        let widget = this.node.toDart();
+        if (this.isFirst) {
+            widget = formatDart(widget + ';');
             return putSimpleCode(widget);
         }
         return widget;

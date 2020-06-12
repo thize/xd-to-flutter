@@ -2,6 +2,7 @@ const { Bounds } = require("../bounds");
 const { Parameter, ParameterRef } = require("./util/parameter");
 const { getColor } = require("./util/color");
 const { titleCase } = require("./util/widgets_util");
+const { googleFonts } = require("./util/google_fonts");
 
 class TextWidget {
     constructor(xdNode) {
@@ -45,7 +46,7 @@ function checkForUnsupportedFeatures(o) {
     if (o.paragraphSpacing) {
         console.log('Paragraph spacing is not currently supported.');
     }
-    if (o.strokeEnabled && node.stroke) {
+    if (o.strokeEnabled && o.stroke) {
         console.log('Text border is not currently supported.');
     }
 }
@@ -65,7 +66,7 @@ function _getText(xdNode, params) {
     textParam = _textTransformation(textParam, xdNode);
     return 'Text('
         + `${textParam},` +
-        _getStyleParam(_getTextStyleParamList(xdNode, null, params)) +
+        _getStyleParam(xdNode, _getTextStyleParamList(xdNode, null, params)) +
         _getTextAlignParam(xdNode) +
         ')';
 }
@@ -94,7 +95,7 @@ function _getTextRich(xdNode, params) {
     // Export a rich text object with an empty root span setting a default style.
     // Child spans set their style as a delta of the default.
     return 'Text.rich(TextSpan(' +
-        '  ' + _getStyleParam(defaultStyleParams) +
+        '  ' + _getStyleParam(xdNode, defaultStyleParams) +
         `  children: [${str}],` +
         `), ${_getTextAlignParam(xdNode)})`;
 
@@ -105,7 +106,7 @@ function _getTextSpan(params, text, xdNode) {
     text = _textTransformation(text, xdNode);
     return 'TextSpan(' +
         ` text: '${text}',` +
-        _getStyleParam(params) +
+        _getStyleParam(xdNode, params) +
         ')';
 }
 
@@ -133,10 +134,23 @@ function _getTextStyleParamList(xdNode, styleRange, params, isDefault = false) {
     ];
 }
 
-function _getStyleParam(params) {
+function _getStyleParam(xdNode, params) {
     if (!params) { return ''; }
     let str = getParamList(params);
+    const family = _getFontFamilyName(xdNode);
+    if (googleFonts.includes(family)) {
+        return (!str ? '' : `style: GoogleFonts.${family}(${str}),`);
+    }
     return (!str ? '' : `style: TextStyle(${str}), `);
+}
+
+function _getFontFamilyName(node) {
+    let family = node.fontFamily.replace(/\s+/g, '');
+    family = family[0].toLowerCase() + family.substring(1, family.length);
+    if (googleFonts.includes(family)) {
+        return family;
+    }
+    return node.fontFamily;
 }
 
 function _getFontFamily(o) {
@@ -144,6 +158,8 @@ function _getFontFamily(o) {
 }
 
 function _getFontFamilyParam(o) {
+    const family = _getFontFamilyName(o);
+    if (googleFonts.includes(family)) return '';
     return `fontFamily: '${_getFontFamily(o)}', `;
 }
 
