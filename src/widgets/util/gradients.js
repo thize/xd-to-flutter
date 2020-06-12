@@ -14,7 +14,6 @@ written permission of Adobe.
 const xd = require("scenegraph");
 const assets = require("assets");
 
-const { fix } = require("../../util");
 const { getColor } = require("./color");
 const { xdAlignmentToDartAlignment } = require("./xd_alignment_to_dart_alignment");
 
@@ -59,6 +58,7 @@ function _getRadialGradient(fill, opacity = 1) {
 
 	// Flutter always draws relative to the shortest edge, whereas XD draws the gradient
 	// stretched to the aspect ratio of its container.
+	const { fix } = require("../../util");
 	return 'RadialGradient(' +
 		`center: ${xdAlignmentToDartAlignment(fill.startX, fill.startY)}, ` +
 		(fill.startX === fill.endX && fill.startY === fill.endY ? '' :
@@ -71,16 +71,19 @@ function _getRadialGradient(fill, opacity = 1) {
 }
 
 function _getColorsParam(arr, opacity) {
+	const { fix } = require("../../util");
 	let l = arr.length, stops = [], colors = [];
 	for (let i = 0; i < l; i++) {
 		let s = arr[i];
 		stops.push(fix(s.stop, 3));
 		colors.push(getColor(s.color, opacity));
 	}
-	return `colors: [${colors.join(", ")}], stops: [${stops.join(", ")}], `;
+	const stopsS = stops.length > 2 ? `stops: [${stops.join(", ")}],` : '';
+	return `colors: [${colors.join(", ")}], ${stopsS}`;
 }
 
 function _getTransformParam(fill) {
+	const { fix } = require("../../util");
 	// The GradientXDTransform is needed even if there is no transformation in order to fix the aspect ratio.
 	let o = fill.gradientTransform;
 	return 'transform: GradientXDTransform(' +
