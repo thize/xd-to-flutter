@@ -5,7 +5,6 @@ const { ComponentWidget } = require("./widgets/component");
 const { ContainerWidget } = require("./widgets/container");
 const { GroupWidget } = require("./widgets/group");
 const { GridWidget } = require("./widgets/grid");
-const { ImageWidget } = require("./widgets/image");
 const { InkWellWidget } = require("./widgets/inkwell");
 const { SvgWidget } = require("./widgets/svg");
 const { TextWidget } = require("./widgets/text");
@@ -51,8 +50,6 @@ function hasInteraction(item) {
 exports.hasInteraction = hasInteraction;
 
 function xdItemToWidget(item) {
-    const isImage = item.fill instanceof ImageFill;
-    if (isImage) return new ImageWidget(item);
     const isGrid = item instanceof RepeatGrid;
     if (isGrid) return new GridWidget(item);
     const isInkWell = item instanceof Group && !item.name.includes('svg_') && item.triggeredInteractions[0] != null && item.triggeredInteractions[0].trigger.type == 'tap';
@@ -150,17 +147,7 @@ function getOpacity(xdNode) {
 
 exports.getOpacity = getOpacity;
 
-function fixAllNumbers(str) {
-    const onlyFloatNumbers = `\\-?\\d+\\.\\d+`;
-    str = str.replace(new RegExp(onlyFloatNumbers, 'g'), (value) => {
-        return fix(value);
-    });
-    return str;
-}
-
-exports.fixAllNumbers = fixAllNumbers;
-
-function putSimpleCode(str) {
+function applyRegex(str) {
     const getNumberRegex = '[0-9]+([\\.][0-9]+)?';
     str = _applySCRegexWithTag(str, getNumberRegex, 'width');
     str = _applySCRegexWithTag(str, getNumberRegex, 'height');
@@ -171,24 +158,35 @@ function putSimpleCode(str) {
     str = _applySCRegexWithTag(str, getNumberRegex, 'top');
     str = _applySCRegexWithTag(str, getNumberRegex, 'bottom');
     str = _applySCRegexWithTag(str, getNumberRegex, null, 'Offset');
+    str = _applySCRegexWithTag(str, getNumberRegex, null, 'elliptical');
     str = _applySCRegexWithTag(str, getNumberRegex, null, 'circular');
     return str;
 }
 
-exports.putSimpleCode = putSimpleCode;
+exports.applyRegex = applyRegex;
 
 function _applySCRegexWithTag(str, regex, tag, method) {
     if (method)
-        return str.replace(new RegExp(method + '(.*)', 'mig'), (value) => {
+        return str.replace(new RegExp(method + '\(.*\)', 'g'), (value) => {
             value = value.replace(new RegExp(regex, 'g'), (number) => {
                 if (number == 0) return number;
-                return `wsz(` + number + ')';
+                number = fix(number);
+                return `sz(` + number + ')';
             });
             return value;
         });
     return str.replace(new RegExp(tag + ': ' + regex, 'g'), (value) => {
         var matches_array = value.match(regex);
         if (matches_array[0] == 0) return value;
-        return tag + ': wsz(' + matches_array[0] + ')';
+        matches_array[0] = fix(matches_array[0]);
+        return tag + ': sz(' + matches_array[0] + ')';
     });
 }
+
+function getParamList(arr) {
+    let str = '';
+    arr.forEach((o) => { if (o) { str += o; } });
+    return str;
+}
+
+exports.getParamList = getParamList;

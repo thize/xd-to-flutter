@@ -136,6 +136,7 @@ function _getTextStyleParamList(xdNode, styleRange, params, isDefault = false) {
 
 function _getStyleParam(xdNode, params) {
     if (!params) { return ''; }
+    const { getParamList } = require("../util");
     let str = getParamList(params);
     const family = _getFontFamilyName(xdNode);
     if (googleFonts.includes(family)) {
@@ -278,13 +279,6 @@ const FONT_STYLES = {
     'oblique': 'italic',
 }
 const FONT_STYLES_RE = _buildStyleRegExp(FONT_STYLES);
-
-function getParamList(arr) {
-    let str = '';
-    arr.forEach((o) => { if (o) { str += o; } });
-    return str;
-}
-
 
 function getParamDelta(defaultParams, params) {
     // Compares an array of params to an array of default params,

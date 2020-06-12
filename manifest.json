@@ -21,7 +21,11 @@
     {
       "label": "Generate Selection",
       "type": "menu",
-      "commandId": "onTapGenerate"
+      "commandId": "onTapGenerate",
+      "shortcut": {
+				"mac": "Cmd+W",
+				"win": "Ctrl+W"
+			}
     }
   ],
   "version": "0.0.1"

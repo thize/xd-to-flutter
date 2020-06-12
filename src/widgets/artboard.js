@@ -1,4 +1,3 @@
-const { randomColor } = require("./util/widgets_util");
 const { Bounds } = require("../bounds");
 const { getAlignmentByFather } = require("./util/alignment_by_father");
 
@@ -11,7 +10,7 @@ class ArtboardWidget {
     toDart(child) {
         let childWidget = child != null ? `body:${getAlignmentByFather(child, this)},` : ``;
         return `Scaffold(
-            backgroundColor: ${randomColor()},
+            backgroundColor: Colors.red,
             ${childWidget}
         )`;
     }

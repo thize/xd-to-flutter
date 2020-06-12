@@ -8,7 +8,7 @@ then your use, modification, or distribution of it requires the prior
 written permission of Adobe. 
 */
 
-const { xdItemToWidget, widgetCanHaveChild, removeItemsFromGroup, fixAllNumbers, putSimpleCode } = require("./util");
+const { xdItemToWidget, widgetCanHaveChild, removeItemsFromGroup, applyRegex } = require("./util");
 const { Bounds } = require("./bounds");
 const { Children } = require("./widgets/children");
 const { ArtboardWidget } = require("./widgets/artboard");
@@ -52,7 +52,7 @@ class Tree {
         let widget = this.node.toDart();
         if (this.isFirst) {
             widget = formatDart(widget + ';');
-            return putSimpleCode(widget);
+            return applyRegex(widget);
         }
         return widget;
     }
@@ -303,7 +303,7 @@ class Node {
         if (this.widget instanceof ComponentWidget) {
             return dartWidget;
         }
-        return fixAllNumbers(wrapWithRotation(this, wrapWithInkWell(this.widget.xdNode, dartWidget)));
+        return wrapWithRotation(this, wrapWithInkWell(this.widget.xdNode, dartWidget));
     }
 
     debug(depth) {
