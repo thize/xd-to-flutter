@@ -1,5 +1,8 @@
 const { Bounds } = require("../bounds");
 const { getAlignmentByFather } = require("./util/alignment_by_father");
+const { getGradientParam } = require("./util/gradients");
+const xd = require("scenegraph");
+const { getColor } = require("./util/color");
 
 class ArtboardWidget {
     constructor(xdNode) {
@@ -8,9 +11,27 @@ class ArtboardWidget {
     }
 
     toDart(child) {
-        let childWidget = child != null ? `body:${getAlignmentByFather(child, this)},` : ``;
+        const isFill = this.xdNode.fill instanceof xd.Color;
+        const bgColor = isFill ? `backgroundColor: ${getColor(this.xdNode.fill, 1)},` : '';
+        let childWidget = '';
+        let alignment = '';
+        if (isFill) {
+            if (child) childWidget = `body:${getAlignmentByFather(child, this)},`;
+        } else {
+            alignment = child ? getAlignmentByFather(child, this, true) : '';
+            if (child) childWidget = `child: ${child.toDart()},`;
+            childWidget = `
+                body: Container(
+                    ${alignment}
+                    decoration: BoxDecoration(
+                        ${getGradientParam(this.xdNode.fill, 1)}
+                    ),
+                    ${childWidget}
+                ),
+                `;
+        }
         return `Scaffold(
-            backgroundColor: Colors.red,
+            ${bgColor}
             ${childWidget}
         )`;
     }

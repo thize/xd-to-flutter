@@ -7,9 +7,6 @@ const { formatDart } = require("./src/widgets/util/format_dart");
 const { ComponentWidget } = require("./src/widgets/component");
 const { listToString } = require("./src/util");
 
-//TODO:
-// * console.log change to own console
-
 function onTapGenerate() {
     const items = scenegraph.selection.items;
     const hasSelection = items.length > 0;
