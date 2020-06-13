@@ -1,10 +1,10 @@
 {
-  "name": "Xd to Flutter by Thize",
+  "name": "Generate Flutter Code",
   "host": {
     "app": "XD",
     "minVersion": "21.0"
   },
-  "id": "b9d42c71",
+  "id": "b9d42c73",
   "icons": [
     {
       "path": "images/icon@1x.png",
