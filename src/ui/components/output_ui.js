@@ -19,7 +19,16 @@ function changeOutputUiText(newText, color) {
     }
 }
 
+function getOutputUiText() {
+    const element = document.getElementById('outputText');
+    if (!element) return '';
+    return element.textContent;
+}
+
+
+
 module.exports = {
     outputUi: outputUi,
     changeOutputUiText: changeOutputUiText,
+    getOutputUiText: getOutputUiText,
 };

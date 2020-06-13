@@ -4,8 +4,9 @@ function exportWithCheckBoxsUi() {
     const title = '<h1>Export with</h1>';
     const checkboxs =
         prototypeInteractionsUi() +
-        googleFontsUi() +
-        simpleCodeUi() + styledWidgetUi();
+        // googleFontsUi() +
+        // simpleCodeUi() +
+        styledWidgetUi();
     return title + checkboxs;
 }
 

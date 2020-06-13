@@ -4,7 +4,7 @@
     "app": "XD",
     "minVersion": "21.0"
   },
-  "id": "b9d42c73",
+  "id": "b9d42c71",
   "icons": [
     {
       "path": "images/icon@1x.png",
@@ -22,7 +22,25 @@
       "type": "panel",
       "label": "UI Panel",
       "panelId": "main_panel"
+    },
+    {
+      "label": "Copy Selected",
+      "type": "menu",
+      "commandId": "onTapGenerate",
+      "shortcut": {
+        "mac": "Cmd+W",
+        "win": "Ctrl+W"
+      }
+    },
+    {
+      "label": "Copy Selected Item Color",
+      "type": "menu",
+      "commandId": "exportColor",
+      "shortcut": {
+        "mac": "Cmd+F",
+        "win": "Ctrl+F"
+      }
     }
   ],
-  "version": "3.0.1"
+  "version": "3.1.0"
 }

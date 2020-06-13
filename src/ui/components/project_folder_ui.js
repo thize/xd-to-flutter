@@ -1,5 +1,5 @@
 const folderIconPath = '../../images/folder.png';
-const { getFolderPath } = require('../../core/functions/util/project_folder');
+const { getFolderPath } = require('../../project_folder');
 
 function projectFolderUi() {
     const title = '<H2>Project Folder</H2>';
