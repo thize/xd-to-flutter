@@ -135,16 +135,22 @@ function _getTextStyleParamList(xdNode, styleRange, params, isDefault = false) {
     ];
 }
 
-function _getStyleParam(xdNode, params) {
+exports._getTextStyleParamList = _getTextStyleParamList;
+
+function _getStyleParam(xdNode, params, withTag = true) {
     if (!params) { return ''; }
     const { getParamList } = require("../util");
     let str = getParamList(params);
     const family = _getFontFamilyName(xdNode);
+    const tag = withTag ? 'style: ' : '';
+    const end = withTag ? ',' : '';
     if (googleFonts.includes(family)) {
-        return (!str ? '' : `style: GoogleFonts.${family}(${str}),`);
+        return (!str ? '' : `${tag}GoogleFonts.${family}(${str})${end}`);
     }
-    return (!str ? '' : `style: TextStyle(${str}), `);
+    return (!str ? '' : `${tag}TextStyle(${str})${end} `);
 }
+
+exports._getStyleParam = _getStyleParam;
 
 function _getFontFamilyName(node) {
     let family = node.fontFamily.replace(/\s+/g, '');
@@ -213,7 +219,7 @@ function _getHeightParam(o) {
 }
 
 function _getShadowsParam(xdNode) {
-    return (xdNode.shadow === null || !xdNode.shadow.visible ? '' :
+    return (xdNode.shadow == null || !xdNode.shadow.visible ? '' :
         `shadows: [${_getShadow(xdNode.shadow)}], `);
 }
 

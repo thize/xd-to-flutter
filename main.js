@@ -16,3 +16,9 @@ module.exports = {
 };
 
 
+/*
+TODO:
+! Android Adaptive icon
+! Mask
+! Grid
+*/

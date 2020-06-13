@@ -17,14 +17,14 @@ function onTapGenerate() {
         const isArtboard = firstItem instanceof Artboard;
         const isOnlyOneComponent = items.length == 1 && firstItem instanceof SymbolInstance;
         if (isOnlyOneComponent) {
-            generateComponents(items);
+            generateComponents(items, true);
         } else if (isArtboard) {
             generateArtboards(items);
         } else {
             generateSelection(items);
         }
         const text = getOutputUiText();
-        if(text == 'Nothing...'){
+        if (text == 'Nothing...') {
             changeOutputUiText('Success');
         }
     } else {
@@ -34,25 +34,42 @@ function onTapGenerate() {
 
 exports.onTapGenerate = onTapGenerate;
 
-function generateComponents(components) {
+function generateComponents(components, isOnlyOneComponent = false) {
     const componentsWidget = [];
     components.forEach(component => {
         const dartCode = new ComponentWidget(component).toDartClass();
         componentsWidget.push(dartCode);
     });
-    const dartCode = formatDart(listToString(componentsWidget));
-    clipboard.copyText(dartCode);
+    if (isOnlyOneComponent) {
+        const dartCode = formatDart(listToString(componentsWidget));
+        clipboard.copyText(dartCode);
+    }
+    componentsWidget.forEach((c, i) => {
+        componentsWidget[i] = formatDart(c);
+    });
+    return componentsWidget;
 }
 
-function generateArtboards(artboards) {
-    const artboardsWidget = [];
+exports.generateComponents = generateComponents;
+
+function generateArtboards(artboards, toClipboard = true) {
+    let artboardsWidget = [];
     artboards.forEach(artboard => {
         const dartCode = new StatelessWidget(artboard.name, itemsToDart([artboard], true)).toDart();
         artboardsWidget.push(dartCode);
     });
-    const dartCode = formatDart(listToString(artboardsWidget));
-    clipboard.copyText(dartCode);
+    if (toClipboard) {
+        const dartCode = formatDart(listToString(artboardsWidget));
+        clipboard.copyText(dartCode);
+    } else {
+        artboardsWidget.forEach((artboard, i) => {
+            artboardsWidget[i] = formatDart(artboard);
+        });
+        return artboardsWidget;
+    }
 }
+
+exports.generateArtboards = generateArtboards;
 
 function generateSelection(items) {
     const dartCode = itemsToDart(items, true);

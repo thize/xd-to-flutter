@@ -10,6 +10,8 @@ const { onTapGenerate } = require("../generate");
 const { exportAppIcon } = require("../icon/functions");
 const { numbersMethodName } = require("./components/numbers_method_name");
 const { exportColor } = require("../color");
+const { exportAll } = require("../export_all");
+const { exportedCodePath } = require("./components/exported_code_path_ui");
 
 
 let panel;
@@ -23,7 +25,7 @@ function show(event) {
             projectFolderUi() + '<hr>' +
             exportButtonsUi() + '<hr>' +
             // exportToUi() + '<hr>' +
-            // exportedCodePath() + '<hr>' +
+            exportedCodePath() + '<hr>' +
             widgetsPrefixUi() + '<hr>' +
             numbersMethodName() + '<hr>' +
             // precisionRowUi() + '<hr>' +
@@ -73,7 +75,7 @@ function buildTaps() {
     let exportAllButton = document.getElementById('exportAllButton');
     exportAllButton.onclick = _checkActive(exportAllButton, function () {
         let exportAllRadio = document.querySelector('input[name="exportAllRadio"]:checked');
-        onTapGenerate(exportAllRadio.value);
+        exportAll(exportAllRadio.value);
     });
     let changeProjectFolderButton = document.getElementById('changeProjectFolderButton');
     changeProjectFolderButton.onclick = async function () {

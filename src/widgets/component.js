@@ -1,5 +1,6 @@
 const { Bounds } = require("../bounds");
 const { StatelessWidget } = require("./stateless");
+const { formatDart } = require("./util/format_dart");
 
 class ComponentWidget {
     constructor(xdNode) {
@@ -15,15 +16,17 @@ class ComponentWidget {
         return `const ${cleanVarName(componentName, true)}()`;
     }
 
-    toDartClass(isFirst = false) {
+    toDartClass() {
         const { itemsToDart } = require("../items_to_dart");
         const { findMasterForSymbolId } = require("../util");
         const { wrapWithInkWell } = require("./util/widgets_util");
         const master = findMasterForSymbolId(this.xdNode.symbolId);
         const componentName = !master ? this.xdNode.name : master.name;
-        let dartComponent = itemsToDart(this.xdNode.children, isFirst);
+        let dartComponent = itemsToDart(this.xdNode.children, false);
         dartComponent = wrapWithInkWell(this.xdNode, dartComponent);
-        return new StatelessWidget(componentName, dartComponent + ';').toDart();
+        const { applyRegex } = require("../util");
+        dartComponent = formatDart(new StatelessWidget(componentName, dartComponent + ';').toDart());
+        return applyRegex(dartComponent);
     }
 }
 

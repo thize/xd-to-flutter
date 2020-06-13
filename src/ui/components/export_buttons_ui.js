@@ -6,8 +6,8 @@ function exportButtonsUi() {
     const artboards = buildRadio('Artboards', true);
     const colors = buildRadio('Colors');
     const components = buildRadio('Components');
-    const fontStyles = buildRadio('FontStyles');
-    const switchs = artboards + components + '<br>' + colors + fontStyles;
+    const textStyles = buildRadio('TextStyles');
+    const switchs = artboards + components + '<br>' + colors + textStyles;
 
     const exportContent = title + exportSelectionButton() + exportSingleColorButton();
     const exportAllContent = titleAll + switchs + exportAllButton();
