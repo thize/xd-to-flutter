@@ -21,7 +21,6 @@ Connect with me at [LinkedIn](https://linkedin.com/in/giovani-lobato-68aa57131).
 ### Installing
 
 Download xdx file from: https://github.com/thize/xd-to-flutter/releases
-or Download from Discover plugins Adobe XD
 
 ## Contributing
 
