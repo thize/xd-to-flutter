@@ -11,14 +11,16 @@ class GroupWidget {
         const { removeItemsFromGroup } = require("../util");
         const ungroupedItems = removeItemsFromGroup(this.xdNode.children);
         const itemsDart = itemsToDart(ungroupedItems);
+        return `\n// Group: ${this.xdNode.name}\n${itemsDart}`;
+        /*
         return `
         Container(
             // Group: ${this.xdNode.name}
-            alignment: Alignment.center,
             width: ${this.xdNode.localBounds.width},
             height: ${this.xdNode.localBounds.height},
             child: ${itemsDart},
         )`;
+        */
     }
 }
 

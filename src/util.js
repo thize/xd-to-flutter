@@ -1,11 +1,10 @@
 const scenegraph = require("scenegraph");
-const { Path, Line, Group, Polygon, BooleanGroup, Artboard, ImageFill, RepeatGrid, SymbolInstance, Text } = require("scenegraph");
+const { Path, Line, Group, Polygon, BooleanGroup, Artboard, RepeatGrid, SymbolInstance, Text } = require("scenegraph");
 const { ArtboardWidget } = require("./widgets/artboard");
 const { ComponentWidget } = require("./widgets/component");
 const { ContainerWidget } = require("./widgets/container");
 const { GroupWidget } = require("./widgets/group");
 const { GridWidget } = require("./widgets/grid");
-const { InkWellWidget } = require("./widgets/inkwell");
 const { SvgWidget } = require("./widgets/svg");
 const { TextWidget } = require("./widgets/text");
 const { MaskWidget } = require("./widgets/mask");
@@ -158,6 +157,36 @@ function applyRegex(str) {
     str = _applySCRegexWithTag(str, getNumberRegex, null, 'Offset');
     str = _applySCRegexWithTag(str, getNumberRegex, null, 'elliptical');
     str = _applySCRegexWithTag(str, getNumberRegex, null, 'circular');
+    const element = document.getElementById('numbersMethodName');
+    let methodName = element != null ? element.value : element;
+    methodName = methodName ? methodName : '';
+    if (methodName != "") {
+        let indexOf = str.indexOf("TextStyle");
+        while (indexOf != -1) {
+            let ini = indexOf + 10;
+            let index = ini;
+            let qtdParentheses = 1;
+            let end;
+            while (end == null) {
+                if (str[index] == '(') {
+                    qtdParentheses++
+                } else if (str[index] == ')') {
+                    qtdParentheses--;
+                }
+                if (qtdParentheses == 0) {
+                    end = index;
+                }
+                index++;
+            }
+            let fix = str.substring(ini, end);
+            console.log('fix height');
+            fix = fix.replace(new RegExp(`height: ${methodName}\(.*\)`, 'gm'), (value) => {
+                return value.replace(`${methodName}(`, '').replace(')', '');
+            });
+            str = str.substring(0, ini) + fix + str.substring(end)
+            indexOf = str.indexOf("TextStyle", end);
+        }
+    }
     return str;
 }
 

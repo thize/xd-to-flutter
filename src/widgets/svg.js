@@ -17,17 +17,7 @@ class SvgWidget {
         const node = this.xdNode;
         const path = new Path(node);
         path.shapes = this.shapes;
-        let height = node.height;
-        height = height != null ? height : node.localBounds.height;
-        height = height == 0 ? 1 : height;
-        let width = node.width;
-        width = width != null ? width : node.localBounds.width;
-        width = width == 0 ? 1 : width;
-        return `SizedBox(
-            width: ${width},
-            height: ${height},
-            child: ${path.toString()},
-        )`;
+        return path.toString();
     }
 
 
@@ -71,9 +61,18 @@ class Path {
     toString() {
         let svg;
         svg = `'${this.toSvgString()}'`;
+        const node = this.xdNode;
+        let height = node.height;
+        height = height != null ? height : node.localBounds.height;
+        height = height == 0 ? 1 : height;
+        let width = node.width;
+        width = width != null ? width : node.localBounds.width;
+        width = width == 0 ? 1 : width;
         return `SvgPicture.string(
             // ${this.xdNode.name}
             ${svg},
+            width: ${width},
+            height: ${height},
         )`;
     }
 

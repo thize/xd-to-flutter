@@ -5,6 +5,9 @@ function xdAlignmentToDartAlignment(x, y) {
     const dx = fix(fixAlignment(x));
     const dy = fix(fixAlignment(y));
     const align = `Alignment(${dx},${dy})`;
+    const dif = Math.abs(dx - dy);
+    if(dif < 0.02) return 'Alignment.center';
+    console.log(`dif = ${dif}`);
     return nameAlignment[align] ? nameAlignment[align] : align;
 }
 
