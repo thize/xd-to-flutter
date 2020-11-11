@@ -26,7 +26,7 @@ Download xdx file from: https://github.com/thize/xd-to-flutter/releases
 
 You can send how many PR's do you want, I'll be glad to analyse and accept them! And if you have any question about the project...
 
-Email-me: thize@bluebookapps.com
+Email-me: thizeml@gmail.com
 
 Connect with me at [LinkedIn](https://linkedin.com/in/giovani-lobato-68aa57131).
 
