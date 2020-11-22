@@ -31,7 +31,7 @@ class TextWidget {
         if (o.areaBox) {
             let w = o.localBounds.width;
             let h = o.localBounds.height;
-            str = `SizedBox(width: ${w}, height: ${h}, child: ${str},)`;
+            str = `${str}.w(${w}).h(${h})`
         }
         return str;
     }
@@ -47,9 +47,9 @@ function checkForUnsupportedFeatures(o) {
     if (o.paragraphSpacing) {
         changeOutputUiText('Paragraph spacing is not currently supported.', 'Brown');
     }
-    if (o.strokeEnabled && o.stroke) {
-        changeOutputUiText('Text border is not currently supported.', 'Brown');
-    }
+    // if (o.strokeEnabled && o.stroke) {
+    //     changeOutputUiText('Text border is not currently supported.', 'Brown');
+    // }
 }
 
 function _textTransformation(text, xdNode) {
@@ -65,11 +65,77 @@ function _getText(xdNode, params) {
         ? `'${escapeString(xdNode.text)}'`
         : params["text"].name;
     textParam = _textTransformation(textParam, xdNode);
-    return 'Text('
+    let withStyledWidget = document.querySelector('input[name="simpleType"]');
+    withStyledWidget = withStyledWidget != null ? withStyledWidget.checked : null;
+    if (withStyledWidget) return styledText(xdNode, textParam);
+    return _borderText(xdNode, 'Text('
         + `${textParam},` +
         _getStyleParam(xdNode, _getTextStyleParamList(xdNode, null, params)) +
         _getTextAlignParam(xdNode) +
-        ')';
+        ')');
+}
+
+function _borderText(xdNode, dartCode) {
+    const { getOpacity } = require("../util");
+    if (xdNode.strokeEnabled && xdNode.stroke) {
+        const xdSec = xdNode.strokeEndCaps;
+        const xdSj = xdNode.strokeJoins;
+        const sc = xdSec == 'round' ? '' : `strokeCap: StrokeCap.${xdSec},`;
+        const sj = xdSj == 'round' ? '' : `strokeJoin: StrokeJoin.${xdSj},`;
+        const sw = xdNode.strokeWidth == 6 ? '' : `strokeWidth: ${xdNode.strokeWidth},`;
+        return `
+        BorderedText( //TODO: install bordered_text package
+            ${sw}
+            strokeColor: ${getColor(xdNode.stroke, getOpacity(xdNode))},
+            ${sc}
+            ${sj}
+            child: ${dartCode},
+          )`;
+    }
+    return dartCode;
+}
+
+function styledText(xdNode, textParam) {
+    const { getOpacity } = require("../util");
+    const c = `.textColor(${getColor(xdNode.fill, getOpacity(xdNode))})`;
+    const fs = `.fontSize(${xdNode.fontSize})`;
+    const weight = _getFontWeight(xdNode.fontStyle);
+    const fw = weight ? `.fontWeight(${weight})` : '';
+    const family = _getFontFamilyName(xdNode);
+    const ff = googleFonts.includes(family) ? `.textStyle(GoogleFonts.${family}())` : `.fontFamily('${_getFontFamily(xdNode)}')`;
+    //! Text Shadow
+    const shadow = xdNode.shadow;
+    let ts = '';
+    const withShadow = shadow != null && shadow.visible;
+    if (withShadow) {
+        const blur = shadow.blur ? shadow.blur != 0 ? `blurRadius: ${shadow.blur},` : '' : '';
+        const color = `color: ${getColor(shadow.color)}`;
+        const x = shadow.x;
+        const y = shadow.y;
+        const offset = (x || y ? x == 0 && y == 0 ? '' : `, offset: Offset(${x}, ${y}),` : '');
+        ts = `.textShadow(${blur}${color}${offset})`;
+    }
+    //! Text Decoration
+    let td = '';
+    if (xdNode.underline || xdNode.strikethrough) {
+        let u = xdNode.underline, s = xdNode.strikethrough;
+        if (u && s) {
+            td = '.combine([TextDecoration.underline, TextDecoration.lineThrough])';
+        } else {
+            td = u ? '.underline' : '.lineThrough'
+        }
+    }
+    //! Text Border
+    let tb = '';
+    if (xdNode.strokeEnabled && xdNode.stroke) {
+        const xdSec = xdNode.strokeEndCaps;
+        const xdSj = xdNode.strokeJoins;
+        const sc = xdSec == 'round' ? '' : `cap: StrokeCap.${xdSec},`;
+        const sj = xdSj == 'round' ? '' : `join: StrokeJoin.${xdSj},`;
+        const sw = xdNode.strokeWidth == 6 ? '' : `width: ${xdNode.strokeWidth},`;
+        tb = `.textBorder(color:${getColor(xdNode.stroke, getOpacity(xdNode))},${sw}${sc}${sj})`;
+    }
+    return `Text(${textParam})${ff}${c}${fs}${fw}${ts}${td}${tb}`;
 }
 
 function escapeString(str) {
@@ -95,10 +161,10 @@ function _getTextRich(xdNode, params) {
 
     // Export a rich text object with an empty root span setting a default style.
     // Child spans set their style as a delta of the default.
-    return 'Text.rich(TextSpan(' +
+    return _borderText(xdNode, 'Text.rich(TextSpan(' +
         '  ' + _getStyleParam(xdNode, defaultStyleParams) +
         `  children: [${str}],` +
-        `), ${_getTextAlignParam(xdNode)})`;
+        `), ${_getTextAlignParam(xdNode)})`);
 
 }
 

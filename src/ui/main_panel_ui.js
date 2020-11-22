@@ -3,7 +3,7 @@ const { build_css } = require("./css");
 const { widgetsPrefixUi } = require("./components/widgets_prefix_ui");
 const { outputUi, changeOutputUiText } = require("./components/output_ui");
 const { projectFolderUi } = require("./components/project_folder_ui");
-const { exportButtonsUi, exportIconButtons } = require("./components/export_buttons_ui");
+const { exportButtonsUi, copyButtonsUi, exportIconButtons } = require("./components/export_buttons_ui");
 const { exportWithCheckBoxsUi } = require("./components/export_with_checkboxs_ui");
 const { getFolderPath, changeProjectFolder } = require('../project_folder');
 const { onTapGenerate } = require("../generate");
@@ -23,15 +23,14 @@ function show(event) {
         panel.innerHTML =
             build_css() +
             outputUi() + '<hr>' +
-            projectFolderUi() + '<hr>' +
-            exportButtonsUi() + '<hr>' +
-            // exportToUi() + '<hr>' +
-            exportedCodePath() + '<hr>' +
-            widgetsPrefixUi() + '<hr>' +
+            copyButtonsUi() + '<hr>' +
             numbersMethodName() + '<hr>' +
-            // precisionRowUi() + '<hr>' +
-            // exportTypeUi() + '<hr>' +
             exportWithCheckBoxsUi() + '<hr>' +
+            outputUi(true) + '<hr>' +
+            exportButtonsUi() + '<hr>' +
+            widgetsPrefixUi() + '<hr>' +
+            projectFolderUi() + '<hr>' +
+            exportedCodePath() + '<hr>' +
             exportIconButtons() + '<hr>';
         event.node.appendChild(panel);
         buildTaps();

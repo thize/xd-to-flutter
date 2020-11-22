@@ -9,8 +9,13 @@ class Children {
         this.node = node;
         this.isStack = this.type == 'Stack';
         this.stackAlignment = '';
-        this.columnOrRowAlignment = '';
+        this.columnOrRowMainAlignment = '';
+        this.columnOrRowCrossAlignment = '';
         this.childrenSpaces = [];
+        this.w;
+        this.h;
+        this.isStart = false;
+        this.isEnd = false;
     }
 
     toDart() {
@@ -27,71 +32,142 @@ class Children {
         }
         this.getPositionedDistances();
         this.getChildrenSpaces();
-        this.buildWidgets(widgets);
-        const width = `width: ${this.node.bounds.x2 - this.node.bounds.x1},`;
-        const height = `height: ${this.node.bounds.y2 - this.node.bounds.y1},`;
+        let withStyledWidget = document.querySelector('input[name="simpleType"]');
+        withStyledWidget = withStyledWidget != null ? withStyledWidget.checked : null;
+        this.buildWidgets(widgets, withStyledWidget);
+        this.w = this.node.bounds.x2 - this.node.bounds.x1;
+        this.h = this.node.bounds.y2 - this.node.bounds.y1;
+        if (withStyledWidget) return this.simpleType(widgets);
+        const width = `width: ${this.w},`;
+        const height = `height: ${this.h},`;
         return `
             SizedBox(
             ${width}
             ${height}
             child: ${this.type}(
                 ${this.stackAlignment}
-                ${this.columnOrRowAlignment}
+                ${this.columnOrRowMainAlignment}
+                ${this.columnOrRowCrossAlignment}
                 children: <Widget>[${widgets},],
             ),
         )`;
     }
 
-    buildWidgets(widgets) {
+    simpleType(widgets) {
+        const { fix } = require("../util");
+        return `
+        [${widgets}].to${this.type}(${this.stackAlignment})${this.columnOrRowMainAlignment}${this.columnOrRowCrossAlignment}.w(${fix(this.w)}).h(${fix(this.h)})
+        `;
+    }
+
+    buildWidgets(widgets, withStyledWidget) {
         if (this.isStack) this.getStackAlignment();
-        if (!this.isStack) this.getColumnOrRowAlignment();
+        if (!this.isStack) this.getColumnOrRowMainAlignment(withStyledWidget);
+        if (!this.isStack) this.getColumnOrRowCrossAlignment(withStyledWidget);
         this.node.children.forEach((child, index) => {
             if (this.isStack) {
-                widgets.push(this.buildPositioneds(child, index));
+                widgets.push(this.buildPositioneds(child, index, withStyledWidget));
             } else {
-                this.buildSpacer(widgets, index);
+                this.buildSpacer(widgets, index, withStyledWidget);
                 widgets.push(this.buildAlignment(child, index));
             }
         });
         if (!this.isStack) {
-            this.buildSpacer(widgets, this.childrenSpaces.length - 1);
+            this.buildSpacer(widgets, this.childrenSpaces.length - 1, withStyledWidget);
         }
     }
 
-    buildSpacer(widgets, index) {
-        if (this.columnOrRowAlignment == '') {
+    buildSpacer(widgets, index, withStyledWidget) {
+        if (this.columnOrRowMainAlignment == '') {
             const spacer = this.childrenSpaces[index];
-            if (spacer > 0) widgets.push(`Spacer(flex: ${spacer})`);
+            if (spacer > 0) {
+                if (withStyledWidget) {
+                    widgets.push(`s(${spacer})`);
+                } else {
+                    widgets.push(`Spacer(flex: ${spacer})`);
+                }
+            }
         }
     }
 
-    getColumnOrRowAlignment() {
+    getColumnOrRowMainAlignment(withSw) {
         const dist = this.childrenSpaces;
         let set = new Set(dist);
         if (set.size == 1) {
             if (set.getByIdx(0) == 0) return;
-            this.columnOrRowAlignment = 'mainAxisAlignment: MainAxisAlignment.spaceEvenly,';
+            this.columnOrRowMainAlignment = withSw ? '.mainSpaceEvenly' : 'mainAxisAlignment: MainAxisAlignment.spaceEvenly,';
             return;
         }
         set = new Set(dist.slice(1, dist.length - 1)); // remove first and last item of Set
         if (dist[0] == 0 && dist[dist.length - 1] == 0 && set.size == 1) {
-            this.columnOrRowAlignment = 'mainAxisAlignment: MainAxisAlignment.spaceBetween,';
+            this.columnOrRowMainAlignment = withSw ? '.mainSpaceBetween' : 'mainAxisAlignment: MainAxisAlignment.spaceBetween,';
             return;
         }
         let first = dist[0];
         if (first != 0 && dist[dist.length - 1] == first && set.size == 1 && set.getByIdx(0) == first * 2) {
-            this.columnOrRowAlignment = 'mainAxisAlignment: MainAxisAlignment.spaceAround,';
+            this.columnOrRowMainAlignment = withSw ? '.mainSpaceAround' : 'mainAxisAlignment: MainAxisAlignment.spaceAround,';
             return;
         }
         let last = dist[dist.length - 1];
         if (first != 0 && last != 0 && first == last && set.size == 1 && set.getByIdx(0) == 0) {
-            this.columnOrRowAlignment = 'mainAxisAlignment: MainAxisAlignment.center,';
+            this.columnOrRowMainAlignment = withSw ? '.mainCenter' : 'mainAxisAlignment: MainAxisAlignment.center,';
             return;
         }
         set = new Set(dist.slice(1, dist.length)); // remove first and last item of Set
         if (first != 0 && set.size == 1 && set.getByIdx(0) == 0) {
-            this.columnOrRowAlignment = 'mainAxisAlignment: MainAxisAlignment.end,';
+            this.columnOrRowMainAlignment = withSw ? '.mainEnd' : 'mainAxisAlignment: MainAxisAlignment.end,';
             return;
+        }
+    }
+
+    getColumnOrRowCrossAlignment(withSw) {
+        let center = 0;
+        let end = 0;
+        let start = 0;
+        for (let index = 0; index < this.topDistance.length; index++) {
+            const top = this.topDistance[index];
+            const bot = this.botDistance[index];
+            const left = this.leftDistance[index];
+            const right = this.rightDistance[index];
+            const isColumn = this.type == 'Column';
+
+            let resAlignment = '';
+            if (isColumn) {
+                if (left != right) {
+                    let auxRight = right == 0 && left == 0 ? 1 : right;
+                    const alignX = (left / (left + auxRight));
+                    resAlignment = xdAlignmentToDartAlignment(alignX, 0.5);
+                    if (resAlignment == 'Alignment.centerLeft') {
+                        start++;
+                    } else if (resAlignment == 'Alignment.centerRight') {
+                        end++;
+                    }
+                } else {
+                    center++;
+                }
+            } else {
+                if (top != bot) {
+                    let auxBot = bot == 0 && top == 0 ? 1 : bot;
+                    const alignY = (top / (top + auxBot));
+                    resAlignment = xdAlignmentToDartAlignment(0.5, alignY);
+                    if (resAlignment == 'Alignment.topCenter') {
+                        start++;
+                    } else if (resAlignment == 'Alignment.bottomCenter') {
+                        end++;
+                    }
+                } else {
+                    center++;
+                }
+            }
+        }
+        if (center >= end && center >= start) return;
+        if (end >= center && end >= start) {
+            this.isEnd = true;
+            this.columnOrRowCrossAlignment = withSw ? '.crossEnd' : 'crossAxisAlignment: CrossAxisAlignment.end,';
+        }
+        if (start >= center && start >= end) {
+            this.isStart = true;
+            this.columnOrRowCrossAlignment = withSw ? '.crossStart' : 'crossAxisAlignment: CrossAxisAlignment.start,';
         }
     }
 
@@ -130,7 +206,8 @@ class Children {
                 let auxRight = right == 0 && left == 0 ? 1 : right;
                 const alignX = (left / (left + auxRight));
                 resAlignment = xdAlignmentToDartAlignment(alignX, 0.5);
-                if (resAlignment != 'Alignment.center')
+                const aux = this.isEnd ? 'Alignment.centerRight' : this.isStart ? 'Alignment.centerLeft' : 'Alignment.center';
+                if (resAlignment != aux)
                     return `Align(alignment: ${resAlignment}, child: ${child.toDart()},)`;
             }
         } else {
@@ -138,22 +215,28 @@ class Children {
                 let auxBot = bot == 0 && top == 0 ? 1 : bot;
                 const alignY = (top / (top + auxBot));
                 resAlignment = xdAlignmentToDartAlignment(0.5, alignY);
-                if (resAlignment != 'Alignment.center')
+                const aux = this.isEnd ? 'Alignment.bottomCenter' : this.isStart ? 'Alignment.topCenter' : 'Alignment.center';
+                if (resAlignment != aux)
                     return `Align(alignment: ${resAlignment}, child: ${child.toDart()},)`;
             }
         }
         return widget;
     }
 
-    buildPositioneds(child, index) {
+    buildPositioneds(child, index, withStyledWidget) {
         const widget = child.toDart();
         const top = this.topDistance[index];
         const bot = this.botDistance[index];
         const left = this.leftDistance[index];
         const right = this.rightDistance[index];
-        const horizontalPositioned = left == right ? '' : left < right ? left == 0 && this.isLeft ? '' : `left: ${left},` : right == 0 && this.isRight ? '' : `right: ${right},`;
-        const verticalPositioned = top == bot ? '' : top < bot ? top == 0 && this.isTop ? '' : `top: ${top},` : bot == 0 && this.isBot ? '' : `bottom: ${bot},`;
+        let horizontalPositioned = left == right ? '' : left < right ? left == 0 && this.isLeft ? '' : `left: ${left},` : right == 0 && this.isRight ? '' : `right: ${right},`;
+        let verticalPositioned = top == bot ? '' : top < bot ? top == 0 && this.isTop ? '' : `top: ${top},` : bot == 0 && this.isBot ? '' : `bottom: ${bot},`;
         if (horizontalPositioned == '' && verticalPositioned == '') return widget;
+        if (withStyledWidget) {
+            horizontalPositioned = verticalPositioned == '' ? horizontalPositioned.substr(0, horizontalPositioned.length - 1) : horizontalPositioned;
+            verticalPositioned = verticalPositioned.substr(0, verticalPositioned.length - 1);
+            return `${widget}.positioned(${horizontalPositioned}${verticalPositioned})`;
+        }
         return `
         Positioned(
             ${horizontalPositioned}

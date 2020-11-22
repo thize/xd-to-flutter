@@ -79,7 +79,7 @@ function exportAllColors() {
         const materialImport = `import 'package:flutter/material.dart';\n\n`;
         appColorsClass = materialImport + appColorsClass;
         changeOutputUiText('Exporting app_colors.dart');
-        exportFiles(['app_colors.dart'], [appColorsClass]);
+        exportFiles(['app_colors.dart'], [appColorsClass], 'Colors');
     }
 }
 

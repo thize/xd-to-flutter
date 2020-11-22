@@ -19,12 +19,16 @@ const { changeOutputUiText } = require("../../ui/components/output_ui");
 
 /** BOXDECORATION */
 function getColorOrDecorationParam(xdNode, parameters) {
-	if (!xdNode.stroke && !xdNode.hasRoundedCorners && !xdNode.shadow && xdNode.fill instanceof xd.Color) {
+	const radii = xdNode.cornerRadii;
+	const tl = radii.topLeft, tr = radii.topRight, br = radii.bottomRight, bl = radii.bottomLeft;
+	const noCorner = tl == 0 && tl === tr && tl === br && tl === bl;
+	if (!xdNode.strokeEnabled && noCorner && !xdNode.shadow.visible && xdNode.fill instanceof xd.Color) {
 		return _getFillParam(xdNode, parameters);
 	} else {
 		return getDecorationParam(xdNode, parameters);
 	}
 }
+
 exports.getColorOrDecorationParam = getColorOrDecorationParam;
 
 function getDecorationParam(o, parameters) {

@@ -12,6 +12,14 @@ class InkWellWidget {
         let withInkWell = document.querySelector('input[name="prototypeInteractions"]');
         withInkWell = withInkWell != null ? withInkWell.checked : null;
         if (!withInkWell) return child;
+        let withStyledWidget = document.querySelector('input[name="simpleType"]');
+        withStyledWidget = withStyledWidget != null ? withStyledWidget.checked : null;
+        if (withStyledWidget) {
+            return `${child}.onTap((){
+                //TODO: onTap ${this.xdNode.name}
+                print('onTap ${this.xdNode.name}');
+            })`
+        }
         return `
         InkWell(
             onTap: (){

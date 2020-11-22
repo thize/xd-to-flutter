@@ -6,7 +6,7 @@ function exportWithCheckBoxsUi() {
         prototypeInteractionsUi() +
         // googleFontsUi() +
         // simpleCodeUi() +
-        styledWidgetUi();
+        simpleTypeUi();
     return title + checkboxs;
 }
 
@@ -28,6 +28,7 @@ function simpleCodeUi() {
     return rowUi(`<input type="checkbox" id="simpleCode" name="simpleCode" >SimpleCode`);
 }
 
-function styledWidgetUi() {
-    return rowUi(`<input type="checkbox" id="stlyedWidget" name="stlyedWidget" disabled="disabled" >Styled Widget (Coming soon)`);
+function simpleTypeUi() {
+    return rowUi(`<input type="checkbox" id="simpleType" name="simpleType" disabled="disabled" >Simple Type (Coming soon)`);
+    // return rowUi(`<input type="checkbox" id="simpleType" name="simpleType" >Simple Type (Beta)`);
 }

@@ -23,12 +23,21 @@ class SvgWidget {
 
     assetSvg() {
         const node = this.xdNode;
+        const { fix } = require("../util");
         let height = node.height;
         height = height != null ? height : node.localBounds.height;
         height = height == 0 ? 1 : height;
         let width = node.width;
         width = width != null ? width : node.localBounds.width;
         width = width == 0 ? 1 : width;
+        let withStyledWidget = document.querySelector('input[name="simpleType"]');
+        withStyledWidget = withStyledWidget != null ? withStyledWidget.checked : null;
+        if (withStyledWidget) {
+            return `SvgPicture.asset(
+                //TODO: ${node.name}
+            'assets/${node.name.replace('svg_', '')}.svg',
+        ).w(${fix(width)}).h(${fix(height)})`;
+        }
         return `SvgPicture.asset(
                 //TODO: ${node.name}
             'assets/${node.name.replace('svg_', '')}.svg',
@@ -76,6 +85,7 @@ class Path {
 
     toString() {
         let svg;
+        const { fix } = require("../util");
         svg = `'${this.toSvgString()}'`;
         const node = this.xdNode;
         let height = node.height;
@@ -84,6 +94,14 @@ class Path {
         let width = node.width;
         width = width != null ? width : node.localBounds.width;
         width = width == 0 ? 1 : width;
+        let withStyledWidget = document.querySelector('input[name="simpleType"]');
+        withStyledWidget = withStyledWidget != null ? withStyledWidget.checked : null;
+        if (withStyledWidget) {
+            return `SvgPicture.string(
+                // ${this.xdNode.name}
+                ${svg},
+        ).w(${fix(width)}).h(${fix(height)})`;
+        }
         return `SvgPicture.string(
             // ${this.xdNode.name}
             ${svg},

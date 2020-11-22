@@ -17,10 +17,26 @@ module.exports = {
 
 
 /*
+CHANGELOG:
+Bordered Text
+Fix Container Decoration
+Added Column/Row Cross Alignment
+
 TODO:
+! Use Color from Asset Panel
+! Use TextStyle from Asset Panel
 ! Android Adaptive icon
 ! Mask
 ! Repeat Grid
 ! List View
-! Styled Widget
+
+TODO: Simple Type:
+* Text
+* Svg
+* Children
+* InkWell
+! Text Rich
+! Container
+! Mask
+! Grid
 */
