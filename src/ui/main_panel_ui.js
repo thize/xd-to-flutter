@@ -7,6 +7,7 @@ const { exportButtonsUi, exportIconButtons } = require("./components/export_butt
 const { exportWithCheckBoxsUi } = require("./components/export_with_checkboxs_ui");
 const { getFolderPath, changeProjectFolder } = require('../project_folder');
 const { onTapGenerate } = require("../generate");
+const { onTapGeneratePath } = require("../generate_path");
 const { exportAppIcon } = require("../icon/functions");
 const { numbersMethodName } = require("./components/numbers_method_name");
 const { exportColor } = require("../color");
@@ -39,15 +40,19 @@ function show(event) {
 
 let oldItemsLengh;
 function update() {
+
     const items = scenegraph.selection.items;
     const singleColorButton = document.getElementById('singleColorButton');
     const isToActiveSingleColorButton = items.length == 1 && (items[0].children.length == 0 || items[0].constructor.name == 'Artboard');
     _changeButtonState(singleColorButton, isToActiveSingleColorButton);
     const selectionButton = document.getElementById('selectionButton');
+    const pathButton = document.getElementById('pathButton');
     const iosIconButton = document.getElementById('iosIconButton');
     const androidIconButton = document.getElementById('androidIconButton');
     const isToActiveSelectionButton = items.length > 0;
     _changeButtonState(selectionButton, isToActiveSelectionButton);
+    const isToActivePathButton = items.length == 1 && items[0].constructor.name == 'Path';
+    _changeButtonState(pathButton, isToActivePathButton);
     const isToActiveIosIconButton = items.length == 1;
     _changeButtonState(iosIconButton, isToActiveIosIconButton);
     const isToActiveAndroidIconButton = items.length == 1;
@@ -71,6 +76,12 @@ function buildTaps() {
         onTapGenerate();
     }, function () {
         changeOutputUiText(`Select something`, 'red');
+    });
+    let pathButton = document.getElementById('pathButton');
+    pathButton.onclick = _checkActive(pathButton, function () {
+        onTapGeneratePath();
+    }, function () {
+        changeOutputUiText(`Select one path`, 'red');
     });
     let exportAllButton = document.getElementById('exportAllButton');
     exportAllButton.onclick = _checkActive(exportAllButton, function () {

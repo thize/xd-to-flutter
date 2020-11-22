@@ -20,5 +20,7 @@ module.exports = {
 TODO:
 ! Android Adaptive icon
 ! Mask
-! Grid
+! Repeat Grid
+! List View
+! Styled Widget
 */

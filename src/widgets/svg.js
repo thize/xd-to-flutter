@@ -15,11 +15,27 @@ class SvgWidget {
 
     toDart() {
         const node = this.xdNode;
+        if (node.name.includes('svg_')) return this.assetSvg();
         const path = new Path(node);
         path.shapes = this.shapes;
         return path.toString();
     }
 
+    assetSvg() {
+        const node = this.xdNode;
+        let height = node.height;
+        height = height != null ? height : node.localBounds.height;
+        height = height == 0 ? 1 : height;
+        let width = node.width;
+        width = width != null ? width : node.localBounds.width;
+        width = width == 0 ? 1 : width;
+        return `SvgPicture.asset(
+                //TODO: ${node.name}
+            'assets/${node.name.replace('svg_', '')}.svg',
+            width: ${width},
+            height: ${height},
+        )`;
+    }
 
     addShapesFromGroup(xdNode) {
         xdNode.children.forEach(child => {

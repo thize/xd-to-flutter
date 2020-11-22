@@ -23,6 +23,7 @@ function _isSvgLine(item) {
 
 function isSvgFolder(item) {
     let onlySvg = true;
+    if (item.name.includes('svg_')) return onlySvg;
     item.children.forEach(child => {
         if (onlySvg) {
             // if (child instanceof Group) {
@@ -179,7 +180,6 @@ function applyRegex(str) {
                 index++;
             }
             let fix = str.substring(ini, end);
-            console.log('fix height');
             fix = fix.replace(new RegExp(`height: ${methodName}\(.*\)`, 'gm'), (value) => {
                 return value.replace(`${methodName}(`, '').replace(')', '');
             });

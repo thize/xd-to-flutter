@@ -8,8 +8,7 @@ function exportButtonsUi() {
     const components = buildRadio('Components');
     const textStyles = buildRadio('TextStyles');
     const switchs = artboards + components + '<br>' + colors + textStyles;
-
-    const exportContent = title + exportSelectionButton() + exportSingleColorButton();
+    const exportContent = title + exportSelectionButton() + exportSingleColorButton() + exportPathButton();
     const exportAllContent = titleAll + switchs + exportAllButton();
     return exportContent + '<hr>' + exportAllContent;
 }
@@ -27,6 +26,10 @@ module.exports = {
 
 function exportSelectionButton() {
     return buttonUi('selectionButton', 'Selected Item', false);
+}
+
+function exportPathButton() {
+    return buttonUi('pathButton', 'Selected Path', false);
 }
 
 function exportSingleColorButton() {
