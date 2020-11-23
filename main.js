@@ -17,20 +17,6 @@ module.exports = {
 
 
 /*
-CHANGELOG:
-
-Export Color now use Colors from Asset Panel
-
-Added:
-Bordered Text
-Column/Row Cross Alignment
-Simple Type (Alpha)
-
-Fixed:
-Column/Row Alignments
-Container Decoration
-UI Flow
-
 * Done
 ? Have to do
 ! To Do
