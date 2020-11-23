@@ -7,6 +7,13 @@ class GridWidget {
     }
 
     toDart() {
+        let withStyledWidget = document.querySelector('input[name="simpleType"]');
+        withStyledWidget = withStyledWidget != null ? withStyledWidget.checked : null;
+        if (withStyledWidget) {
+            return `Container(
+            // [${this.xdNode.name}] Repeat grid aren't supported
+        ).w(${this.xdNode.localBounds.width}).h(${this.xdNode.localBounds.height}).backgroundColor(Colors.red)`;
+        }
         return `
         Container(
             // [${this.xdNode.name}] Repeat grid aren't supported.

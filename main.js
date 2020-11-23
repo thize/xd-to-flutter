@@ -18,14 +18,26 @@ module.exports = {
 
 /*
 CHANGELOG:
+
+Export Color now use Colors from Asset Panel
+
+Added:
 Bordered Text
-Fix Container Decoration
-Added Column/Row Cross Alignment
+Column/Row Cross Alignment
+Simple Type (Alpha)
+
+Fixed:
+Column/Row Alignments
+Container Decoration
+UI Flow
+
+* Done
+? Have to do
+! To Do
 
 TODO:
-! Use Color from Asset Panel
-! Use TextStyle from Asset Panel
 ! Android Adaptive icon
+! Use TextStyle from Asset Panel
 ! Mask
 ! Repeat Grid
 ! List View
@@ -35,8 +47,8 @@ TODO: Simple Type:
 * Svg
 * Children
 * InkWell
+* Mask
+* Grid
+* Container
 ! Text Rich
-! Container
-! Mask
-! Grid
 */

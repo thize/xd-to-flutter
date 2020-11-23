@@ -19,9 +19,12 @@ const { changeOutputUiText } = require("../../ui/components/output_ui");
 
 /** BOXDECORATION */
 function getColorOrDecorationParam(xdNode, parameters) {
-	const radii = xdNode.cornerRadii;
-	const tl = radii.topLeft, tr = radii.topRight, br = radii.bottomRight, bl = radii.bottomLeft;
-	const noCorner = tl == 0 && tl === tr && tl === br && tl === bl;
+	let noCorner = !(xdNode instanceof xd.Ellipse);
+	if (noCorner) {
+		const radii = xdNode.cornerRadii;
+		const tl = radii.topLeft, tr = radii.topRight, br = radii.bottomRight, bl = radii.bottomLeft;
+		noCorner = tl == 0 && tl === tr && tl === br && tl === bl;
+	}
 	if (!xdNode.strokeEnabled && noCorner && !xdNode.shadow.visible && xdNode.fill instanceof xd.Color) {
 		return _getFillParam(xdNode, parameters);
 	} else {
@@ -34,7 +37,32 @@ exports.getColorOrDecorationParam = getColorOrDecorationParam;
 function getDecorationParam(o, parameters) {
 	return `decoration: ${_getBoxDecoration(o, parameters)}, `;
 }
+
 exports.getDecorationParam = getDecorationParam;
+
+
+function getStyledDecoration(xdNode, parameters) {
+	const { fix, getOpacity } = require("../../util");
+	//! border
+	let s = !xdNode.strokeEnabled ? '' : `
+    border: Border.all(
+        width: ${xdNode.strokeWidth}.a,
+        color:  ${getColor(xdNode.stroke, getOpacity(xdNode))},
+        ),`;
+	//! shadow
+	let bs = xdNode.shadow;
+	if (!bs || !bs.visible) { bs = ""; } else {
+		bs = `boxShadow: [BoxShadow(color: ${getColor(bs.color, getOpacity(xdNode))}, offset: Offset(${fix(bs.x)}.a, ${fix(bs.y)}.a), blurRadius: ${fix(bs.blur)}.a, ), ], `;
+	}
+	//! radius
+	let br = _getBorderRadiusParam(xdNode);
+	//! Result
+	return `.decorated(
+         ${_getFillParam(xdNode, parameters)}${s}${bs}${br}
+    )`;
+}
+
+exports.getStyledDecoration = getStyledDecoration;
 
 function _getBoxDecoration(xdNode, parameters) {
 	const { getParamList } = require("../../util");
@@ -130,8 +158,24 @@ function _getBorderRadiusForRectangle(o) {
 	let radii = o.cornerRadii;
 	let tl = radii.topLeft, tr = radii.topRight, br = radii.bottomRight, bl = radii.bottomLeft;
 	if (tl === tr && tl === br && tl === bl) {
+		let withStyledWidget = document.querySelector('input[name="simpleType"]');
+		withStyledWidget = withStyledWidget != null ? withStyledWidget.checked : null;
+		if (withStyledWidget) return `${tl}.circularBorder`;
 		return `BorderRadius.circular(${tl})`;
 	} else {
+		if ((tl == tr || (tl <= 1 && tr <= 1)) && (br == bl || (br <= 1 && bl <= 1))) {
+			return `BorderRadius.vertical(
+				${_getRadiusParam("top", tl)}
+				${_getRadiusParam("bottom", br)}
+			)`;
+		}
+
+		if ((tl == bl || (tl <= 1 && bl <= 1)) && (br == tr || (br <= 1 && tr <= 1))) {
+			return `BorderRadius.horizontal(
+				${_getRadiusParam("left", tl)}
+				${_getRadiusParam("right", br)}
+			)`;
+		}
 		return 'BorderRadius.only(' +
 			_getRadiusParam("topLeft", tl) +
 			_getRadiusParam("topRight", tr) +
@@ -143,7 +187,10 @@ function _getBorderRadiusForRectangle(o) {
 
 function _getRadiusParam(param, value) {
 	if (value <= 1) { return ''; }
-	return `${param}: Radius.circular(${value}), `;
+	let withStyledWidget = document.querySelector('input[name="simpleType"]');
+	withStyledWidget = withStyledWidget != null ? withStyledWidget.checked : null;
+	if (withStyledWidget) return `${param}: ${value}.circular, `;
+	return `${param}: aRadius.circular(${value}), `;
 }
 
 

@@ -16,19 +16,20 @@ module.exports = {
 
 
 
-function googleFontsUi() {
-    return rowUi(`<input type="checkbox" id="googleFonts" name="googleFonts">Google Fonts`);
-}
+// function googleFontsUi() {
+//     return rowUi(`<input type="checkbox" id="googleFonts" name="googleFonts">Google Fonts`);
+// }
+
+// function simpleCodeUi() {
+//     return rowUi(`<input type="checkbox" id="simpleCode" name="simpleCode" >SimpleCode`);
+// }
 
 function prototypeInteractionsUi() {
     return rowUi(`<input type="checkbox" id="prototypeInteractions" name="prototypeInteractions" checked>Prototype Interactions`);
 }
 
-function simpleCodeUi() {
-    return rowUi(`<input type="checkbox" id="simpleCode" name="simpleCode" >SimpleCode`);
-}
 
 function simpleTypeUi() {
-    return rowUi(`<input type="checkbox" id="simpleType" name="simpleType" disabled="disabled" >Simple Type (Coming soon)`);
+    return rowUi(`<input type="checkbox" id="simpleType" name="simpleType">Simple Type (Alpha)`);
     // return rowUi(`<input type="checkbox" id="simpleType" name="simpleType" >Simple Type (Beta)`);
 }

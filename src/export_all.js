@@ -9,7 +9,6 @@ const assets = require("assets");
 const { Parameter, ParameterRef } = require("./widgets/util/parameter");
 const { _getStyleParam, _getTextStyleParamList } = require("./widgets/text");
 const { applyRegex } = require("./util");
-const { _getFillParam } = require("./widgets/util/decorations");
 const { getColor } = require("./widgets/util/color");
 let components = [];
 let componentsNames = [];

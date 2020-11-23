@@ -201,14 +201,23 @@ class Children {
         const right = this.rightDistance[index];
         const isColumn = this.type == 'Column';
         let resAlignment;
+        let withStyledWidget = document.querySelector('input[name="simpleType"]');
+        withStyledWidget = withStyledWidget != null ? withStyledWidget.checked : null;
         if (isColumn) {
             if (left != right) {
                 let auxRight = right == 0 && left == 0 ? 1 : right;
                 const alignX = (left / (left + auxRight));
                 resAlignment = xdAlignmentToDartAlignment(alignX, 0.5);
                 const aux = this.isEnd ? 'Alignment.centerRight' : this.isStart ? 'Alignment.centerLeft' : 'Alignment.center';
-                if (resAlignment != aux)
-                    return `Align(alignment: ${resAlignment}, child: ${child.toDart()},)`;
+                if (resAlignment != aux) {
+                    if (!withStyledWidget) {
+                        return `Align(alignment: ${resAlignment}, child: ${child.toDart()},)`;
+                    }
+                    if (resAlignment == 'Alignment.center') {
+                        return `${child.toDart()}.center()`;
+                    }
+                    return `${child.toDart()}.alignment(${resAlignment})`;
+                }
             }
         } else {
             if (top != bot) {
@@ -216,8 +225,15 @@ class Children {
                 const alignY = (top / (top + auxBot));
                 resAlignment = xdAlignmentToDartAlignment(0.5, alignY);
                 const aux = this.isEnd ? 'Alignment.bottomCenter' : this.isStart ? 'Alignment.topCenter' : 'Alignment.center';
-                if (resAlignment != aux)
-                    return `Align(alignment: ${resAlignment}, child: ${child.toDart()},)`;
+                if (resAlignment != aux) {
+                    if (!withStyledWidget) {
+                        return `Align(alignment: ${resAlignment}, child: ${child.toDart()},)`;
+                    }
+                    if (resAlignment == 'Alignment.center') {
+                        return `${child.toDart()}.center()`;
+                    }
+                    return `${child.toDart()}.alignment(${resAlignment})`;
+                }
             }
         }
         return widget;

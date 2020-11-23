@@ -11,6 +11,13 @@ class MaskWidget {
         // const { removeItemsFromGroup } = require("../util");
         // const ungroupedItems = removeItemsFromGroup(this.xdNode.children);
         // const itemsDart = itemsToDart(ungroupedItems);
+        let withStyledWidget = document.querySelector('input[name="simpleType"]');
+        withStyledWidget = withStyledWidget != null ? withStyledWidget.checked : null;
+        if (withStyledWidget) {
+            return `Container(
+            // [${this.xdNode.name}] Group masks aren't supported.
+        ).w(${this.xdNode.localBounds.width}).h(${this.xdNode.localBounds.height}).backgroundColor(Colors.red)`;
+        }
         return `
         Container(
             // [${this.xdNode.name}] Group masks aren't supported.

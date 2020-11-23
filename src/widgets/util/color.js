@@ -1,8 +1,11 @@
+const assets = require("assets");
 
-
-function getColor(color, opacity = 1.0) {
+function getColor(color, opacity = 1.0, fromAsset = true) {
     const hexColor = color.toHex(true).replace("#", "").toUpperCase();
-    const colorResult = _colorToMaterialColor(`Color(0xFF${hexColor})`);
+    let colorResult = _colorToMaterialColor(`Color(0xFF${hexColor})`);
+    if (fromAsset) {
+        colorResult = _colorToAssetPanelColor(colorResult);
+    }
     const withOpacity = _withOpacity((color.a / 255) * opacity);
     return `${colorResult}${withOpacity}`;
 }
@@ -20,6 +23,28 @@ function _colorToMaterialColor(color) {
     if (materialColors[color] != null)
         return materialColors[color];
     return 'const ' + color;
+}
+
+function _colorToAssetPanelColor(color) {
+    const assetsColors = assets.colors.get();
+    for (let i = 0; i < assetsColors.length; i++) {
+        const assetsColor = assetsColors[i];
+        const name = assetsColor.name != null ? assetsColor.name : `color${i + 1}`;
+        if (!_isGradient(assetsColor)) {
+            const generatedColor = getColor(assetsColor.color, 1, false)
+            if (generatedColor == color) {
+                const element = document.getElementById('widgetsPrexix');
+                let prefix = element != null ? element.value : element;
+                if (!prefix) prefix = '';
+                return `${prefix}AppColors.${name}`;
+            }
+        }
+    }
+    return color;
+}
+
+function _isGradient(fill) {
+    return fill.startY != null || (fill.colorStops != null && fill.colorStops.length > 0);
 }
 
 const materialColors = JSON.parse(JSON.stringify(JSON.parse(`{
