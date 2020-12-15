@@ -162,30 +162,36 @@ function applyRegex(str) {
     let methodName = element != null ? element.value : element;
     methodName = methodName ? methodName : '';
     if (methodName != "") {
-        let indexOf = str.indexOf("TextStyle");
-        while (indexOf != -1) {
-            let ini = indexOf + 10;
-            let index = ini;
-            let qtdParentheses = 1;
-            let end;
-            while (end == null) {
-                if (str[index] == '(') {
-                    qtdParentheses++
-                } else if (str[index] == ')') {
-                    qtdParentheses--;
-                }
-                if (qtdParentheses == 0) {
-                    end = index;
-                }
-                index++;
+        str = _applyTextStyle(str, methodName, 'TextStyle');
+        str = _applyTextStyle(str, methodName, 'GoogleFonts');
+    }
+    return str;
+}
+
+function _applyTextStyle(str, methodName, tag) {
+    let indexOf = str.indexOf(tag);
+    while (indexOf != -1) {
+        let ini = indexOf + 10;
+        let index = ini;
+        let qtdParentheses = 1;
+        let end;
+        while (end == null) {
+            if (str[index] == '(') {
+                qtdParentheses++
+            } else if (str[index] == ')') {
+                qtdParentheses--;
             }
-            let fix = str.substring(ini, end);
-            fix = fix.replace(new RegExp(`height: ${methodName}\(.*\)`, 'gm'), (value) => {
-                return value.replace(`${methodName}(`, '').replace(')', '');
-            });
-            str = str.substring(0, ini) + fix + str.substring(end)
-            indexOf = str.indexOf("TextStyle", end);
+            if (qtdParentheses == 0) {
+                end = index;
+            }
+            index++;
         }
+        let fix = str.substring(ini, end);
+        fix = fix.replace(new RegExp(`height: ${methodName}\(.*\)`, 'gm'), (value) => {
+            return value.replace(`${methodName}(`, '').replace(')', '');
+        });
+        str = str.substring(0, ini) + fix + str.substring(end)
+        indexOf = str.indexOf(tag, end);
     }
     return str;
 }

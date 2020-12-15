@@ -31,11 +31,20 @@ class TextWidget {
         if (o.areaBox) {
             let w = o.localBounds.width;
             let h = o.localBounds.height;
-            str = `${str}.w(${w}).h(${h})`
+            let withStyledWidget = document.querySelector('input[name="simpleType"]');
+            withStyledWidget = withStyledWidget != null ? withStyledWidget.checked : null;
+            if (withStyledWidget) {
+                str = `${str}.w(${w}).h(${h})`
+            } else {
+                str = `SizedBox(
+                    width: ${w},
+                    height: ${h},
+                    child: ${str},
+                )`
+            }
         }
         return str;
     }
-
 }
 
 exports.TextWidget = TextWidget;
