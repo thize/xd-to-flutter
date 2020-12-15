@@ -1,5 +1,5 @@
 {
-  "name": "Generate Flutter Code",
+  "name": "Flutter Code Generator",
   "host": {
     "app": "XD",
     "minVersion": "21.0"
