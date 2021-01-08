@@ -33,10 +33,9 @@ class SvgWidget {
         let withStyledWidget = document.querySelector('input[name="simpleType"]');
         withStyledWidget = withStyledWidget != null ? withStyledWidget.checked : null;
         if (withStyledWidget) {
-            return `SvgPicture.asset(
+            return `
                 //TODO: ${node.name}
-            'assets/${node.name.replace('svg_', '')}.svg',
-        ).w(${fix(width)}).h(${fix(height)})`;
+            'assets/${node.name.replace('svg_', '')}.svg'.svgAsset().w(${fix(width)}).h(${fix(height)})`;
         }
         return `SvgPicture.asset(
                 //TODO: ${node.name}
@@ -97,10 +96,9 @@ class Path {
         let withStyledWidget = document.querySelector('input[name="simpleType"]');
         withStyledWidget = withStyledWidget != null ? withStyledWidget.checked : null;
         if (withStyledWidget) {
-            return `SvgPicture.string(
+            return `
                 // ${this.xdNode.name}
-                ${svg},
-        ).w(${fix(width)}).h(${fix(height)})`;
+                ${svg}.svgString().w(${fix(width)}).h(${fix(height)})`;
         }
         return `SvgPicture.string(
             // ${this.xdNode.name}

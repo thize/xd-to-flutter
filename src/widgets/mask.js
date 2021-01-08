@@ -16,7 +16,7 @@ class MaskWidget {
         if (withStyledWidget) {
             return `Container(
             // [${this.xdNode.name}] Group masks aren't supported.
-        ).w(${this.xdNode.localBounds.width}).h(${this.xdNode.localBounds.height}).backgroundColor(Colors.red)`;
+        ).w(${this.xdNode.localBounds.width}).h(${this.xdNode.localBounds.height}).bgColor(Colors.red)`;
         }
         return `
         Container(

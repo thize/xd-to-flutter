@@ -105,13 +105,15 @@ function _borderText(xdNode, dartCode) {
 }
 
 function styledText(xdNode, textParam) {
+    //TODO: tAlignment
     const { getOpacity } = require("../util");
-    const c = `.textColor(${getColor(xdNode.fill, getOpacity(xdNode))})`;
-    const fs = `.fontSize(${xdNode.fontSize})`;
+    const al = _getStyledTextAlign(xdNode);
+    const c = `.color(${getColor(xdNode.fill, getOpacity(xdNode))})`;
+    const fs = `.size(${xdNode.fontSize})`;
     const weight = _getFontWeight(xdNode.fontStyle);
-    const fw = weight ? `.fontWeight(${weight})` : '';
+    const fw = weight ? `.weight(${weight})` : '';
     const family = _getFontFamilyName(xdNode);
-    const ff = googleFonts.includes(family) ? `.textStyle(GoogleFonts.${family}())` : `.fontFamily('${_getFontFamily(xdNode)}')`;
+    const ff = googleFonts.includes(family) ? `.textStyle(GoogleFonts.${family}())` : `.family('${_getFontFamily(xdNode)}')`;
     //! Text Shadow
     const shadow = xdNode.shadow;
     let ts = '';
@@ -122,7 +124,7 @@ function styledText(xdNode, textParam) {
         const x = shadow.x;
         const y = shadow.y;
         const offset = (x || y ? x == 0 && y == 0 ? '' : `, offset: Offset(${x}, ${y}),` : '');
-        ts = `.textShadow(${blur}${color}${offset})`;
+        ts = `.shadow(${blur}${color}${offset})`;
     }
     //! Text Decoration
     let td = '';
@@ -142,9 +144,9 @@ function styledText(xdNode, textParam) {
         const sc = xdSec == 'round' ? '' : `cap: StrokeCap.${xdSec},`;
         const sj = xdSj == 'round' ? '' : `join: StrokeJoin.${xdSj},`;
         const sw = xdNode.strokeWidth == 6 ? '' : `width: ${xdNode.strokeWidth},`;
-        tb = `.textBorder(color:${getColor(xdNode.stroke, getOpacity(xdNode))},${sw}${sc}${sj})`;
+        tb = `.border(color:${getColor(xdNode.stroke, getOpacity(xdNode))},${sw}${sc}${sj})`;
     }
-    return `Text(${textParam})${ff}${c}${fs}${fw}${ts}${td}${tb}`;
+    return `${textParam}.text()${ff}${c}${al}${fs}${fw}${ts}${td}${tb}`;
 }
 
 function escapeString(str) {
@@ -294,7 +296,7 @@ function _getHeightParam(o) {
 }
 
 function _getShadowsParam(xdNode) {
-    return (xdNode.shadow == null || !xdNode.shadow.visible ? '' :
+    return ((xdNode.shadow == null || !xdNode.shadow.visible) ? '' :
         `shadows: [${_getShadow(xdNode.shadow)}], `);
 }
 
@@ -308,6 +310,14 @@ function _getShadow(shadow) {
 function _getTextAlign(align) {
     return 'TextAlign.' + (align == 'right' ? 'right' :
         align === 'center' ? 'center' : 'left');
+}
+
+function _getStyledTextAlign(xdNode) {
+    const align = xdNode.textAlign;
+    if (align == 'left') return '';
+    if (align == 'right') return '.tRight';
+    if (align == 'center') return '.tCenter';
+    return '';
 }
 
 function _getFontStyle(style) {

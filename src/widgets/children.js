@@ -56,7 +56,10 @@ class Children {
     simpleType(widgets) {
         const { fix } = require("../util");
         return `
-        [${widgets}].to${this.type}(${this.stackAlignment})${this.columnOrRowMainAlignment}${this.columnOrRowCrossAlignment}.w(${fix(this.w)}).h(${fix(this.h)})
+        ${this.type}(
+            ${this.stackAlignment}
+            children: <Widget>[${widgets},],
+        )${this.columnOrRowMainAlignment}${this.columnOrRowCrossAlignment}.w(${fix(this.w)}).h(${fix(this.h)})
         `;
     }
 

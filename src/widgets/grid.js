@@ -12,7 +12,7 @@ class GridWidget {
         if (withStyledWidget) {
             return `Container(
             // [${this.xdNode.name}] Repeat grid aren't supported
-        ).w(${this.xdNode.localBounds.width}).h(${this.xdNode.localBounds.height}).backgroundColor(Colors.red)`;
+        ).w(${this.xdNode.localBounds.width}).h(${this.xdNode.localBounds.height}).bgColor(Colors.red)`;
         }
         return `
         Container(

@@ -71,8 +71,8 @@ class ContainerWidget {
             const tl = radii.topLeft, tr = radii.topRight, br = radii.bottomRight, bl = radii.bottomLeft;
             noCorner = tl == 0 && tl === tr && tl === br && tl === bl;
         }
-        if (!xdNode.strokeEnabled && noCorner && !xdNode.shadow.visible && xdNode.fill instanceof xd.Color) {
-            d = `.backgroundColor(${getColor(xdNode.fill)})`;
+        if (!xdNode.strokeEnabled && noCorner && (xdNode.shadow == null || !xdNode.shadow.visible) && xdNode.fill instanceof xd.Color) {
+            d = `.bgColor(${getColor(xdNode.fill)})`;
         } else {
             d = getStyledDecoration(xdNode, parameters);
         }
@@ -87,9 +87,8 @@ function getProp(xdNode, prop) {
     return o && o[prop];
 }
 
-
 function getStyledAlignmentByFather(node, fatherNode) {
-    const { xdAlignmentToDartAlignment } = require("./util/xd_alignment_to_dart_alignment");
+    const { xdAlignmentToStyledDartAlignment } = require("./util/xd_alignment_to_dart_alignment");
     const top = node.bounds.y1 - fatherNode.bounds.y1;
     const right = fatherNode.bounds.x2 - node.bounds.x2;
     const bot = fatherNode.bounds.y2 - node.bounds.y2;
@@ -98,12 +97,12 @@ function getStyledAlignmentByFather(node, fatherNode) {
     const alignY = (top / (top + auxBot));
     let auxRight = right == 0 && left == 0 ? 1 : right;
     const alignX = (left / (left + auxRight));
-    const resAlignment = xdAlignmentToDartAlignment(alignX, alignY);
-    if (resAlignment == 'Alignment.center') {
-        return `${node.toDart()}.center()`;
-    }
-    if (resAlignment != 'Alignment.topLeft') {
-        return `${node.toDart()}.alignment(${resAlignment})`;
+    const resAlignment = xdAlignmentToStyledDartAlignment(alignX, alignY);
+    if (resAlignment[0] != '.topLeft') {
+        if (resAlignment.length == 1) {
+            return `${node.toDart()}${resAlignment[0]}`;
+        }
+        return `${node.toDart()}.alignment(${resAlignment[0]},${resAlignment[1]})`;
     }
     if (onlyTag) return '';
     return node.toDart();
