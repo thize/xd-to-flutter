@@ -85,7 +85,7 @@ class Children {
             const spacer = this.childrenSpaces[index];
             if (spacer > 0) {
                 if (withStyledWidget) {
-                    widgets.push(`s(${spacer})`);
+                    widgets.push(`${spacer}.spacer`);
                 } else {
                     widgets.push(`Spacer(flex: ${spacer})`);
                 }
@@ -98,27 +98,27 @@ class Children {
         let set = new Set(dist);
         if (set.size == 1) {
             if (set.getByIdx(0) == 0) return;
-            this.columnOrRowMainAlignment = withSw ? '.mainSpaceEvenly' : 'mainAxisAlignment: MainAxisAlignment.spaceEvenly,';
+            this.columnOrRowMainAlignment = withSw ? '.mSpaceEvenly' : 'mainAxisAlignment: MainAxisAlignment.spaceEvenly,';
             return;
         }
         set = new Set(dist.slice(1, dist.length - 1)); // remove first and last item of Set
         if (dist[0] == 0 && dist[dist.length - 1] == 0 && set.size == 1) {
-            this.columnOrRowMainAlignment = withSw ? '.mainSpaceBetween' : 'mainAxisAlignment: MainAxisAlignment.spaceBetween,';
+            this.columnOrRowMainAlignment = withSw ? '.mSpaceBetween' : 'mainAxisAlignment: MainAxisAlignment.spaceBetween,';
             return;
         }
         let first = dist[0];
         if (first != 0 && dist[dist.length - 1] == first && set.size == 1 && set.getByIdx(0) == first * 2) {
-            this.columnOrRowMainAlignment = withSw ? '.mainSpaceAround' : 'mainAxisAlignment: MainAxisAlignment.spaceAround,';
+            this.columnOrRowMainAlignment = withSw ? '.mSpaceAround' : 'mainAxisAlignment: MainAxisAlignment.spaceAround,';
             return;
         }
         let last = dist[dist.length - 1];
         if (first != 0 && last != 0 && first == last && set.size == 1 && set.getByIdx(0) == 0) {
-            this.columnOrRowMainAlignment = withSw ? '.mainCenter' : 'mainAxisAlignment: MainAxisAlignment.center,';
+            this.columnOrRowMainAlignment = withSw ? '.mCenter' : 'mainAxisAlignment: MainAxisAlignment.center,';
             return;
         }
         set = new Set(dist.slice(1, dist.length)); // remove first and last item of Set
         if (first != 0 && set.size == 1 && set.getByIdx(0) == 0) {
-            this.columnOrRowMainAlignment = withSw ? '.mainEnd' : 'mainAxisAlignment: MainAxisAlignment.end,';
+            this.columnOrRowMainAlignment = withSw ? '.mEnd' : 'mainAxisAlignment: MainAxisAlignment.end,';
             return;
         }
     }
@@ -166,11 +166,11 @@ class Children {
         if (center >= end && center >= start) return;
         if (end >= center && end >= start) {
             this.isEnd = true;
-            this.columnOrRowCrossAlignment = withSw ? '.crossEnd' : 'crossAxisAlignment: CrossAxisAlignment.end,';
+            this.columnOrRowCrossAlignment = withSw ? '.cEnd' : 'crossAxisAlignment: CrossAxisAlignment.end,';
         }
         if (start >= center && start >= end) {
             this.isStart = true;
-            this.columnOrRowCrossAlignment = withSw ? '.crossStart' : 'crossAxisAlignment: CrossAxisAlignment.start,';
+            this.columnOrRowCrossAlignment = withSw ? '.cStart' : 'crossAxisAlignment: CrossAxisAlignment.start,';
         }
     }
 

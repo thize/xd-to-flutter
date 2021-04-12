@@ -27,14 +27,4 @@ TODO:
 ! Mask
 ! Repeat Grid
 ! List View
-
-TODO: Simple Type:
-* Text
-* Svg
-* Children
-* InkWell
-* Mask
-* Grid
-* Container
-! Text Rich
 */

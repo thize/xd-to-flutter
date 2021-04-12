@@ -65,9 +65,9 @@ function exportAllColors() {
     let resColors = '';
     assetsColors.forEach((assetsColor, index) => {
         const name = assetsColor.name != null ? assetsColor.name : `color${index + 1}`;
-        const generatedColor = _isGradient(assetsColor) ? _gradientColorList(assetsColor) : getColor(assetsColor.color)
+        const generatedColor = _isGradient(assetsColor) ? _gradientColorList(assetsColor) : getColor(assetsColor.color, 1, false)
         const staticType = _isGradient(assetsColor) ? 'List<Color>' : 'Color';
-        const generatedStaticColor = `static ${staticType} get ${name} => ${generatedColor};`
+        const generatedStaticColor = `static const ${staticType} ${name} = ${generatedColor.replace('const ', '')};`
         resColors += generatedStaticColor + '\n';
     });
     if (resColors == '') {
@@ -110,13 +110,14 @@ function getImports(widget, componentsNames) {
     const googleFonts = widget.includes('GoogleFonts.') ? `import 'package:google_fonts/google_fonts.dart';\n` : '';
     const math = widget.includes('Transform.rotate') ? `import 'dart:math';\n` : '';
     const simplecode = widget.includes('sz(') ? `import 'package:simple_code/simple_code.dart';\n` : '';
+    const appColors = widget.includes('AppColors.') ? `import 'app_colors.dart';\n` : '';
     let importsComponents = '';
     componentsNames.forEach(c => {
         if (widget.includes(`const ${c}`) && !widget.includes(`class ${c}`)) {
             importsComponents += `import '${c}.dart';\n`;
         }
     });
-    return material + svg + googleFonts + math + simplecode + importsComponents + '\n';
+    return material + svg + googleFonts + math + simplecode + appColors + importsComponents + '\n';
 }
 
 function getImportsTextStyle(widget) {
@@ -187,7 +188,7 @@ function _isGradient(fill) {
 function _gradientColorList(gradient) {
     let colors = [];
     gradient.colorStops.forEach(colorStop => {
-        colors.push(dartColor(colorStop.color));
+        colors.push(getColor(colorStop.color, 1, false));
     });
     return `[${colors}]`;
 }

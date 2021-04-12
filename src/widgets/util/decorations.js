@@ -46,18 +46,18 @@ function getStyledDecoration(xdNode, parameters) {
 	//! border
 	let s = !xdNode.strokeEnabled ? '' : `
     border: Border.all(
-        width: ${xdNode.strokeWidth}.a,
+        width: ${xdNode.strokeWidth},
         color:  ${getColor(xdNode.stroke, getOpacity(xdNode))},
         ),`;
 	//! shadow
 	let bs = xdNode.shadow;
 	if (!bs || !bs.visible) { bs = ""; } else {
-		bs = `boxShadow: [BoxShadow(color: ${getColor(bs.color, getOpacity(xdNode))}, offset: Offset(${fix(bs.x)}.a, ${fix(bs.y)}.a), blurRadius: ${fix(bs.blur)}.a, ), ], `;
+		bs = `boxShadow: [BoxShadow(color: ${getColor(bs.color, getOpacity(xdNode))}, offset: Offset(${fix(bs.x)}, ${fix(bs.y)}), blurRadius: ${fix(bs.blur)}, ), ], `;
 	}
 	//! radius
 	let br = _getBorderRadiusParam(xdNode);
 	//! Result
-	return `.decorated(
+	return `.decoration(
          ${_getFillParam(xdNode, parameters)}${s}${bs}${br}
     )`;
 }

@@ -80,6 +80,7 @@ function _getText(xdNode, params) {
     return _borderText(xdNode, 'Text('
         + `${textParam},` +
         _getStyleParam(xdNode, _getTextStyleParamList(xdNode, null, params)) +
+        _getHeightBehavior(xdNode) +
         _getTextAlignParam(xdNode) +
         ')');
 }
@@ -110,10 +111,12 @@ function styledText(xdNode, textParam) {
     const al = _getStyledTextAlign(xdNode);
     const c = `.color(${getColor(xdNode.fill, getOpacity(xdNode))})`;
     const fs = `.size(${xdNode.fontSize})`;
-    const weight = _getFontWeight(xdNode.fontStyle);
-    const fw = weight ? `.weight(${weight})` : '';
     const family = _getFontFamilyName(xdNode);
-    const ff = googleFonts.includes(family) ? `.textStyle(GoogleFonts.${family}())` : `.family('${_getFontFamily(xdNode)}')`;
+    const wgf = googleFonts.includes(family);
+    const weight = _getFontWeight(xdNode.fontStyle);
+    const fw = !wgf && weight ? `.weight(${weight})` : '';
+    const gfw = wgf && weight ? `fontWeight: ${weight}` : '';
+    const ff = wgf ? `.textStyle(GoogleFonts.${family}(${gfw}))` : `.family('${_getFontFamily(xdNode)}')`;
     //! Text Shadow
     const shadow = xdNode.shadow;
     let ts = '';
@@ -174,7 +177,7 @@ function _getTextRich(xdNode, params) {
     // Child spans set their style as a delta of the default.
     return _borderText(xdNode, 'Text.rich(TextSpan(' +
         '  ' + _getStyleParam(xdNode, defaultStyleParams) +
-        `  children: [${str}],` +
+        `  children: [${str}],` + _getHeightBehavior(xdNode) +
         `), ${_getTextAlignParam(xdNode)})`);
 
 }
@@ -293,6 +296,13 @@ function _getHeightParam(o) {
     // XD uses a pixel value.
     return (o.lineSpacing === 0 ? '' :
         `height: ${o.lineSpacing / o.fontSize}, `);
+}
+
+function _getHeightBehavior(o) {
+    // XD reports a lineSpacing of 0 to indicate default spacing.
+    // Flutter uses a multiplier against the font size for its "height" value.
+    // XD uses a pixel value.
+    return (o.lineSpacing === 0 ? '' : `textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false),`);
 }
 
 function _getShadowsParam(xdNode) {

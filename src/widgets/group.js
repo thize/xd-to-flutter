@@ -11,7 +11,8 @@ class GroupWidget {
         const { removeItemsFromGroup } = require("../util");
         const ungroupedItems = removeItemsFromGroup(this.xdNode.children);
         const itemsDart = itemsToDart(ungroupedItems);
-        return `\n// Group: ${this.xdNode.name}\n${itemsDart}`;
+        return itemsDart;
+        // return `\n// Group: ${this.xdNode.name}\n${itemsDart}`;
         /*
         return `
         Container(

@@ -1,5 +1,6 @@
 const { getColor } = require("./widgets/util/color");
 const { exportDialog } = require("./ui/dialogs/dialogs");
+const { Artboard } = require("scenegraph");
 
 let clipboard = require("clipboard");
 let scenegraph = require("scenegraph")
@@ -31,7 +32,7 @@ async function exportColor() {
     withErro = null;
     color = null;
     const node = scenegraph.selection.items[0];
-    if (node.children.length > 1 || scenegraph.selection.items.length > 1) {
+    if ((node.children.length > 1 && !(node instanceof Artboard)) || scenegraph.selection.items.length > 1) {
         await exportDialog("Select only one item", 'Ok', 'Tap any key to close');
     } else {
         document.addEventListener('keydown', keydownFunc);

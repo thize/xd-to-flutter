@@ -7,7 +7,7 @@ function outputUi(two) {
     return title + outputText;
 }
 
-function changeOutputUiText(newText, color) {
+function changeOutputUiText(newText, color, stop = false) {
     const redColor = 'LightCoral';
     const greenColor = 'MediumSeaGreen';
     const element = document.getElementById('outputText');
@@ -24,6 +24,7 @@ function changeOutputUiText(newText, color) {
         element.style.color = color;
         element2.style.color = color;
     }
+    if (stop) alert('error to stop the app');
 }
 
 function getOutputUiText() {
